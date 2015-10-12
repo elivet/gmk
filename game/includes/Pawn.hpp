@@ -11,6 +11,9 @@ public:
 	Pawn &	operator=( Pawn const & rhs );
 
 private:
+	int	const	_posX;
+	int	const	_posY;
+	int	const	_player;
 
 };
 

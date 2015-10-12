@@ -5,6 +5,11 @@ Pawn::Pawn( void )
 	return ;
 }
 
+Pawn::Pawn( int x, int y, int player)  : _xPos( x ), _yPos( y ), _player( player )
+{
+	return ;
+}
+
 Pawn::~Pawn( void )
 {
 	return ;
