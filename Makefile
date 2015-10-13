@@ -13,15 +13,12 @@ CC				=	g++
 NAME			=	gomoku
 
 FILES			=	main.cpp \
-<<<<<<< HEAD
 					game/Board.cpp \
 					game/Pawn.cpp \
 					game/Gomoku.cpp \
 					game/Player.cpp \
 					game/Computer.cpp \
-=======
 					engine/OpenGlLib.cpp
->>>>>>> origin/master
 
 SRCS			=	$(FILES)
 
