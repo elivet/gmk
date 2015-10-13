@@ -1,6 +1,8 @@
 #ifndef BOARD_HPP
 # define BOARD_HPP
 
+#include "../includes/Pawn.hpp"
+
 class Board
 {
 public:
@@ -11,6 +13,7 @@ public:
 	Board &	operator=( Board const & rhs );
 
 private:
+	std::map<std::pair<int,int>, Pawn*>		_pawns;
 
 };
 

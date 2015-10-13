@@ -1,8 +1,8 @@
-NAME = npuzzle
+NAME = gomoku
 
 FLAGS = -Wall -Wextra -Werror
 
-OBJ = main.o Gomoku.o
+OBJ = main.o
 
 all: $(NAME)
 
