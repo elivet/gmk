@@ -1,21 +1,40 @@
-NAME = gomoku
+#DEV, BUID
+MODE			=	BUILD
 
-FLAGS = -Wall -Wextra -Werror
+ifeq ($(MODE), DEV)
+	CPPFLAGS	=	-Wall -Wextra -ansi -O3 -DDEBUG
+else
+	CPPFLAGS	=	-Wall -Wextra -Werror -ansi -O3
+endif
 
-OBJ = main.o
+CC				=	g++
 
-all: $(NAME)
+NAME			=	gomoku
 
-$(NAME): $(OBJ)
-	    g++ $(FLAGS) -o $(NAME) $(OBJ)
+FILES			=	main.cpp
 
-%.o: %.cpp
-	    g++ $(FLAGS) -c $<
+SRCS			=	$(FILES)
+
+OBJS			=	$(SRCS:.cpp=.o)
+
+HEADS			=	$(SRCS:.cpp=.hpp)
+
+all:			$(NAME)
+
+$(NAME):		$(OBJS)
+	@$(CC) -o $(NAME) $(OBJS)
+	@printf "\033[33mCompilation of %-40s \033[34m[\033[32m✔\033[34m]\033[0m\n" $(NAME)
+
+$(OBJS):		$(HEADS)
+
+%.o:			%.cpp
+	@printf "\t\033[36m-> %-45s\033[34m[\033[32m✔\033[34m]\033[0m\n" $<
+	@$(CC) $(CPPFLAGS) -o $@ -c $<
 
 clean:
-	    rm -rf $(OBJ)
+	@printf "\033[31mRemove %s objects\033[0m\n" $(NAME)
+	@rm -rf $(OBJS)
 
-fclean: clean
-	    rm -rf $(NAME)
-
-re: fclean all
+fclean:			clean
+	@printf "\033[31mRemove binary\033[0m\n"
+	@rm -rf $(NAME)
