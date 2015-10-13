@@ -12,7 +12,8 @@ CC				=	g++
 
 NAME			=	gomoku
 
-FILES			=	main.cpp
+FILES			=	main.cpp \
+					engine/OpenGlLib.cpp
 
 SRCS			=	$(FILES)
 
@@ -20,17 +21,21 @@ OBJS			=	$(SRCS:.cpp=.o)
 
 HEADS			=	$(SRCS:.cpp=.hpp)
 
+INC			=	-I ~/.brew/include/
+
+LIB			=	-L ~/.brew/lib/ -lglfw3 -framework OpenGL
+
 all:			$(NAME)
 
 $(NAME):		$(OBJS)
-	@$(CC) -o $(NAME) $(OBJS)
+	@$(CC) -shared -o $(NAME) $(OBJS) $(LIB)
 	@printf "\033[33mCompilation of %-40s \033[34m[\033[32m✔\033[34m]\033[0m\n" $(NAME)
 
 $(OBJS):		$(HEADS)
 
 %.o:			%.cpp
 	@printf "\t\033[36m-> %-45s\033[34m[\033[32m✔\033[34m]\033[0m\n" $<
-	@$(CC) $(CPPFLAGS) -o $@ -c $<
+	@$(CC) $(CPPFLAGS) -o $@ -c $< $(INC)
 
 clean:
 	@printf "\033[31mRemove %s objects\033[0m\n" $(NAME)
@@ -39,3 +44,14 @@ clean:
 fclean:			clean
 	@printf "\033[31mRemove binary\033[0m\n"
 	@rm -rf $(NAME)
+
+re:				fclean all
+
+install:
+	@if [ ! -d "~/.brew" ] ; \
+	then \
+		brew update; \
+	fi;
+	@mkdir -p ~/Library/Caches
+	@mkdir -p ~/Library/Caches/Homebrew
+	@~/.brew/bin/brew install homebrew/versions/glfw3

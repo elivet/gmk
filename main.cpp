@@ -2,15 +2,14 @@
 #include <iostream> 
 #include <string> 
 #include <map>
+#include "engine/OpenGlLib.hpp"
 
 int 		main(int argc, char const *argv[])
 {
-	std::map<std::pair<int,int>, std::string> myMap;
-	myMap[std::make_pair(10,20)] = "#bingo#";
+	(void)argc;
+	(void)argv;
 
-	if (argc > 1)
-		myMap[std::make_pair(10,20)] = argv[1];
-	
-	std::cout << myMap[std::make_pair(10,20)] << std::endl;
+	OpenGlLib *blop = new OpenGlLib();
+	blop->createWindow(100, 100, "oooh yeah");
 	return (0);
 }
