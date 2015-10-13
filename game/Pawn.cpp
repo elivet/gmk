@@ -1,12 +1,13 @@
-#include "../includes/Pawn.hpp"
+#include "Pawn.hpp"
 
 Pawn::Pawn( void )
 {
 	return ;
 }
 
-Pawn::Pawn( int x, int y, int player)  : _xPos( x ), _yPos( y ), _player( player )
+Pawn::Pawn( int player) : _player( player )
 {
+	std::cout << "PAWN CONST: " << _player << std::endl;
 	return ;
 }
 
@@ -27,4 +28,9 @@ Pawn &	Pawn::operator=( Pawn const & rhs )
 
 	}
 	return ( *this );
+}
+
+int		Pawn::getPlayer()
+{
+	return this->_player;
 }

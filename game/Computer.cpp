@@ -1,9 +1,12 @@
-#include "../includes/Computer.hpp"
+#include "Computer.hpp"
 
 Computer::Computer( void )
 {
+	this->_name = 2;
+	this->_capturedPawns = 0;
 	return ;
 }
+
 
 Computer::~Computer( void )
 {

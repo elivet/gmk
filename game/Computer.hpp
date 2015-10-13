@@ -1,11 +1,13 @@
 #ifndef COMPUTER_HPP
 # define COMPUTER_HPP
 
-class Computer
+# include "Player.hpp"
+
+class Computer : public Player
 {
 public:
 	Computer( void );
- 	~Computer( void );
+ 	virtual ~Computer( void );
 	Computer( Computer const & src );
 
 	Computer &	operator=( Computer const & rhs );

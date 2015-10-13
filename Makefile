@@ -12,7 +12,12 @@ CC				=	g++
 
 NAME			=	gomoku
 
-FILES			=	main.cpp
+FILES			=	main.cpp \
+					game/Board.cpp \
+					game/Pawn.cpp \
+					game/Gomoku.cpp \
+					game/Player.cpp \
+					game/Computer.cpp \
 
 SRCS			=	$(FILES)
 

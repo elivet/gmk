@@ -1,6 +1,11 @@
-#include "../includes/Player.hpp"
+#include "Player.hpp"
 
-Player::Player( void )
+Player::Player( void ) : _name(1), _capturedPawns(0)
+{
+	return ;
+}
+
+Player::Player( int name ) : _name(name), _capturedPawns(0)
 {
 	return ;
 }
