@@ -1,4 +1,3 @@
-
 #DEV, BUID
 MODE			=	BUILD
 
@@ -19,27 +18,25 @@ FILES			=	main.cpp \
 					game/Player.cpp \
 					game/Computer.cpp \
 
+
 SRCS			=	$(FILES)
 
 OBJS			=	$(SRCS:.cpp=.o)
 
 HEADS			=	$(SRCS:.cpp=.hpp)
 
-#INC			=	-I ~/.brew/include/
-
-#LIB			=	-L ~/.brew/lib/ -lglfw3 -framework OpenGL
 
 all:			$(NAME)
 
 $(NAME):		$(OBJS)
-	@$(CC) -shared -o $(NAME) $(OBJS) #$(LIB)
+	@$(CC) -o $(NAME) $(OBJS)
 	@printf "\033[33mCompilation of %-40s \033[34m[\033[32m✔\033[34m]\033[0m\n" $(NAME)
 
 $(OBJS):		$(HEADS)
 
 %.o:			%.cpp
 	@printf "\t\033[36m-> %-45s\033[34m[\033[32m✔\033[34m]\033[0m\n" $<
-	@$(CC) $(CPPFLAGS) -o $@ -c $< #$(INC)
+	@$(CC) $(CPPFLAGS) -o $@ -c $<
 
 clean:
 	@printf "\033[31mRemove %s objects\033[0m\n" $(NAME)
@@ -50,12 +47,3 @@ fclean:			clean
 	@rm -rf $(NAME)
 
 re:				fclean all
-
-install:
-	@if [ ! -d "~/.brew" ] ; \
-	then \
-		brew update; \
-	fi;
-	@mkdir -p ~/Library/Caches
-	@mkdir -p ~/Library/Caches/Homebrew
-	@~/.brew/bin/brew install homebrew/versions/glfw3

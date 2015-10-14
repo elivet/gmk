@@ -5,9 +5,9 @@
 #include "game/Board.hpp"
 //#include "engine/OpenGlLib.hpp"
 
+
 int 		main()
 {
-	// OpenGlLib *blop = new OpenGlLib();
-	// blop->createWindow(100, 100, "oooh yeah");
+	std::cout << "wefwef" << std::endl;
 	return (0);
 }
