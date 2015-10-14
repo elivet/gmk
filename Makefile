@@ -18,7 +18,6 @@ FILES			=	main.cpp \
 					game/Gomoku.cpp \
 					game/Player.cpp \
 					game/Computer.cpp \
-					engine/OpenGlLib.cpp
 
 SRCS			=	$(FILES)
 
@@ -26,21 +25,21 @@ OBJS			=	$(SRCS:.cpp=.o)
 
 HEADS			=	$(SRCS:.cpp=.hpp)
 
-INC			=	-I ~/.brew/include/
+#INC			=	-I ~/.brew/include/
 
-LIB			=	-L ~/.brew/lib/ -lglfw3 -framework OpenGL
+#LIB			=	-L ~/.brew/lib/ -lglfw3 -framework OpenGL
 
 all:			$(NAME)
 
 $(NAME):		$(OBJS)
-	@$(CC) -shared -o $(NAME) $(OBJS) $(LIB)
+	@$(CC) -shared -o $(NAME) $(OBJS) #$(LIB)
 	@printf "\033[33mCompilation of %-40s \033[34m[\033[32m✔\033[34m]\033[0m\n" $(NAME)
 
 $(OBJS):		$(HEADS)
 
 %.o:			%.cpp
 	@printf "\t\033[36m-> %-45s\033[34m[\033[32m✔\033[34m]\033[0m\n" $<
-	@$(CC) $(CPPFLAGS) -o $@ -c $< $(INC)
+	@$(CC) $(CPPFLAGS) -o $@ -c $< #$(INC)
 
 clean:
 	@printf "\033[31mRemove %s objects\033[0m\n" $(NAME)
