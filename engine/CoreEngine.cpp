@@ -66,7 +66,7 @@ bool			CoreEngine::start( void )
 	while (this->_isRunning)
 	{
 		startFrame = this->getTime();
-		// this->_renderLib->updateKeys();
+		this->_renderLib->updateKeys();
 		this->_renderLib->clearWindow();
 		if ( this->_renderLib->isCloseRequest())
 		{
