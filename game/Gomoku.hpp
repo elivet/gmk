@@ -15,6 +15,9 @@ public:
 
 	Gomoku &	operator=( Gomoku const & rhs );
 
+	void		play();
+	void		turns(Player* p1, Player* p2);
+
 private:
 	Board*		_currentBoard;
 	Player*		_player1;

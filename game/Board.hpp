@@ -13,13 +13,17 @@ public:
 
 	Board &	operator=( Board const & rhs );
 
-	void	insert(int x, int y, int player);
+	void	insert(std::pair<int, int> xy, int player);
 	void	displayPawns( void );
 	Pawn*	findPawn( int x, int y);
+	bool 	checkwin();
+	void	checkAround(std::map<std::pair<int,int>, Pawn*>::iterator it);
+	int 	checker(int x, int y, std::pair<int, int> key);
+	int 	checkAlignement(std::pair<int, int> key, std::pair<int, int> key2);
 
 private:
 	std::map<std::pair<int,int>, Pawn*>		_pawns;
-
+	int										_win;
 };
 
 #endif

@@ -12,6 +12,8 @@ public:
 
 	Computer &	operator=( Computer const & rhs );
 
+	virtual std::pair<int, int>			play();
+
 private:
 
 };

@@ -1,6 +1,8 @@
 #ifndef PLAYER_HPP
 # define PLAYER_HPP
 
+#include <iostream>
+
 class Player
 {
 public:
@@ -10,6 +12,11 @@ public:
 	Player( Player const & src );
 
 	Player &	operator=( Player const & rhs );
+
+	virtual std::pair<int, int>			play();
+
+	int			getName();
+
 
 protected:
 	int		_name;

@@ -28,3 +28,15 @@ Player &	Player::operator=( Player const & rhs )
 	}
 	return ( *this );
 }
+
+std::pair<int, int>		Player::play()
+{
+	std::cout << this->_name << " playing" << std::endl;
+	std::pair<int, int> key = std::make_pair(1, 4);
+	return key;
+}
+
+int						Player::getName()
+{
+	return this->_name;
+}
