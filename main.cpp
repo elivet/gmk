@@ -7,6 +7,8 @@
 #include "game/Board.hpp"
 #include "./game/Gomoku.hpp"
 //#include "engine/OpenGlLib.hpp"
+#include "engine/CoreEngine.hpp"
+#include <unistd.h>
 
 
 int 		main()
@@ -27,5 +29,8 @@ int 		main()
 	}
 	gomoku->play();
 	std::cout << "wefwef" << std::endl;
+	CoreEngine *engine = new CoreEngine(50);
+	engine->start();
+
 	return (0);
 }
