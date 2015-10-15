@@ -18,7 +18,8 @@ FILES			=	main.cpp \
 					game/Player.cpp \
 					game/Computer.cpp \
 					\
-					engine/OpenGlLib.cpp
+					engine/OpenGlLib.cpp\
+					engine/CoreEngine.cpp\
 
 
 SRCS			=	$(FILES)
