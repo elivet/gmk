@@ -44,10 +44,10 @@ Gomoku &	Gomoku::operator=( Gomoku const & rhs )
 void		Gomoku::play()
 {
 	_currentBoard->insert(std::make_pair(1,2), 1);
-	_currentBoard->insert(std::make_pair(1,3), 1);
-	_currentBoard->insert(std::make_pair(1,4), 1);
-	_currentBoard->insert(std::make_pair(1,5), 1);
-	_currentBoard->insert(std::make_pair(1,6), 1);
+	_currentBoard->insert(std::make_pair(2,3), 1);
+	_currentBoard->insert(std::make_pair(3,4), 1);
+	_currentBoard->insert(std::make_pair(4,5), 1);
+	_currentBoard->insert(std::make_pair(5,6), 1);
 
 
 
