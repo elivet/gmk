@@ -3,6 +3,8 @@
 # include <GLFW/glfw3.h>
 # include <iostream>
 
+# define SCREEN 30
+
 class OpenGlLib
 {
 public:
@@ -33,6 +35,8 @@ public:
 	virtual bool		clearWindow( void );
 	virtual void		updateKeys( void );
 	virtual	bool		isKeyPressed( e_key ) const;
+	virtual void		drawSquare( int posX, int posY, int size, int color ) const;
+	virtual void		drawLine( float x1, float y1, float x2, float y2, int color ) const;
 
 	static void			key_callback( GLFWwindow * window, int key, int scancode, int action, int mods );
 	static bool			keys[SIZEOF];

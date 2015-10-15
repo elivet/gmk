@@ -105,7 +105,67 @@ bool		OpenGlLib::isKeyPressed( e_key key ) const
 	return ( OpenGlLib::keys[key] );
 }
 
+void		OpenGlLib::drawSquare( int posX, int posY, int size, int color ) const
+{
+	(void)size;
+	float ratio;
+	int width, height;
+	float r, g, b;
+	r = (float)( (color & 0xFF0000) >> 16 ) / 255.f;
+	g = (float)( (color & 0x00FF00) >> 8 ) / 255.f;
+	b = (float)( (color & 0x0000FF) ) / 255.f;
+	glfwGetFramebufferSize( this->_window, &width, &height );
+	ratio = width / (float) height;
+	glViewport( 0, 0, width, height );
+	glMatrixMode( GL_PROJECTION );
+	glLoadIdentity();
+	glOrtho( -ratio, ratio, -1.f, 1.f, 1.f, -1.f );
+	glMatrixMode( GL_MODELVIEW );
+	glLoadIdentity();
+	glBegin( GL_TRIANGLES );
+	glColor3f( r, g, b );
+	ratio *= 20.0;
+	glVertex3f( (-0.f + posX - SCREEN) / ratio, -(-0.f + posY - SCREEN) / ratio, 0.f );
+	glVertex3f( (-0.f + posX - SCREEN) / ratio, -(+1.f + posY - SCREEN) / ratio, 0.f );
+	glVertex3f( (+1.f + posX - SCREEN) / ratio, -(+1.f + posY - SCREEN) / ratio, 0.f );
+	glVertex3f( (-0.f + posX - SCREEN) / ratio, -(-0.f + posY - SCREEN) / ratio, 0.f );
+	glVertex3f( (+1.f + posX - SCREEN) / ratio, -(-0.f + posY - SCREEN) / ratio, 0.f );
+	glVertex3f( (+1.f + posX - SCREEN) / ratio, -(+1.f + posY - SCREEN) / ratio, 0.f );
+	glEnd();
+	return ;
+}
 
+void		OpenGlLib::drawLine( float x1, float y1, float x2, float y2, int color ) const
+{
+	float tmp;
+	if (x2 < x1)
+	{
+		tmp = x2;
+		x2 = x1;
+		x1 = tmp;
+	}
+	if (y2 < y1)
+	{
+		tmp = y2;
+		y2 = y1;
+		y1 = tmp;
+	}
+	if (y1 == y2)
+	{
+		for (int x = x1; x <= x2; x++)
+		{
+			this->drawSquare(x, y1, 1, color);
+		}
+	}
+	else
+	{
+		for (int y = y1; y <= y2; y++)
+		{
+			this->drawSquare(x1, y, 1, color);
+		}
+	}
+	return ;
+}
 
 
 
