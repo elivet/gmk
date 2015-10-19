@@ -5,7 +5,7 @@ Possibility::Possibility( void )
 	return ;
 }
 
-Possibility( int x, int y, int player ): _x(x), _y(y), _player(player)
+Possibility::Possibility( int x, int y, int player ): _player(player), _x(x), _y(y)
 {
 	return ;
 }

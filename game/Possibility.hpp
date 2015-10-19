@@ -2,6 +2,7 @@
 # define POSSIBILITY_HPP
 
 # include <iostream>
+# include <vector>
 
 class Possibility
 {
