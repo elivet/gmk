@@ -14,6 +14,7 @@ public:
 	Board &	operator=( Board const & rhs );
 
 	void	insert(std::pair<int, int> xy, int player);
+	void	erase(std::pair<int, int> xy);
 	void	displayPawns( void );
 	Pawn*	findPawn( int x, int y);
 	bool 	checkwin();

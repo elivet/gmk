@@ -33,6 +33,13 @@ void		Board::insert(std::pair<int, int> xy, int player)
 	return ;
 }
 
+void		Board::erase(std::pair<int, int> xy)
+{
+	std::cout << "erasePawn x: " << xy.first << " y: " << xy.second << std::endl;
+	_pawns.erase(xy);
+	return ;
+}
+
 void		Board::displayPawns( void )
 {
 	for(std::map<std::pair<int,int>, Pawn*>::iterator it=_pawns.begin() ; it!=_pawns.end() ; ++it)

@@ -17,7 +17,7 @@ FILES			=	main.cpp \
 					game/Gomoku.cpp \
 					game/Player.cpp \
 					game/Computer.cpp \
-					#game/Possibility.cpp \
+					game/Possibility.cpp \
 					\
 					#engine/OpenGlLib.cpp\
 					#engine/CoreEngine.cpp\

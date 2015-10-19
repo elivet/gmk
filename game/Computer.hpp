@@ -4,6 +4,7 @@
 # include "Player.hpp"
 # include "Board.hpp"
 # include "Pawn.hpp"
+# include "Possibility.hpp"
 # include <vector>
 
 class Computer : public Player
@@ -17,14 +18,18 @@ public:
 
 	virtual std::pair<int, int>			play(Board* currentBoard);
 
-	void								getSons(Board* currentBoard);
-	void								emptyAround(Board* currentBoard, int x, int y);
-	// void								createSon(Board* currentBoard, int x, int y);
+	void								getSons(bool bill);
+	void								emptyAround(int x, int y, bool bill);
+	void								createSon(int x, int y);
+	void								createGrandSon(int x, int y);
 	void								displaySons();
+	void								lookAround(int x, int y, bool bill);
 
 
 private:
-	std::vector<Board*>	_sons;
+	std::vector<Possibility*> 	_sons;
+	Board* 						_currentBoard;
+	Possibility*				_tmp;
 };
 
 #endif

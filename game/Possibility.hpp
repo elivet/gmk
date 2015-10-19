@@ -3,6 +3,7 @@
 
 # include <iostream>
 # include <vector>
+# include <map>
 
 class Possibility
 {
@@ -14,12 +15,19 @@ public:
 
 	Possibility &	operator=( Possibility const & rhs );
 
+	void		insert(int x, int y, int player);
+
+	int											getX( void );
+	int											getY( void );
+	std::map<std::pair<int,int>,Possibility*>	getGrandSons( void );
+
 private:
 	int							_player;
-	int							_weight;
+	// int							_weight;
 	int							_x;
 	int							_y;
-	std::vector<Possibility> 	_sons;
+public:
+	std::map<std::pair<int,int>,Possibility*> 	_grandSons;
 
 };
 
