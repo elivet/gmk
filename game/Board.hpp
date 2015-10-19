@@ -21,6 +21,9 @@ public:
 	int 	checker(int x, int y, std::pair<int, int> key);
 	int 	checkAlignement(std::pair<int, int> key, std::pair<int, int> key2);
 
+
+	std::map<std::pair<int,int>, Pawn*>		getPawns();
+
 private:
 	std::map<std::pair<int,int>, Pawn*>		_pawns;
 	int										_win;

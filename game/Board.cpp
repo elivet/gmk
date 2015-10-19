@@ -12,6 +12,7 @@ Board::~Board( void )
 
 Board::Board( Board const & src )
 {
+	std::cout << "  +++++++++    NEW SON" << std::endl;
 	*this = src;
 }
 
@@ -118,3 +119,26 @@ bool 		Board::checkwin()
 	}
 	return false;
 }
+
+std::map<std::pair<int,int>, Pawn*>		Board::getPawns()
+{
+	return _pawns;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

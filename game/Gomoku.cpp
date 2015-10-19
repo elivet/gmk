@@ -43,11 +43,11 @@ Gomoku &	Gomoku::operator=( Gomoku const & rhs )
 
 void		Gomoku::play()
 {
-	_currentBoard->insert(std::make_pair(1,2), 1);
-	_currentBoard->insert(std::make_pair(2,3), 1);
-	_currentBoard->insert(std::make_pair(3,4), 1);
-	_currentBoard->insert(std::make_pair(4,5), 1);
-	_currentBoard->insert(std::make_pair(5,6), 1);
+	// _currentBoard->insert(std::make_pair(1,2), 1);
+	// _currentBoard->insert(std::make_pair(2,3), 1);
+	// _currentBoard->insert(std::make_pair(3,4), 1);
+	// _currentBoard->insert(std::make_pair(4,5), 1);
+	// _currentBoard->insert(std::make_pair(5,6), 1);
 
 
 
@@ -67,9 +67,9 @@ void		Gomoku::turns(Player* p1, Player* p2)
 	std::pair<int, int> tmp;
 	while (!this->_currentBoard->checkwin())
 	{
-		tmp = p1->play();
+		tmp = p1->play(this->_currentBoard);
 		// _currentBoard->insert(tmp, p1->getName());
-		tmp = p2->play();
+		tmp = p2->play(this->_currentBoard);
 		// _currentBoard->insert(tmp, p2->getName());
 	}
 	return ;

@@ -1,7 +1,8 @@
 #ifndef PLAYER_HPP
 # define PLAYER_HPP
 
-#include <iostream>
+# include <iostream>
+# include "Board.hpp"
 
 class Player
 {
@@ -13,7 +14,7 @@ public:
 
 	Player &	operator=( Player const & rhs );
 
-	virtual std::pair<int, int>			play();
+	virtual std::pair<int, int>			play(Board* currentBoard);
 
 	int			getName();
 
