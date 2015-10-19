@@ -3,6 +3,7 @@
 
 # include "Player.hpp"
 # include "Board.hpp"
+# include "Pawn.hpp"
 # include <vector>
 
 class Computer : public Player

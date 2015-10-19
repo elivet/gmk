@@ -44,9 +44,12 @@ std::pair<int, int>			Computer::play(Board* currentBoard)
 
 void						Computer::getSons(Board* currentBoard)
 {
-	for(std::map<std::pair<int,int>, Pawn*>::iterator it=currentBoard->getPawns().begin() ; it!=currentBoard->getPawns().end() ; ++it)
+	int loop = 0;
+	std::map<std::pair<int,int>, Pawn*>		pawns = currentBoard->getPawns();
+	for(std::map<std::pair<int,int>, Pawn*>::iterator it=pawns.begin() ; it!=pawns.end() ; it++)
 	{
-		std::cout << "beginLOOP getSons" << std::endl;
+		loop++;
+		std::cout << "beginLOOP getSons loop: " << loop << " size: " << currentBoard->getPawns().size() << std::endl;
 		int x = it->first.first;
 		int y = it->first.second;
 		emptyAround(currentBoard, x - 1, y);
@@ -59,8 +62,8 @@ void						Computer::getSons(Board* currentBoard)
 		emptyAround(currentBoard, x - 1, y + 1);
 		std::cout << "endLOOP getSons" << std::endl;
 	}
-	std::cout << "displaySons getSons" << std::endl;
-	displaySons();
+	// std::cout << "displaySons getSons" << std::endl;
+	// displaySons();
 	return ;
 }
 
