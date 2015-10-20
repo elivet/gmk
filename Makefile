@@ -19,8 +19,9 @@ FILES			=	main.cpp \
 					game/Computer.cpp \
 					game/Possibility.cpp \
 					\
-					#engine/OpenGlLib.cpp\
-					#engine/CoreEngine.cpp\
+					engine/OpenGlLib.cpp\
+					engine/CoreEngine.cpp\
+					core/GameObject.cpp\
 
 
 SRCS			=	$(FILES)

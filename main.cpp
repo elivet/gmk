@@ -6,8 +6,7 @@
 #include <string.h>
 #include "game/Board.hpp"
 #include "./game/Gomoku.hpp"
-//#include "engine/OpenGlLib.hpp"
-// #include "engine/CoreEngine.hpp"
+#include "engine/CoreEngine.hpp"
 #include <unistd.h>
 
 

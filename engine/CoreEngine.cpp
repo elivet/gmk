@@ -91,6 +91,34 @@ bool			CoreEngine::start( void )
 	return ( true );
 }
 
+int			CoreEngine::update( double delta )
+{
+	for ( size_t i = 0; i < this->_objects.size(); i++ )
+		this->_objects[i]->update( _renderLib, delta );
+	return ( true );
+}
+
+int			CoreEngine::render( void ) const
+{
+	for ( size_t i = 0; i < this->_objects.size(); i++ )
+		this->_objects[i]->render( _renderLib );
+	return ( true );
+}
+
+int			CoreEngine::setRunnig( int state )
+{
+	this->_isRunning = state;
+	return true;
+}
+
+int			CoreEngine::addObject( GameObject * object )
+{
+	object->setCoreEngine(this);
+	object->init();
+	this->_objects.push_back( object );
+	return ( true );
+}
+
 bool			CoreEngine::stop( void )
 {
 	if ( ! this->_isRunning )
