@@ -29,12 +29,12 @@ public:
 private:
 	CoreEngine( void );
 
-	double					getTime( void );
-	void *					_handle;
-	float					_fps;
-	bool					_isRunning;
+	double						getTime( void );
+	void *						_handle;
+	float						_fps;
+	bool						_isRunning;
 	std::vector<GameObject *>	_objects;
-	OpenGlLib *				_renderLib;
+	OpenGlLib *					_renderLib;
 
 };
 

@@ -1,4 +1,5 @@
 #include "GameObject.hpp"
+#include "../engine/CoreEngine.hpp"
 
 GameObject::GameObject( void )
 {

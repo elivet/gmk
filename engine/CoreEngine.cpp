@@ -54,7 +54,7 @@ bool			CoreEngine::start( void )
 	// 	std::cerr << "CoreEngine need a game !" << std::endl;
 	// 	return ( false );
 	// }
-	if ( ! this->_renderLib->createWindow( 850, 550, "Gomoku" ) )
+	if ( ! this->_renderLib->createWindow( 850, 850, "Gomoku" ) )
 	{
 		std::cerr << "Failed to create window !" << std::endl;
 		return ( false );
@@ -75,7 +75,7 @@ bool			CoreEngine::start( void )
 		}
 
 		// this->_game->update( this->_renderLib, dt );
-		// this->_game->render( this->_renderLib );
+		this->render();
 
 		this->_renderLib->refreshWindow();
 
