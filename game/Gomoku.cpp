@@ -101,7 +101,7 @@ int					Gomoku::render( OpenGlLib *	_renderLib ) const
 			color += 0x000F0F;
 			color2 += 0xFF0000;
 			_renderLib->drawSquare(i, j, 1, color);
-			_renderLib->drawCircle(i, j, 1, color2);
+			_renderLib->drawCircle(i, j, 1, rand());
 		}
 	}
 	// _renderLib->drawLine(1, 0, 1, 20, 0xFF0000);
