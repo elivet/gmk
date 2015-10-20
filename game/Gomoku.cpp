@@ -84,7 +84,18 @@ int					Gomoku::update( OpenGlLib *	_renderLib, double delta )
 
 int					Gomoku::render( OpenGlLib *	_renderLib ) const
 {
-	_renderLib->drawSquare(10, 10 ,20, 0xFFFFFF);
+	_renderLib->drawSquare(0, 0 , 1, 0x000000);
+	_renderLib->drawSquare(0, 5 , 0.5, 0x000000);
+	_renderLib->drawSquare(10, 0 , 0.5, 0x000000);
+	_renderLib->drawSquare(10, 5 , 0.5, 0x000000);
+
+
+	_renderLib->drawLine(0, 0, 0, 50, 0x000000);
+	_renderLib->drawLine(0, 0, 30, 0, 0x000000);
+
+	_renderLib->drawCircle(0,0, 2, 0x000000);
+	// _renderLib->drawCircle(0,2, 2, 0x000000);
+	// _renderLib->drawCircle(0,4, 2, 0x000000);
 	return true;
 }
 
