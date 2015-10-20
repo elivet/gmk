@@ -12,6 +12,7 @@ Board::~Board( void )
 
 Board::Board( Board const & src )
 {
+	std::cout << "  +++++++++    NEW SON" << std::endl;
 	*this = src;
 }
 
@@ -29,6 +30,13 @@ void		Board::insert(std::pair<int, int> xy, int player)
 	std::cout << "insertPawn x: " << xy.first << " y: " << xy.second << std::endl;
 	Pawn	*pawn = new Pawn(player);
 	_pawns[xy] = pawn;
+	return ;
+}
+
+void		Board::erase(std::pair<int, int> xy)
+{
+	std::cout << "erasePawn x: " << xy.first << " y: " << xy.second << std::endl;
+	_pawns.erase(xy);
 	return ;
 }
 
@@ -118,3 +126,26 @@ bool 		Board::checkwin()
 	}
 	return false;
 }
+
+std::map<std::pair<int,int>, Pawn*>		Board::getPawns()
+{
+	return _pawns;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

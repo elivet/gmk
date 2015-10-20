@@ -14,12 +14,16 @@ public:
 	Board &	operator=( Board const & rhs );
 
 	void	insert(std::pair<int, int> xy, int player);
+	void	erase(std::pair<int, int> xy);
 	void	displayPawns( void );
 	Pawn*	findPawn( int x, int y);
 	bool 	checkwin();
 	void	checkAround(std::map<std::pair<int,int>, Pawn*>::iterator it);
 	int 	checker(int x, int y, std::pair<int, int> key);
 	int 	checkAlignement(std::pair<int, int> key, std::pair<int, int> key2);
+
+
+	std::map<std::pair<int,int>, Pawn*>		getPawns();
 
 private:
 	std::map<std::pair<int,int>, Pawn*>		_pawns;

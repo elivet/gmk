@@ -2,6 +2,10 @@
 # define COMPUTER_HPP
 
 # include "Player.hpp"
+# include "Board.hpp"
+# include "Pawn.hpp"
+# include "Possibility.hpp"
+# include <vector>
 
 class Computer : public Player
 {
@@ -12,10 +16,20 @@ public:
 
 	Computer &	operator=( Computer const & rhs );
 
-	virtual std::pair<int, int>			play();
+	virtual std::pair<int, int>			play(Board* currentBoard);
+
+	void								getSons(bool bill);
+	void								emptyAround(int x, int y, bool bill);
+	void								createSon(int x, int y);
+	void								createGrandSon(int x, int y);
+	void								displaySons();
+	void								lookAround(int x, int y, bool bill);
+
 
 private:
-
+	std::vector<Possibility*> 	_sons;
+	Board* 						_currentBoard;
+	Possibility*				_tmp;
 };
 
 #endif
