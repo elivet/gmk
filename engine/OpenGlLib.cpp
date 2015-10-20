@@ -59,6 +59,7 @@ bool		OpenGlLib::isCloseRequest( void ) const
 
 bool		OpenGlLib::createWindow( int height, int width, std::string title)
 {
+	glfwWindowHint(GLFW_SAMPLES, 4);
 	this->_window = glfwCreateWindow( height, width, title.c_str(), NULL, NULL );
 	glViewport(0, 0, height, width);
 	if ( ! this->_window )
@@ -125,113 +126,166 @@ void		OpenGlLib::setColor(int color)
 	glColor3f( r, g, b );
 }
 
-void		OpenGlLib::drawSquare( float posX, float posY, float size, int color ) const
-{
-	float ratio;
-	int width, height;
-	glfwGetFramebufferSize( this->_window, &width, &height );
-	ratio = width / (float) height;
-	glViewport( 0, 0, width, height );
-	glMatrixMode( GL_PROJECTION );
-	glLoadIdentity();
-	glOrtho( -ratio, ratio, -1.f, 1.f, 1.f, -1.f );
-	glMatrixMode( GL_MODELVIEW );
-	glLoadIdentity();
-	glBegin( GL_TRIANGLES );
-	setColor(color);
-	ratio *= 20.0;
-	// glVertex3f( -0.f + posX * size, -(-0.f + posY * size), 0.f );
-	// glVertex3f( -0.f + posX * size, -(+1.f + posY * size), 0.f );
-	// glVertex3f( +1.f + posX * size, -(+1.f + posY * size), 0.f );
-	// glVertex3f( -0.f + posX * size, -(-0.f + posY * size), 0.f );
-	// glVertex3f( +1.f + posX * size, -(-0.f + posY * size), 0.f );
-	// glVertex3f( +1.f + posX * size, -(+1.f + posY * size), 0.f );
-	glVertex3f( ((-0.f + posX) * size) / ratio, -((-0.f + posY) * size) / ratio, 0.f );
-	glVertex3f( ((-0.f + posX) * size) / ratio, -((+1.f + posY) * size) / ratio, 0.f );
-	glVertex3f( ((+1.f + posX) * size) / ratio, -((+1.f + posY) * size) / ratio, 0.f );
-	glVertex3f( ((-0.f + posX) * size) / ratio, -((-0.f + posY) * size) / ratio, 0.f );
-	glVertex3f( ((+1.f + posX) * size) / ratio, -((-0.f + posY) * size) / ratio, 0.f );
-	glVertex3f( ((+1.f + posX) * size) / ratio, -((+1.f + posY) * size) / ratio, 0.f );
-	// (void)posX;
-	// (void)posY;
-	// (void)size;
-	// glVertex3f(-0.5f, 0.5f, -5.0f);
-	// glVertex3f(-1.0f, 1.5f, -5.0f);
-	// glVertex3f(-1.5f, 0.5f, -5.0f);
+// void		OpenGlLib::drawSquare( float posX, float posY, float size, int color ) const
+// {
+// 	float ratio;
+// 	int width, height;
+// 	glfwGetFramebufferSize( this->_window, &width, &height );
+// 	ratio = width / (float) height;
+// 	glViewport( 0, 0, width, height );
+// 	glMatrixMode( GL_PROJECTION );
+// 	glLoadIdentity();
+// 	glOrtho( -ratio, ratio, -1.f, 1.f, 1.f, -1.f );
+// 	glMatrixMode( GL_MODELVIEW );
+// 	glLoadIdentity();
+// 	glBegin( GL_TRIANGLES );
+// 	setColor(color);
+// 	ratio *= 20.0;
+// 	// glVertex3f( -0.f + posX * size, -(-0.f + posY * size), 0.f );
+// 	// glVertex3f( -0.f + posX * size, -(+1.f + posY * size), 0.f );
+// 	// glVertex3f( +1.f + posX * size, -(+1.f + posY * size), 0.f );
+// 	// glVertex3f( -0.f + posX * size, -(-0.f + posY * size), 0.f );
+// 	// glVertex3f( +1.f + posX * size, -(-0.f + posY * size), 0.f );
+// 	// glVertex3f( +1.f + posX * size, -(+1.f + posY * size), 0.f );
+// 	glVertex3f( ((-0.f + posX) * size) / ratio, -((-0.f + posY) * size) / ratio, 0.f );
+// 	glVertex3f( ((-0.f + posX) * size) / ratio, -((+1.f + posY) * size) / ratio, 0.f );
+// 	glVertex3f( ((+1.f + posX) * size) / ratio, -((+1.f + posY) * size) / ratio, 0.f );
+// 	glVertex3f( ((-0.f + posX) * size) / ratio, -((-0.f + posY) * size) / ratio, 0.f );
+// 	glVertex3f( ((+1.f + posX) * size) / ratio, -((-0.f + posY) * size) / ratio, 0.f );
+// 	glVertex3f( ((+1.f + posX) * size) / ratio, -((+1.f + posY) * size) / ratio, 0.f );
+// 	// (void)posX;
+// 	// (void)posY;
+// 	// (void)size;
+// 	// glVertex3f(-0.5f, 0.5f, -5.0f);
+// 	// glVertex3f(-1.0f, 1.5f, -5.0f);
+// 	// glVertex3f(-1.5f, 0.5f, -5.0f);
 
-	glEnd();
-	return ;
-}
+// 	glEnd();
+// 	return ;
+// }
 
-void		OpenGlLib::drawLine( float x1, float y1, float x2, float y2, int color ) const
-{
-	float tmp;
-	if (x2 < x1)
-	{
-		tmp = x2;
-		x2 = x1;
-		x1 = tmp;
-	}
-	if (y2 < y1)
-	{
-		tmp = y2;
-		y2 = y1;
-		y1 = tmp;
-	}
-	if (y1 == y2)
-	{
-		for (int x = x1; x <= x2; x++)
-		{
-			this->drawSquare(x, y1, 0.2, color);
-		}
-	}
-	else
-	{
-		for (int y = y1; y <= y2; y++)
-		{
-			this->drawSquare(x1, y, 0.2, color);
-		}
-	}
-	return ;
-}
+// void		OpenGlLib::drawLine( float x1, float y1, float x2, float y2, int color ) const
+// {
+// 	float tmp;
+// 	if (x2 < x1)
+// 	{
+// 		tmp = x2;
+// 		x2 = x1;
+// 		x1 = tmp;
+// 	}
+// 	if (y2 < y1)
+// 	{
+// 		tmp = y2;
+// 		y2 = y1;
+// 		y1 = tmp;
+// 	}
+// 	if (y1 == y2)
+// 	{
+// 		for (int x = x1; x <= x2; x++)
+// 		{
+// 			this->drawSquare(x, y1, 0.2, color);
+// 		}
+// 	}
+// 	else
+// 	{
+// 		for (int y = y1; y <= y2; y++)
+// 		{
+// 			this->drawSquare(x1, y, 0.2, color);
+// 		}
+// 	}
+// 	return ;
+// }
 
-void		OpenGlLib::drawCircle( float cx, float cy, float size, int color ) const
-{
-	int num_segments = 10;
-	float theta = 2 * 3.1415926 / float(num_segments); 
-	float tangetial_factor = tanf(theta);//calculate the tangential factor 
+// void		OpenGlLib::drawCircle( float cx, float cy, float size, int color ) const
+// {
+// 	int num_segments = 10;
+// 	float theta = 2 * 3.1415926 / float(num_segments); 
+// 	float tangetial_factor = tanf(theta);//calculate the tangential factor 
 
-	float radial_factor = cosf(theta);//calculate the radial factor 
+// 	float radial_factor = cosf(theta);//calculate the radial factor 
 	
-	float x = size;//we start at angle = 0 
+// 	float x = size;//we start at angle = 0 
 
-	float y = 0; 
+// 	float y = 0; 
     
-	glBegin(GL_LINE_LOOP);
+// 	glBegin(GL_LINE_LOOP);
+// 	setColor(color);
+// 	for(int ii = 0; ii < num_segments; ii++) 
+// 	{ 
+// 		glVertex2f(x + cx, y + cy);//output vertex 
+        
+// 		//calculate the tangential vector 
+// 		//remember, the radial vector is (x, y) 
+// 		//to get the tangential vector we flip those coordinates and negate one of them 
+
+// 		float tx = -y; 
+// 		float ty = x; 
+        
+// 		//add the tangential vector 
+
+// 		x += tx * tangetial_factor; 
+// 		y += ty * tangetial_factor; 
+        
+// 		//correct using the radial factor 
+
+// 		x *= radial_factor; 
+// 		y *= radial_factor; 
+// 	} 
+// 	glEnd(); 
+// 	return ;
+// }
+
+void		OpenGlLib::drawSquare(float x, float y, float scale, int color) const
+{
+	y *= -1;
+	x = x - (RATIO/2);
+	y = y + (RATIO/2) - 1*scale;
+	
 	setColor(color);
-	for(int ii = 0; ii < num_segments; ii++) 
-	{ 
-		glVertex2f(x + cx, y + cy);//output vertex 
-        
-		//calculate the tangential vector 
-		//remember, the radial vector is (x, y) 
-		//to get the tangential vector we flip those coordinates and negate one of them 
+	glBegin( GL_POLYGON );
+		glVertex2f( (x ) / RATIO*2 , (y ) / RATIO*2 );
+		glVertex2f( (x ) / RATIO*2 , (y + scale) / RATIO*2 );
+		glVertex2f( (x + scale) / RATIO*2 , (y + scale) / RATIO*2 );
+		glVertex2f( (x + scale) / RATIO*2 , (y ) / RATIO*2 );
+	glEnd();
+}
 
-		float tx = -y; 
-		float ty = x; 
-        
-		//add the tangential vector 
+void		OpenGlLib::drawCircle(float x, float y, float scale, int color) const
+{
 
-		x += tx * tangetial_factor; 
-		y += ty * tangetial_factor; 
-        
-		//correct using the radial factor 
+	y *= -1;
+	x = x - (RATIO/2) + scale/2;
+	y = y + (RATIO/2) - 1*scale + scale/2;
 
-		x *= radial_factor; 
-		y *= radial_factor; 
-	} 
-	glEnd(); 
-	return ;
+	double angle;
+	double a;
+	double b;
+
+	setColor(color);
+	glBegin( GL_POLYGON );
+		for( int i = 0; i <= (360 * scale) + 20; i++ )
+		{
+			angle = 2 * M_PI * i / ((360 * scale) + 20);
+			a = cos( angle );
+			b = sin( angle );
+			glVertex2d( (x + a * scale/2)/ RATIO*2  , (y + b * scale/2)/ RATIO*2  );
+		}
+	glEnd();
+}
+
+void		OpenGlLib::drawLine(float xa, float ya, float xb, float yb, int color) const
+{
+	ya *= -1;
+	yb *= -1;
+	xa = xa - (RATIO/2);
+	ya = ya + (RATIO/2);
+	xb = xb - (RATIO/2);
+	yb = yb + (RATIO/2);
+	setColor(color);
+	glBegin(GL_LINE_LOOP);
+		glVertex2d(xa / RATIO*2, ya / RATIO*2);
+		glVertex2d(xb / RATIO*2, yb / RATIO*2);
+	glEnd();
 }
 
 
