@@ -89,7 +89,7 @@ void					Computer::createGrandSon(int x, int y)
 	if (x >= 0 && x < 19 && y >= 0 && y < 19)
 	{
 		this->_tmp->insert(x, y, _name);
-		this->_tmp->_grandSons[std::make_pair(x, y)]->setWeight(this->_currentBoard);
+		this->setWeight(x, y);
 	}
 	return ;
 }
@@ -121,6 +121,22 @@ void					Computer::displaySons()
 	return ;
 }
 
+void			Computer::setWeight(int x, int y)
+{
+	int weight = 0;
+	_currentBoard->insert(std::make_pair(x, y), this->_name);
+	if (_currentBoard->checkwin())
+	{
+		if (_currentBoard->getWin() == this->_name)
+			weight += 1000;
+		else
+			weight -= 1000;
+	}
+	this->_tmp->getGrandSons()[std::make_pair(x, y)]->_capturedPawns = _currentBoard->checkCapture(x, y);
+	weight += this->_tmp->getGrandSons()[std::make_pair(x, y)]->_capturedPawns.size(); // * 10 a revoir
+	this->_tmp->getGrandSons()[std::make_pair(x, y)]->setWeight(weight);
+	return ;
+}
 
 
 

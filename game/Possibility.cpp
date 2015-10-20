@@ -1,11 +1,11 @@
 #include "Possibility.hpp"
 
-Possibility::Possibility( void )
+Possibility::Possibility( void ): _weight(0)
 {
 	return ;
 }
 
-Possibility::Possibility( int x, int y, int player ): _player(player), _x(x), _y(y)
+Possibility::Possibility( int x, int y, int player ): _player(player), _x(x), _y(y), _weight(0)
 {
 	std::cout << "tg : " << _player << std::endl;
 	return ;
@@ -56,9 +56,22 @@ std::map<std::pair<int,int>,Possibility*>	Possibility::getGrandSons( void )
 	return this->_grandSons;
 }
 
-void			Possibility::setWeight(Board* currentBoard)
+void 				Possibility::setWeight(int weight)
 {
-	_currentBoard = currentBoard;
-	_currentBoard->insert(std::make_pair(this->_x, this->_y), this->_player);
+	_weight = weight;
 	return ;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

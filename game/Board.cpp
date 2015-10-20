@@ -86,7 +86,28 @@ int 		Board::checkAlignement(std::pair<int, int> key, std::pair<int, int> key2)
 	return count;
 }
 
-int 		Board::checker(int x, int y, std::pair<int, int> key)
+std::vector<std::pair<int, int> > 	Board::checkTrap(std::pair<int, int> key, std::pair<int, int> key2)
+{
+	int nx = key2.first - key.first;
+	int ny = key2.second - key.second;
+	int player = findPawn(key.first, key.second)->getPlayer();
+	int opponent = findPawn(key2.first, key2.second)->getPlayer();
+	std::vector<std::pair<int, int> > capturedPawns;
+
+	std::pair<int, int> currentKey = std::make_pair(key2.first + nx, key2.second + ny);
+	if (findPawn(currentKey.first, currentKey.second) && findPawn(currentKey.first, currentKey.second)->getPlayer() == opponent)
+	{
+		currentKey = std::make_pair(currentKey.first + nx, currentKey.second + ny);
+		if (findPawn(currentKey.first, currentKey.second) && findPawn(currentKey.first, currentKey.second)->getPlayer() == player)
+		{
+			capturedPawns.push_back(key2);
+			capturedPawns.push_back(currentKey);
+		}
+	}
+	return capturedPawns;
+}
+
+int 		Board::checkFriend(int x, int y, std::pair<int, int> key)
 {
 	std::pair<int, int> key2 = std::make_pair(x, y);
 
@@ -95,22 +116,70 @@ int 		Board::checker(int x, int y, std::pair<int, int> key)
 	return 0;
 }
 
+std::vector<std::pair<int, int> >	Board::checkOpponent(int x, int y, std::pair<int, int> key)
+{
+	std::vector<std::pair<int, int> > capturedPawns;
+	std::pair<int, int> key2 = std::make_pair(x, y);
+	Pawn	*tmpPawn;
+
+	if ((tmpPawn = findPawn(x, y)) != NULL)
+	{
+		if (tmpPawn->getPlayer() != _pawns[key]->getPlayer())
+			return (checkTrap(key, key2));
+	}
+	return capturedPawns;
+}
+
 void		Board::checkAround(std::map<std::pair<int,int>, Pawn*>::iterator it)
 {
 	std::pair<int, int> key = std::make_pair(it->first.first, it->first.second);
 
-	if (checker(it->first.first - 1, it->first.second, key) == 0)
-		checker(it->first.first + 1, it->first.second, key);
+	if (checkFriend(it->first.first - 1, it->first.second, key) == 0)
+		checkFriend(it->first.first + 1, it->first.second, key);
 
-	if (checker(it->first.first - 1, it->first.second - 1, key) == 0)
-		checker(it->first.first + 1, it->first.second + 1, key);
+	if (checkFriend(it->first.first - 1, it->first.second - 1, key) == 0)
+		checkFriend(it->first.first + 1, it->first.second + 1, key);
 
-	if (checker(it->first.first - 1, it->first.second + 1, key) == 0)
-		checker(it->first.first + 1, it->first.second - 1, key);
+	if (checkFriend(it->first.first - 1, it->first.second + 1, key) == 0)
+		checkFriend(it->first.first + 1, it->first.second - 1, key);
 
-	if (checker(it->first.first, it->first.second + 1, key) == 0)
-		checker(it->first.first, it->first.second - 1, key);
+	if (checkFriend(it->first.first, it->first.second + 1, key) == 0)
+		checkFriend(it->first.first, it->first.second - 1, key);
 	return ;
+}
+
+std::vector<std::pair<int, int> >		Board::checkCapture(int x, int y)
+{
+	std::vector<std::pair<int, int> >	tmp;
+	std::vector<std::pair<int, int> >	tmp2;
+	std::pair<int, int> key = std::make_pair(x, y);
+
+	tmp = checkOpponent(x - 1, y, key);
+	if (tmp.size() > 0)
+		tmp2.insert(tmp2.end(), tmp.begin(), tmp.end());
+	tmp = checkOpponent(x + 1, y, key);
+	if (tmp.size() > 0)
+		tmp2.insert(tmp2.end(), tmp.begin(), tmp.end());
+	tmp = checkOpponent(x - 1, y - 1, key);
+	if (tmp.size() > 0)
+		tmp2.insert(tmp2.end(), tmp.begin(), tmp.end());
+	tmp = checkOpponent(x + 1, y + 1, key);
+	if (tmp.size() > 0)
+		tmp2.insert(tmp2.end(), tmp.begin(), tmp.end());
+	tmp = checkOpponent(x - 1, y + 1, key);
+	if (tmp.size() > 0)
+		tmp2.insert(tmp2.end(), tmp.begin(), tmp.end());
+	tmp = checkOpponent(x + 1, y - 1, key);
+	if (tmp.size() > 0)
+		tmp2.insert(tmp2.end(), tmp.begin(), tmp.end());
+	tmp = checkOpponent(x, y + 1, key);
+	if (tmp.size() > 0)
+		tmp2.insert(tmp2.end(), tmp.begin(), tmp.end());
+	tmp = checkOpponent(x, y - 1, key);
+	if (tmp.size() > 0)
+		tmp2.insert(tmp2.end(), tmp.begin(), tmp.end());
+
+	return tmp2;
 }
 
 bool 		Board::checkwin()
@@ -131,6 +200,14 @@ std::map<std::pair<int,int>, Pawn*>		Board::getPawns()
 {
 	return _pawns;
 }
+
+int 			Board::getWin()
+{
+	return _win;
+}
+
+
+
 
 
 

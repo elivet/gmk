@@ -21,17 +21,17 @@ public:
 	int											getX( void );
 	int											getY( void );
 	std::map<std::pair<int,int>,Possibility*>	getGrandSons( void );
-	void										setWeight(Board* currentBoard);
+
+	void 										setWeight(int weight);
 
 private:
 	int							_player;
-	// int							_weight;
 	int							_x;
 	int							_y;
-	Board*						_currentBoard;
+	int							_weight;
 public:
 	std::map<std::pair<int,int>,Possibility*> 	_grandSons;
-
+	std::vector<std::pair<int, int> > 			_capturedPawns;
 };
 
 #endif

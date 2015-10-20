@@ -24,6 +24,7 @@ public:
 	void								createGrandSon(int x, int y);
 	void								displaySons();
 	void								lookAround(int x, int y, bool bill);
+	void								setWeight(int x, int y);
 
 private:
 	std::vector<Possibility*> 	_sons;
