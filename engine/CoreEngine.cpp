@@ -75,7 +75,7 @@ bool			CoreEngine::start( void )
 		}
 
 		// this->_game->update( this->_renderLib, dt );
-		// this->_game->render( this->_renderLib );
+		this->render();
 
 		this->_renderLib->refreshWindow();
 

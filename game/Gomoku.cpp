@@ -75,3 +75,18 @@ void		Gomoku::turns(Player* p1, Player* p2)
 	return ;
 }
 
+int					Gomoku::update( OpenGlLib *	_renderLib, double delta )
+{
+	(void)_renderLib;
+	(void)delta;
+	return true;
+}
+
+int					Gomoku::render( OpenGlLib *	_renderLib ) const
+{
+	_renderLib->drawSquare(10, 10 ,20, 0xFFFFFF);
+	return true;
+}
+
+
+

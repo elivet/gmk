@@ -26,10 +26,14 @@ int 		main()
 		else
 			std::cout << "Please answer yes or no (y/n)" << std::endl;
 	}
+	
+	CoreEngine *engine = new CoreEngine(50);
+	engine->addObject(gomoku);
+	engine->start();
+
 	gomoku->play();
-	std::cout << "wefwef" << std::endl;
-	// CoreEngine *engine = new CoreEngine(50);
-	// engine->start();
+
+
 
 	return (0);
 }
