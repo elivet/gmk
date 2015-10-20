@@ -37,7 +37,6 @@ std::pair<int, int>			Computer::play(Board* currentBoard)
 		_currentBoard->insert(std::make_pair(1,2), 1);
 	else
 	{
-		std::cout << "getSons" << std::endl; 
 		getSons(false);
 		displaySons();
 		exit(0);
@@ -48,16 +47,12 @@ std::pair<int, int>			Computer::play(Board* currentBoard)
 
 void						Computer::getSons(bool bill)
 {
-	int loop = 0;
 	std::map<std::pair<int,int>, Pawn*>		pawns = _currentBoard->getPawns();
 	for(std::map<std::pair<int,int>, Pawn*>::iterator it=pawns.begin() ; it!=pawns.end() ; it++)
 	{
-		loop++;
-		std::cout << "beginLOOP getSons loop: " << loop << " size: " << _currentBoard->getPawns().size() << std::endl;
 		int x = it->first.first;
 		int y = it->first.second;
 		lookAround(x, y, bill);
-		std::cout << "endLOOP getSons" << std::endl;
 	}
 	
 	// std::cout << "displaySons getSons" << std::endl;
@@ -79,7 +74,6 @@ void					Computer::lookAround(int x, int y, bool bill)
 
 void					Computer::emptyAround(int x, int y, bool bill)
 {
-	std::cout << " @@@@@@@@@@@@@@       Around x: " << x << " y: " << y << std::endl;
 	if (!_currentBoard->findPawn(x, y))
 	{
 		if (!bill)
@@ -94,9 +88,8 @@ void					Computer::createGrandSon(int x, int y)
 {
 	if (x >= 0 && x < 19 && y >= 0 && y < 19)
 	{
-		std::cout << "createGrandSon0 x: " << x << " y: " << y << std::endl;
 		this->_tmp->insert(x, y, _name);
-		std::cout << "createGrandSon SIZE: " << this->_tmp->getGrandSons().size() << std::endl;
+		this->_tmp->_grandSons[std::make_pair(x, y)]->setWeight(this->_currentBoard);
 	}
 	return ;
 }
@@ -105,17 +98,11 @@ void					Computer::createSon(int x, int y)
 {
 	if (x >= 0 && x < 19 && y >= 0 && y < 19)
 	{
-		std::cout << "createSon0 x: " << x << " y: " << y << std::endl;
 		_tmp = new Possibility(x, y, this->_name);
 		_currentBoard->insert(std::make_pair(x, y), this->_name);
 		getSons(true);
 		_currentBoard->erase(std::make_pair(x, y));
-		if (_currentBoard->findPawn(x, y) == NULL)
-			std::cout << "PAWN ERASED MUTAFUCKA" << std::endl;
-		else
-			std::cout << "PAWN NOT NOT NOT ERASED MUTAFUCKA" << std::endl;
 		this->_sons.push_back(_tmp);
-		std::cout << "createSon SIZE: " << _sons.size() << std::endl;
 	}
 	return ;
 }

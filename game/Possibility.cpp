@@ -55,3 +55,10 @@ std::map<std::pair<int,int>,Possibility*>	Possibility::getGrandSons( void )
 {
 	return this->_grandSons;
 }
+
+void			Possibility::setWeight(Board* currentBoard)
+{
+	_currentBoard = currentBoard;
+	_currentBoard->insert(std::make_pair(this->_x, this->_y), this->_player);
+	return ;
+}

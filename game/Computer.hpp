@@ -25,7 +25,6 @@ public:
 	void								displaySons();
 	void								lookAround(int x, int y, bool bill);
 
-
 private:
 	std::vector<Possibility*> 	_sons;
 	Board* 						_currentBoard;
