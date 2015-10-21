@@ -7,6 +7,9 @@
 #include "../engine/OpenGlLib.hpp"
 #include "../core/GameObject.hpp"
 
+#define COLOR_BLACK 0x000000
+#define COLOR_WHITE 0xFFFFFF
+
 class Gomoku: public GameObject
 {
 public:
