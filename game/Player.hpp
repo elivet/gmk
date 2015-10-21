@@ -8,7 +8,7 @@ class Player
 {
 public:
 	Player( void );
-	Player( int name );
+	Player( int name, int color );
  	virtual ~Player( void );
 	Player( Player const & src );
 
@@ -16,12 +16,14 @@ public:
 
 	virtual std::pair<int, int>			play(Board* currentBoard);
 
-	int			getName();
+	int			getName() const;
+	int			getColor() const;
 
 
 protected:
 	int		_name;
 	int		_capturedPawns;
+	int		_color;
 
 };
 

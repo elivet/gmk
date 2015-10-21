@@ -78,7 +78,7 @@ bool			CoreEngine::start( void )
 		this->render();
 
 		this->_renderLib->refreshWindow();
-
+		
 		endFrame = this->getTime();
 		dt = (endFrame - startFrame);
 		sleep = (SECOND / this->_fps) - (dt * SECOND);

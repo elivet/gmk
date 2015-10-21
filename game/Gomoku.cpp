@@ -16,8 +16,8 @@ Gomoku::Gomoku( bool comp )
 	}
 	else
 	{
-		this->_player1 = new Player(1);
-		this->_player2 = new Player(2);
+		this->_player1 = new Player(1, 0x000000);
+		this->_player2 = new Player(2, 0xFFFFFF);
 	}
 	return ;
 }
@@ -79,6 +79,7 @@ int					Gomoku::update( OpenGlLib *	_renderLib, double delta )
 {
 	(void)_renderLib;
 	(void)delta;
+
 	return true;
 }
 
@@ -100,6 +101,16 @@ int					Gomoku::render( OpenGlLib *	_renderLib ) const
 	_renderLib->drawSquare(3.9, 15.9, 0.2, COLOR_BLACK);
 	_renderLib->drawSquare(9.9, 15.9, 0.2, COLOR_BLACK);
 	_renderLib->drawSquare(15.9, 15.9, 0.2, COLOR_BLACK);
+
+	if (_renderLib->isMouseClicked())
+	{
+		int x = (int)_renderLib->OpenGlLib::lastClick[0];
+		int y = (int)_renderLib->OpenGlLib::lastClick[1];
+		_currentBoard->insert(std::make_pair(x, y), 1);
+		_renderLib->OpenGlLib::lastClick[2] = 0.0;
+	}
+	_currentBoard->render(_renderLib);
+
 
 	return true;
 }
