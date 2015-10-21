@@ -43,8 +43,8 @@ void		OpenGlLib::key_callback( GLFWwindow * window, int key, int scancode, int a
 
 void OpenGlLib::cursor_callback(GLFWwindow* window, double x, double y)
 {
-	x = (int)(( x/RATIO/2 ) - 1);
-	y = (int)(( y/RATIO/2 ) - 1);
+	// x = (int)round(( x/RATIO/2 ) - 1);
+	// y = (int)round(( y/RATIO/2 ) - 1);
 	OpenGlLib::cursorPos[0] = x;
 	OpenGlLib::cursorPos[1] = y;
 	if ( !window )
@@ -55,11 +55,13 @@ void OpenGlLib::button_callback(GLFWwindow* window, int button, int action, int 
 {
 	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
 	{
-		OpenGlLib::lastClick[0] = OpenGlLib::cursorPos[0];
-		OpenGlLib::lastClick[1] = OpenGlLib::cursorPos[1];
+		int	x = (int)trunc(( OpenGlLib::cursorPos[0]/RATIO/2 ) - 1);
+		int	y = (int)trunc(( OpenGlLib::cursorPos[1]/RATIO/2 ) - 1);
+		OpenGlLib::lastClick[0] = x;
+		OpenGlLib::lastClick[1] = y;
 		OpenGlLib::lastClick[2] = 1.0;
 		printf( "mouse: %f - %f - %f\n", OpenGlLib::lastClick[0], OpenGlLib::lastClick[1], OpenGlLib::lastClick[2]);
-		printf("coord: %f - %f\n", OpenGlLib::cursorPos[0], OpenGlLib::cursorPos[1]);
+		printf("coord: %f - %f\n", ( OpenGlLib::cursorPos[0]/RATIO/2 ) - 1, ( OpenGlLib::cursorPos[1]/RATIO/2 ) - 1);
 	}
 	else if ( mods || window )
 		return ;
