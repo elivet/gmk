@@ -79,6 +79,7 @@ int					Gomoku::update( OpenGlLib *	_renderLib, double delta )
 {
 	(void)_renderLib;
 	(void)delta;
+
 	return true;
 }
 
@@ -100,6 +101,9 @@ int					Gomoku::render( OpenGlLib *	_renderLib ) const
 	_renderLib->drawSquare(3.9, 15.9, 0.2, COLOR_BLACK);
 	_renderLib->drawSquare(9.9, 15.9, 0.2, COLOR_BLACK);
 	_renderLib->drawSquare(15.9, 15.9, 0.2, COLOR_BLACK);
+
+	if (_renderLib->isMouseClicked())
+		printf("click\n");
 
 	return true;
 }

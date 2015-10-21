@@ -2,6 +2,8 @@
 #include <math.h> 
 
 bool	OpenGlLib::keys[SIZEOF] = {0};
+double	OpenGlLib::cursorPos[2] = {0};
+double	OpenGlLib::lastClick[3] = {0};
 
 static void	error_callback( int error, const char * description )
 {
@@ -39,6 +41,28 @@ void		OpenGlLib::key_callback( GLFWwindow * window, int key, int scancode, int a
 	}
 }
 
+void OpenGlLib::cursor_callback(GLFWwindow* window, double x, double y)
+{
+	OpenGlLib::cursorPos[0] = x;
+	OpenGlLib::cursorPos[1] = y;
+	if ( !window )
+		return ;
+}
+
+void OpenGlLib::button_callback(GLFWwindow* window, int button, int action, int mods)
+{
+	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
+	{
+		OpenGlLib::lastClick[0] = OpenGlLib::cursorPos[0];
+		OpenGlLib::lastClick[1] = OpenGlLib::cursorPos[1];
+		OpenGlLib::lastClick[2] = 1.0;
+		printf( "mouse: %f - %f - %f\n", OpenGlLib::lastClick[0], OpenGlLib::lastClick[1], OpenGlLib::lastClick[2]);
+		printf("coord: %f - %f\n", OpenGlLib::cursorPos[0], OpenGlLib::cursorPos[1]);
+	}
+	else if ( mods || window )
+		return ;
+}
+
 OpenGlLib::OpenGlLib( void )
 {
 	glfwSetErrorCallback( error_callback );
@@ -72,6 +96,8 @@ bool		OpenGlLib::createWindow( int height, int width, std::string title)
 	glfwMakeContextCurrent( this->_window );
 	glfwSwapInterval(1);
 	glfwSetKeyCallback( this->_window, key_callback );
+	glfwSetCursorPosCallback(this->_window, cursor_callback);
+	glfwSetMouseButtonCallback(this->_window, button_callback);
 	return ( true );
 }
 
@@ -114,6 +140,11 @@ void		OpenGlLib::updateKeys( void )
 bool		OpenGlLib::isKeyPressed( e_key key ) const
 {
 	return ( OpenGlLib::keys[key] );
+}
+
+bool		OpenGlLib::isMouseClicked() const
+{
+	return ( OpenGlLib::lastClick[2] );
 }
 
 void		OpenGlLib::setColor(int color)
