@@ -16,8 +16,8 @@ Gomoku::Gomoku( bool comp )
 	}
 	else
 	{
-		this->_player1 = new Player(1);
-		this->_player2 = new Player(2);
+		this->_player1 = new Player(1, 0x000000);
+		this->_player2 = new Player(2, 0xFFFFFF);
 	}
 	return ;
 }

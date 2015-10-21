@@ -4,6 +4,7 @@ Computer::Computer( void )
 {
 	this->_name = 2;
 	this->_capturedPawns = 0;
+	this->_color = 0xFFFFFF;
 	return ;
 }
 

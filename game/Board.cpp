@@ -213,7 +213,10 @@ int					Board::render( OpenGlLib *	_renderLib )
 		int x = it->first.first;
 		int y = it->first.second;
 
-		_renderLib->drawCircle(x, y, 1, 0x000000);
+		if (it->second->getPlayer())
+			_renderLib->drawCircle(x, y, 1, 0xFFFFFF);
+		else
+			_renderLib->drawCircle(x, y, 1, 0x000000);
 	}
 	return (true);
 }
