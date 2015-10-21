@@ -43,6 +43,10 @@ void		OpenGlLib::key_callback( GLFWwindow * window, int key, int scancode, int a
 
 void OpenGlLib::cursor_callback(GLFWwindow* window, double x, double y)
 {
+	// x = x + 0.5 - (RATIO/2) + 1/2;
+	// y = y - 0.5 + (RATIO/2) - 1*1 + 1/2;
+	x = (int)(( x/RATIO/2 ) - 1);
+	y = (int)(( y/RATIO/2 ) - 1);
 	OpenGlLib::cursorPos[0] = x;
 	OpenGlLib::cursorPos[1] = y;
 	if ( !window )
