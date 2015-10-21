@@ -206,6 +206,18 @@ int 			Board::getWin()
 	return _win;
 }
 
+int					Board::render( OpenGlLib *	_renderLib )
+{
+	for(std::map<std::pair<int,int>, Pawn*>::iterator it=_pawns.begin() ; it!=_pawns.end() ; ++it)
+	{
+		int x = it->first.first;
+		int y = it->first.second;
+
+		_renderLib->drawCircle(x, y, 1, 0x000000);
+	}
+	return (true);
+}
+
 
 
 

@@ -4,6 +4,7 @@
 # include "Pawn.hpp"
 # include <map>
 # include <vector>
+# include "../engine/OpenGlLib.hpp"
 
 class Board
 {
@@ -29,6 +30,8 @@ public:
 
 	std::map<std::pair<int,int>, Pawn*>		getPawns();
 	int 									getWin();
+
+	int					render( OpenGlLib *	_renderLib );
 
 private:
 	std::map<std::pair<int,int>, Pawn*>		_pawns;
