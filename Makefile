@@ -18,6 +18,7 @@ FILES			=	main.cpp \
 					game/Player.cpp \
 					game/Computer.cpp \
 					game/Possibility.cpp \
+					game/Alignement.cpp \
 					\
 					engine/OpenGlLib.cpp\
 					engine/CoreEngine.cpp\

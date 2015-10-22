@@ -1,4 +1,5 @@
 #include "Gomoku.hpp"
+#include <stdlib.h>
 
 Gomoku::Gomoku( void )
 {
@@ -27,7 +28,7 @@ Gomoku::~Gomoku( void )
 	return ;
 }
 
-Gomoku::Gomoku( Gomoku const & src )
+Gomoku::Gomoku( Gomoku const & src ):GameObject()
 {
 	*this = src;
 }

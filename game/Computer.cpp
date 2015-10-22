@@ -1,4 +1,5 @@
 #include "Computer.hpp"
+#include <stdlib.h>
 
 Computer::Computer( void )
 {
@@ -14,7 +15,7 @@ Computer::~Computer( void )
 	return ;
 }
 
-Computer::Computer( Computer const & src )
+Computer::Computer( Computer const & src ):Player()
 {
 	*this = src;
 }

@@ -1,4 +1,5 @@
 #include "OpenGlLib.hpp"
+#include <stdio.h>
 #include <math.h> 
 
 bool	OpenGlLib::keys[SIZEOF] = {0};
