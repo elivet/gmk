@@ -2,19 +2,29 @@
 # define ALIGNEMENT_HPP
 
 # include "Pawn.hpp"
-# include <map>
-
+# include "Board.hpp"
+# include <vector>
+// class Pawn;
+// class Board;
 class Alignement
 {
 public:
 	Alignement( void );
+	Alignement( Pawn* p1, Pawn* p2 );
  	~Alignement( void );
 	Alignement( Alignement const & src );
 
 	Alignement &	operator=( Alignement const & rhs );
 
+	int			isAligned(std::pair<int, int> key, Board* currentBoard);
+
 private:
-	std::map<std::pair<int,int>, Pawn*>		_pawns;
+	Pawn*					_pawnBegin;
+	Pawn*					_pawnEnd;
+	int						_nx;
+	int 					_ny;
+	int 					_px;
+	int 					_py;
 };
 
 #endif

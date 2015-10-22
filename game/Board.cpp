@@ -1,4 +1,6 @@
 #include "Board.hpp"
+#include "Pawn.hpp"
+#include "Alignement.hpp"
 
 Board::Board( void ): _win(0)
 {
@@ -28,7 +30,7 @@ Board &	Board::operator=( Board const & rhs )
 void		Board::insert(std::pair<int, int> xy, int player)
 {
 	std::cout << "insertPawn x: " << xy.first << " y: " << xy.second << std::endl;
-	Pawn	*pawn = new Pawn(player);
+	Pawn	*pawn = new Pawn(player, xy.first, xy.second);
 	_pawns[xy] = pawn;
 	return ;
 }
@@ -219,6 +221,50 @@ int					Board::render( OpenGlLib *	_renderLib )
 			_renderLib->drawCircle(x, y, 1, 0x000000);
 	}
 	return (true);
+}
+
+void		Board::createAlignement(Pawn* neighbour, std::pair<int,int> key)
+{
+	Pawn* current = findPawn(key.first, key.second);
+	Alignement* 	newAlignement = new Alignement(neighbour, current);
+	neighbour->_alignements.push_back(newAlignement);
+	current->_alignements.push_back(newAlignement);
+	return ;
+}
+
+void		Board::findAlignement(Pawn* neighbour, std::pair<int,int> key)
+{
+	int top = 0;
+	for (unsigned int i = 0; i < neighbour->getAlignements().size(); i++)
+		top += neighbour->_alignements[i]->isAligned(key, this);
+	if (!top)
+		createAlignement(neighbour, key);
+	return ;
+}
+
+void		Board::checkNeighbour(std::pair<int,int> key1, std::pair<int,int> key2)
+{
+	Pawn	*tmpPawn;
+
+	if ((tmpPawn = findPawn(key1.first, key1.second)) != NULL)
+	{
+		if (tmpPawn->getPlayer() == _pawns[key2]->getPlayer())
+			findAlignement(tmpPawn, key2);
+	}
+	return ;
+}
+
+void		Board::stockAlignement(std::pair<int,int> xy)
+{
+	checkNeighbour(std::make_pair(xy.first - 1, xy.second), xy);
+	checkNeighbour(std::make_pair(xy.first + 1, xy.second), xy);
+	checkNeighbour(std::make_pair(xy.first - 1, xy.second - 1), xy);
+	checkNeighbour(std::make_pair(xy.first + 1, xy.second + 1), xy);
+	checkNeighbour(std::make_pair(xy.first - 1, xy.second + 1), xy);
+	checkNeighbour(std::make_pair(xy.first + 1, xy.second - 1), xy);
+	checkNeighbour(std::make_pair(xy.first, xy.second + 1), xy);
+	checkNeighbour(std::make_pair(xy.first, xy.second - 1), xy);
+	return ;
 }
 
 

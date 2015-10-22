@@ -1,6 +1,7 @@
 #ifndef GOMOKU_HPP
 # define GOMOKU_HPP
 
+# include <iostream>
 # include "Player.hpp"
 # include "Board.hpp"
 # include "Computer.hpp"
@@ -22,6 +23,7 @@ public:
 
 	void		play();
 	void		turns(Player* p1, Player* p2);
+	void		stockAlignement(Player* p1, Player* p2, std::pair<int, int> xy);
 
 	virtual int					update( OpenGlLib *	_renderLib, double delta );
 	virtual int					render( OpenGlLib *	_renderLib ) const;

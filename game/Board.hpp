@@ -1,11 +1,12 @@
 #ifndef BOARD_HPP
 # define BOARD_HPP
 
-# include "Pawn.hpp"
+// # include "Pawn.hpp"
 # include <map>
 # include <vector>
 # include "../engine/OpenGlLib.hpp"
 
+class Pawn;
 class Board
 {
 public:
@@ -15,17 +16,22 @@ public:
 
 	Board &	operator=( Board const & rhs );
 
-	void	insert(std::pair<int, int> xy, int player);
-	void	erase(std::pair<int, int> xy);
-	void	displayPawns( void );
-	Pawn*	findPawn( int x, int y);
-	bool 	checkwin();
-	void	checkAround(std::map<std::pair<int,int>, Pawn*>::iterator it);
-	int 	checkFriend(int x, int y, std::pair<int, int> key);
+	void								insert(std::pair<int, int> xy, int player);
+	void								erase(std::pair<int, int> xy);
+	void								displayPawns( void );
+	Pawn*								findPawn( int x, int y);
+	bool 								checkwin();
+	void								checkAround(std::map<std::pair<int,int>, Pawn*>::iterator it);
+	int 								checkFriend(int x, int y, std::pair<int, int> key);
 	std::vector<std::pair<int, int> > 	checkOpponent(int x, int y, std::pair<int, int> key);
-	std::vector<std::pair<int, int> >		checkTrap(std::pair<int, int> key, std::pair<int, int> key2);
-	int 	checkAlignement(std::pair<int, int> key, std::pair<int, int> key2);
+	std::vector<std::pair<int, int> >	checkTrap(std::pair<int, int> key, std::pair<int, int> key2);
+	int 								checkAlignement(std::pair<int, int> key, std::pair<int, int> key2);
 	std::vector<std::pair<int, int> >	checkCapture(int x, int y);
+	void								stockAlignement(std::pair<int,int> xy);
+	void								findAlignement(Pawn* neighbour, std::pair<int,int> key);
+	void								checkNeighbour(std::pair<int,int> key1, std::pair<int,int> key2);
+	void								createAlignement(Pawn* neighbour, std::pair<int,int> key);
+
 
 
 	std::map<std::pair<int,int>, Pawn*>		getPawns();

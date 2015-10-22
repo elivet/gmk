@@ -32,7 +32,7 @@ Player &	Player::operator=( Player const & rhs )
 std::pair<int, int>		Player::play(Board* currentBoard)
 {
 	std::cout << this->_name << " playing" << std::endl;
-	std::pair<int, int> key = std::make_pair(1, 4);
+	std::pair<int, int> key = std::make_pair(4, 5);
 	(void)currentBoard;
 	return key;
 }
@@ -46,3 +46,5 @@ int						Player::getColor() const
 {
 	return this->_color;
 }
+
+
