@@ -1,25 +1,16 @@
 #include "Gomoku.hpp"
+#include "../engine/CoreEngine.hpp"
 #include <stdlib.h>
+#include <stdio.h>
 
 Gomoku::Gomoku( void )
 {
-	return ;
-}
-
-Gomoku::Gomoku( bool comp )
-{
 	this->_currentBoard = new Board();
-
-	if ( comp )
-	{
-		this->_player1 = new Player();
-		this->_player2 = new Computer();
-	}
-	else
-	{
-		this->_player1 = new Player(1, 0x000000);
-		this->_player2 = new Player(2, 0xFFFFFF);
-	}
+	this->_lastClick = new double[3];
+	this->_lastClick[0] = 0;
+	this->_lastClick[1] = 0;
+	this->_lastClick[2] = 0;
+	this->_firstPlayerTurn = true;
 	return ;
 }
 
@@ -42,83 +33,144 @@ Gomoku &	Gomoku::operator=( Gomoku const & rhs )
 	return ( *this );
 }
 
-void		Gomoku::play()
+/****************************************************************
+***************************GAME**********************************
+*****************************************************************/
+
+void				Gomoku::init( void )
 {
-	// _currentBoard->insert(std::make_pair(1,2), 1);
-	// _currentBoard->insert(std::make_pair(2,3), 1);
-	// 	_currentBoard->stockAlignement(std::make_pair(2,3));
-	// _currentBoard->insert(std::make_pair(3,4), 1);
-	// 	_currentBoard->stockAlignement(std::make_pair(3,4));
-	// _currentBoard->insert(std::make_pair(4,5), 1);
-	// _currentBoard->insert(std::make_pair(5,6), 1);
+		bool comp = false;
+		std::string	c;
+		while (c != "y" && c != "n")
+		{
+			std::cout << "Do you wanna play against the computer ? (y/n)" << std::endl;
+			std::cin >> c;
+			if (c == "y")
+				comp = true;
+			else if (c == "n")
+				comp = false;
+			else
+				std::cout << "Please answer yes or no (y/n)" << std::endl;
+		}
 
+		if ( comp )
+		{
+			this->_player1 = new Player();
+			this->_player2 = new Computer();
+		}
+		else
+		{
+			this->_player1 = new Player(1, 0x000000);
+			this->_player2 = new Player(2, 0xFFFFFF);
+		}
 
-
-
-	srand(time(NULL)); // initialisation de rand
-	int nombre_aleatoire = 0;
-	nombre_aleatoire = rand() % 2;
-	if (nombre_aleatoire)
-		this->turns(_player1, _player2);
-	else
-		this->turns(_player2, _player1);
-	return ;
+		srand(time(NULL)); // initialisation de rand
+		int nombre_aleatoire = 0;
+		nombre_aleatoire = rand() % 2;
+		if (nombre_aleatoire)
+			this->_firstPlayerTurn = false;
 }
 
-void		Gomoku::turns(Player* p1, Player* p2)
+void				Gomoku::play()
 {
-	std::pair<int, int> tmp;
-	while (!this->_currentBoard->checkwin())
+	if (this->_currentBoard->checkwin())
 	{
-
-		tmp = p1->play(this->_currentBoard);
-		_currentBoard->insert(tmp, p1);
-		_currentBoard->stockAlignement(tmp);
-		tmp = p2->play(this->_currentBoard);
-		_currentBoard->insert(tmp, p2);
-		_currentBoard->stockAlignement(tmp);
-		// exit(0);
+		this->endGame();
+		return ;
+	}
+	if (this->_firstPlayerTurn)
+	{
+		if (isClicked())
+		{
+			_currentBoard->insert(getPair(), _player1);
+			endTurn();
+		}
+	}
+	else
+	{
+		if (isClicked())
+		{
+			_currentBoard->insert(getPair(), _player2);
+			endTurn();
+		}
 	}
 	return ;
 }
 
+// void				Gomoku::turns(Player* p1, Player* p2)
+// {
+// 	std::pair<int, int> tmp;
+// 	while (!this->_currentBoard->checkwin())
+// 	{
+// 		tmp = p1->play(this->_currentBoard);
+// 		// _currentBoard->insert(tmp, p1->getName());
+// 		tmp = p2->play(this->_currentBoard);
+// 		// _currentBoard->insert(tmp, p2->getName());
+// 	}
+// 	return ;
+// }
+
+void				Gomoku::endGame( void )
+{
+	this->getCoreEngine()->setRunnig(false);
+}
+
+
+std::pair<int, int>	Gomoku::getPair( void )
+{
+	int x = this->_lastClick[0];
+	int y = this->_lastClick[1];
+	return std::make_pair( x, y );
+}
+
+bool				Gomoku::isClicked( void )
+{
+	return (this->_lastClick[2]);
+}
+
+void				Gomoku::endTurn( void )
+{
+	this->_lastClick[2] = 0;
+	this->_firstPlayerTurn = !this->_firstPlayerTurn;
+
+}
+
+/****************************************************************
+***************************ENGINE********************************
+*****************************************************************/
+
+void				Gomoku::setCoreEngine(CoreEngine * coreEngine)
+{
+	_coreEngine = coreEngine;
+}
+
+CoreEngine*			Gomoku::getCoreEngine( void ) const
+{
+	return ( this->_coreEngine );
+}
 
 int					Gomoku::update( OpenGlLib *	_renderLib, double delta )
 {
 	(void)_renderLib;
 	(void)delta;
+	this->_lastClick = &(_renderLib->OpenGlLib::lastClick[0]);
+	this->play();
 
 	return true;
 }
 
 int					Gomoku::render( OpenGlLib *	_renderLib ) const
 {
-
-	for (int i = 1; i < 20; i++)
-		_renderLib->drawLine(i, 1, i, 19, COLOR_BLACK);
-	for (int i = 1; i < 20; i++)
-		_renderLib->drawLine(1, i, 19, i, COLOR_BLACK);
-	_renderLib->drawSquare(3.9, 3.9, 0.2, COLOR_BLACK);
-	_renderLib->drawSquare(9.9, 3.9, 0.2, COLOR_BLACK);
-	_renderLib->drawSquare(15.9, 3.9, 0.2, COLOR_BLACK);
-
-	_renderLib->drawSquare(3.9, 9.9, 0.2, COLOR_BLACK);
-	_renderLib->drawSquare(9.9, 9.9, 0.2, COLOR_BLACK);
-	_renderLib->drawSquare(15.9, 9.9, 0.2, COLOR_BLACK);
-
-	_renderLib->drawSquare(3.9, 15.9, 0.2, COLOR_BLACK);
-	_renderLib->drawSquare(9.9, 15.9, 0.2, COLOR_BLACK);
-	_renderLib->drawSquare(15.9, 15.9, 0.2, COLOR_BLACK);
-
-	if (_renderLib->isMouseClicked())
-	{
-		int x = (int)_renderLib->OpenGlLib::lastClick[0];
-		int y = (int)_renderLib->OpenGlLib::lastClick[1];
-		_currentBoard->insert(std::make_pair(x, y), _player1);
-		_renderLib->OpenGlLib::lastClick[2] = 0.0;
-
-	}
 	_currentBoard->render(_renderLib);
+
+	// if (_renderLib->isMouseClicked())
+	// {
+	// 	int x = (int)_renderLib->OpenGlLib::lastClick[0];
+	// 	int y = (int)_renderLib->OpenGlLib::lastClick[1];
+	// 	_currentBoard->insert(std::make_pair(x, y), 1);
+	// 	_renderLib->OpenGlLib::lastClick[2] = 0.0;
+	// }
+	
 
 
 	return true;

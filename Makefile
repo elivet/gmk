@@ -11,7 +11,12 @@ CC				=	g++
 
 NAME			=	gomoku
 
-FILES			=	main.cpp \
+FILES			=	\
+					engine/OpenGlLib.cpp\
+					engine/CoreEngine.cpp\
+					core/GameObject.cpp\
+					\
+					main.cpp \
 					game/Board.cpp \
 					game/Pawn.cpp \
 					game/Gomoku.cpp \
@@ -20,9 +25,7 @@ FILES			=	main.cpp \
 					game/Possibility.cpp \
 					game/Alignement.cpp \
 					\
-					engine/OpenGlLib.cpp\
-					engine/CoreEngine.cpp\
-					core/GameObject.cpp\
+
 
 
 SRCS			=	$(FILES)
@@ -31,9 +34,9 @@ OBJS			=	$(SRCS:.cpp=.o)
 
 HEADS			=	$(SRCS:.cpp=.hpp)
 
-INC				=	-I ~/.brew/include/
+INC				=	`pkg-config --cflags gl glfw3 x11 xxf86vm xrandr xi xcursor xinerama`
 
-LIB				=	-L ~/.brew/lib/ -lglfw3 -framework OpenGL
+LIB				=	`pkg-config --libs gl glfw3 x11 xxf86vm xrandr xi xcursor xinerama` -lpthread
 
 
 all:			$(NAME)

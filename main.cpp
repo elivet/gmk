@@ -12,34 +12,14 @@
 
 int 		main()
 {
-	Gomoku* gomoku;
-	std::string	c;
-	int color = 0x000000;
-	for (int i = 0; i < 19; i++)
-	{
-		for (int j = 0; j < 19; j++)
-		{
-			color += 0x00001F;
-			std::cout << "x: " << j << " y: " << i << " color:" << color << std::endl;
-		}
-	}
-	while (c != "y" && c != "n")
-	{
-		std::cout << "Do you wanna play against the computer ? (y/n)" << std::endl;
-		std::cin >> c;
-		if (c == "y")
-			gomoku = new Gomoku(true);
-		else if (c == "n")
-			gomoku = new Gomoku(false);
-		else
-			std::cout << "Please answer yes or no (y/n)" << std::endl;
-	}
+	Gomoku* gomoku = new Gomoku();
+
 	
 	CoreEngine *engine = new CoreEngine(50);
-	engine->addObject(gomoku);
+	engine->setGame(gomoku);
 	engine->start();
 
-	gomoku->play();
+	// gomoku->play();
 
 
 

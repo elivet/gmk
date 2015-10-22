@@ -208,21 +208,6 @@ int 			Board::getWin()
 	return _win;
 }
 
-int					Board::render( OpenGlLib *	_renderLib )
-{
-	for(std::map<std::pair<int,int>, Pawn*>::iterator it=_pawns.begin() ; it!=_pawns.end() ; ++it)
-	{
-		int x = it->first.first;
-		int y = it->first.second;
-
-		if (it->second->getPlayer()->getName())
-			_renderLib->drawCircle(x, y, 1, 0xFFFFFF);
-		else
-			_renderLib->drawCircle(x, y, 1, 0x000000);
-	}
-	return (true);
-}
-
 void		Board::createAlignement(Pawn* neighbour, std::pair<int,int> key)
 {
 	Pawn* current = findPawn(key.first, key.second);
@@ -265,6 +250,34 @@ void		Board::stockAlignement(std::pair<int,int> xy)
 	checkNeighbour(std::make_pair(xy.first, xy.second + 1), xy);
 	checkNeighbour(std::make_pair(xy.first, xy.second - 1), xy);
 	return ;
+}
+
+int					Board::render( OpenGlLib *	_renderLib )
+{
+	for (int i = 1; i < 20; i++)
+		_renderLib->drawLine(i, 1, i, 19, COLOR_BLACK);
+	for (int i = 1; i < 20; i++)
+		_renderLib->drawLine(1, i, 19, i, COLOR_BLACK);
+	_renderLib->drawSquare(3.9, 3.9, 0.2, COLOR_BLACK);
+	_renderLib->drawSquare(9.9, 3.9, 0.2, COLOR_BLACK);
+	_renderLib->drawSquare(15.9, 3.9, 0.2, COLOR_BLACK);
+
+	_renderLib->drawSquare(3.9, 9.9, 0.2, COLOR_BLACK);
+	_renderLib->drawSquare(9.9, 9.9, 0.2, COLOR_BLACK);
+	_renderLib->drawSquare(15.9, 9.9, 0.2, COLOR_BLACK);
+
+	_renderLib->drawSquare(3.9, 15.9, 0.2, COLOR_BLACK);
+	_renderLib->drawSquare(9.9, 15.9, 0.2, COLOR_BLACK);
+	_renderLib->drawSquare(15.9, 15.9, 0.2, COLOR_BLACK);
+
+	for(std::map<std::pair<int,int>, Pawn*>::iterator it=_pawns.begin() ; it!=_pawns.end() ; ++it)
+	{
+		int x = it->first.first;
+		int y = it->first.second;
+
+		_renderLib->drawCircle(x, y, 1, it->second->getPlayer()->getColor());
+	}
+	return (true);
 }
 
 

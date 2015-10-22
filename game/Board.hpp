@@ -5,8 +5,13 @@
 # include <map>
 # include <vector>
 # include "../engine/OpenGlLib.hpp"
+
 class Player;
 class Pawn;
+
+#define COLOR_BLACK 0x000000
+#define COLOR_WHITE 0xFFFFFF
+
 class Board
 {
 public:

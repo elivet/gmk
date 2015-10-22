@@ -54,11 +54,8 @@ void OpenGlLib::button_callback(GLFWwindow* window, int button, int action, int 
 {
 	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
 	{
-		int x = (int)round((OpenGlLib::cursorPos[0]/42.5) - 1);
-		int y = (int)round((OpenGlLib::cursorPos[1]/42.5) - 1);
-
-		OpenGlLib::lastClick[0] = x;
-		OpenGlLib::lastClick[1] = y;
+		OpenGlLib::lastClick[0] = (int)round((OpenGlLib::cursorPos[0]/42.5) - 1);
+		OpenGlLib::lastClick[1] = (int)round((OpenGlLib::cursorPos[1]/42.5) - 1);
 		OpenGlLib::lastClick[2] = 1.0;
 	}
 	else if ( mods || window )
@@ -100,6 +97,9 @@ bool		OpenGlLib::createWindow( int height, int width, std::string title)
 	glfwSetKeyCallback( this->_window, key_callback );
 	glfwSetCursorPosCallback(this->_window, cursor_callback);
 	glfwSetMouseButtonCallback(this->_window, button_callback);
+	glfwGetCursorPos(this->_window, &OpenGlLib::cursorPos[0], &OpenGlLib::cursorPos[1]);
+	OpenGlLib::lastClick[0] = (int)round((OpenGlLib::cursorPos[0]/42.5) - 1);
+	OpenGlLib::lastClick[1] = (int)round((OpenGlLib::cursorPos[1]/42.5) - 1);
 	return ( true );
 }
 
