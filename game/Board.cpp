@@ -27,7 +27,7 @@ Board &	Board::operator=( Board const & rhs )
 	return ( *this );
 } 
 
-void		Board::insert(std::pair<int, int> xy, int player)
+void		Board::insert(std::pair<int, int> xy, Player* player)
 {
 	std::cout << "insertPawn x: " << xy.first << " y: " << xy.second << std::endl;
 	Pawn	*pawn = new Pawn(player, xy.first, xy.second);
@@ -46,7 +46,7 @@ void		Board::displayPawns( void )
 {
 	for(std::map<std::pair<int,int>, Pawn*>::iterator it=_pawns.begin() ; it!=_pawns.end() ; ++it)
 	{
-		std::cout << "x: " << it->first.first << " y: " << it->first.second << " player: " << it->second->getPlayer() << std::endl;
+		std::cout << "x: " << it->first.first << " y: " << it->first.second << " player: " << it->second->getPlayer()->getName() << std::endl;
 	}
 
 }
@@ -69,22 +69,22 @@ int 		Board::checkAlignement(std::pair<int, int> key, std::pair<int, int> key2)
 	int py = key.second - key2.second;
 	int nx = key2.first - key.first;
 	int ny = key2.second - key.second;
-	int player = findPawn(key.first, key.second)->getPlayer();
+	int player = findPawn(key.first, key.second)->getPlayer()->getName();
 
 	std::pair<int, int> currentKey = std::make_pair(key2.first + nx, key2.second + ny);
-	while (findPawn(currentKey.first, currentKey.second) && findPawn(currentKey.first, currentKey.second)->getPlayer() == player)
+	while (findPawn(currentKey.first, currentKey.second) && findPawn(currentKey.first, currentKey.second)->getPlayer()->getName() == player)
 	{
 		currentKey = std::make_pair(currentKey.first + nx, currentKey.second + ny);
 		count++;
 	}
 	currentKey = std::make_pair(key.first + px, key.second + py);
-	while (findPawn(currentKey.first, currentKey.second) && findPawn(currentKey.first, currentKey.second)->getPlayer() == player)
+	while (findPawn(currentKey.first, currentKey.second) && findPawn(currentKey.first, currentKey.second)->getPlayer()->getName() == player)
 	{
 		currentKey = std::make_pair(currentKey.first + px, currentKey.second + py);
 		count++;
 	}
 	if (count >= 5)
-		_win = findPawn(key.first, key.second)->getPlayer();
+		_win = findPawn(key.first, key.second)->getPlayer()->getName();
 	return count;
 }
 
@@ -92,15 +92,15 @@ std::vector<std::pair<int, int> > 	Board::checkTrap(std::pair<int, int> key, std
 {
 	int nx = key2.first - key.first;
 	int ny = key2.second - key.second;
-	int player = findPawn(key.first, key.second)->getPlayer();
-	int opponent = findPawn(key2.first, key2.second)->getPlayer();
+	int player = findPawn(key.first, key.second)->getPlayer()->getName();
+	int opponent = findPawn(key2.first, key2.second)->getPlayer()->getName();
 	std::vector<std::pair<int, int> > capturedPawns;
 
 	std::pair<int, int> currentKey = std::make_pair(key2.first + nx, key2.second + ny);
-	if (findPawn(currentKey.first, currentKey.second) && findPawn(currentKey.first, currentKey.second)->getPlayer() == opponent)
+	if (findPawn(currentKey.first, currentKey.second) && findPawn(currentKey.first, currentKey.second)->getPlayer()->getName() == opponent)
 	{
 		currentKey = std::make_pair(currentKey.first + nx, currentKey.second + ny);
-		if (findPawn(currentKey.first, currentKey.second) && findPawn(currentKey.first, currentKey.second)->getPlayer() == player)
+		if (findPawn(currentKey.first, currentKey.second) && findPawn(currentKey.first, currentKey.second)->getPlayer()->getName() == player)
 		{
 			capturedPawns.push_back(key2);
 			capturedPawns.push_back(currentKey);
@@ -126,7 +126,7 @@ std::vector<std::pair<int, int> >	Board::checkOpponent(int x, int y, std::pair<i
 
 	if ((tmpPawn = findPawn(x, y)) != NULL)
 	{
-		if (tmpPawn->getPlayer() != _pawns[key]->getPlayer())
+		if (tmpPawn->getPlayer()->getName() != _pawns[key]->getPlayer()->getName())
 			return (checkTrap(key, key2));
 	}
 	return capturedPawns;
@@ -215,7 +215,7 @@ int					Board::render( OpenGlLib *	_renderLib )
 		int x = it->first.first;
 		int y = it->first.second;
 
-		if (it->second->getPlayer())
+		if (it->second->getPlayer()->getName())
 			_renderLib->drawCircle(x, y, 1, 0xFFFFFF);
 		else
 			_renderLib->drawCircle(x, y, 1, 0x000000);
@@ -248,7 +248,7 @@ void		Board::checkNeighbour(std::pair<int,int> key1, std::pair<int,int> key2)
 
 	if ((tmpPawn = findPawn(key1.first, key1.second)) != NULL)
 	{
-		if (tmpPawn->getPlayer() == _pawns[key2]->getPlayer())
+		if (tmpPawn->getPlayer()->getName() == _pawns[key2]->getPlayer()->getName())
 			findAlignement(tmpPawn, key2);
 	}
 	return ;

@@ -6,9 +6,9 @@ Pawn::Pawn( void )
 	return ;
 }
 
-Pawn::Pawn( int player, int x, int y) : _player( player ), _x(x), _y(y)
+Pawn::Pawn( Player* player, int x, int y) : _player( player ), _x(x), _y(y)
 {
-	std::cout << "PAWN CONST: " << _player << std::endl;
+	// std::cout << "PAWN CONST: " << _player->getName() << std::endl;
 	return ;
 }
 
@@ -31,7 +31,7 @@ Pawn &	Pawn::operator=( Pawn const & rhs )
 	return ( *this );
 }
 
-int		Pawn::getPlayer()
+Player*		Pawn::getPlayer()
 {
 	return this->_player;
 }

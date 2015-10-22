@@ -36,7 +36,7 @@ std::pair<int, int>			Computer::play(Board* currentBoard)
 
 	_currentBoard = currentBoard;
 	if (_currentBoard->getPawns().size() == 0)
-		_currentBoard->insert(std::make_pair(1,2), 1);
+		_currentBoard->insert(std::make_pair(1,2), this);
 	else
 	{
 		getSons(false);
@@ -101,7 +101,7 @@ void					Computer::createSon(int x, int y)
 	if (x >= 0 && x < 19 && y >= 0 && y < 19)
 	{
 		_tmp = new Possibility(x, y, this->_name);
-		_currentBoard->insert(std::make_pair(x, y), this->_name);
+		_currentBoard->insert(std::make_pair(x, y), this);
 		getSons(true);
 		_currentBoard->erase(std::make_pair(x, y));
 		this->_sons.push_back(_tmp);
@@ -126,7 +126,7 @@ void					Computer::displaySons()
 void			Computer::setWeight(int x, int y)
 {
 	int weight = 0;
-	_currentBoard->insert(std::make_pair(x, y), this->_name);
+	_currentBoard->insert(std::make_pair(x, y), this);
 	if (_currentBoard->checkwin())
 	{
 		if (_currentBoard->getWin() == this->_name)
@@ -136,6 +136,9 @@ void			Computer::setWeight(int x, int y)
 	}
 	this->_tmp->getGrandSons()[std::make_pair(x, y)]->_capturedPawns = _currentBoard->checkCapture(x, y);
 	weight += this->_tmp->getGrandSons()[std::make_pair(x, y)]->_capturedPawns.size(); // * 10 a revoir
+
+
+
 	this->_tmp->getGrandSons()[std::make_pair(x, y)]->setWeight(weight);
 	return ;
 }

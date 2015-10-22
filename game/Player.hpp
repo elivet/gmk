@@ -3,7 +3,10 @@
 
 # include <iostream>
 # include "Board.hpp"
-
+// # include "Alignement.hpp"
+# include "Pawn.hpp" 
+class Pawn;
+class Alignement;
 class Player
 {
 public:
@@ -21,9 +24,11 @@ public:
 
 
 protected:
-	int		_name;
-	int		_capturedPawns;
-	int		_color;
+	int										_name;
+	int										_capturedPawns;
+	int										_color;
+public:
+	std::vector<Alignement*>				_alignements;
 
 };
 

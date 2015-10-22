@@ -48,6 +48,7 @@ int			Alignement::isAligned(std::pair<int, int> key, Board* currentBoard)
 		Pawn*	newPawn = currentBoard->findPawn(key.first, key.second);
 		this->_pawnBegin = newPawn;
 		newPawn->_alignements.push_back(this);
+		newPawn->getPlayer()->_alignements.push_back(this);
 		return 1;
 	}
 	if (currentKey2.first == key.first && currentKey2.second == key.second)
@@ -57,6 +58,7 @@ int			Alignement::isAligned(std::pair<int, int> key, Board* currentBoard)
 		Pawn*	newPawn = currentBoard->findPawn(key.first, key.second);
 		this->_pawnEnd = newPawn;
 		newPawn->_alignements.push_back(this);
+		newPawn->getPlayer()->_alignements.push_back(this);
 		return 1;
 	}
 	return 0;

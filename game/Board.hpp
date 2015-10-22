@@ -1,11 +1,11 @@
 #ifndef BOARD_HPP
 # define BOARD_HPP
 
-// # include "Pawn.hpp"
+// # include "Player.hpp"
 # include <map>
 # include <vector>
 # include "../engine/OpenGlLib.hpp"
-
+class Player;
 class Pawn;
 class Board
 {
@@ -16,7 +16,7 @@ public:
 
 	Board &	operator=( Board const & rhs );
 
-	void								insert(std::pair<int, int> xy, int player);
+	void								insert(std::pair<int, int> xy, Player* player);
 	void								erase(std::pair<int, int> xy);
 	void								displayPawns( void );
 	Pawn*								findPawn( int x, int y);

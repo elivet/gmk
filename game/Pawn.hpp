@@ -3,25 +3,27 @@
 
 # include <iostream>
 # include <vector>
+#include "Player.hpp"
 // # include "Alignement.hpp"
 class Alignement;
+// class Player;
 class Pawn
 {
 public:
 	Pawn( void );
-	Pawn( int player, int x, int y );
+	Pawn( Player* player, int x, int y );
  	~Pawn( void );
 	Pawn( Pawn const & src );
 
 	Pawn &	operator=( Pawn const & rhs );
 
-	int		getPlayer();
-	int		getX();
-	int		getY();
+	Player*							getPlayer();
+	int								getX();
+	int								getY();
 	std::vector<Alignement*>		getAlignements();
 
 private:
-	int							_player;
+	Player*						_player;
 	int							_x;
 	int							_y;
 public:

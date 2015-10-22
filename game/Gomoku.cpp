@@ -44,11 +44,11 @@ Gomoku &	Gomoku::operator=( Gomoku const & rhs )
 
 void		Gomoku::play()
 {
-	_currentBoard->insert(std::make_pair(1,2), 1);
-	_currentBoard->insert(std::make_pair(2,3), 1);
-		_currentBoard->stockAlignement(std::make_pair(2,3));
-	_currentBoard->insert(std::make_pair(3,4), 1);
-		_currentBoard->stockAlignement(std::make_pair(3,4));
+	// _currentBoard->insert(std::make_pair(1,2), 1);
+	// _currentBoard->insert(std::make_pair(2,3), 1);
+	// 	_currentBoard->stockAlignement(std::make_pair(2,3));
+	// _currentBoard->insert(std::make_pair(3,4), 1);
+	// 	_currentBoard->stockAlignement(std::make_pair(3,4));
 	// _currentBoard->insert(std::make_pair(4,5), 1);
 	// _currentBoard->insert(std::make_pair(5,6), 1);
 
@@ -72,10 +72,10 @@ void		Gomoku::turns(Player* p1, Player* p2)
 	{
 
 		tmp = p1->play(this->_currentBoard);
-		_currentBoard->insert(tmp, p1->getName());
+		_currentBoard->insert(tmp, p1);
 		_currentBoard->stockAlignement(tmp);
 		tmp = p2->play(this->_currentBoard);
-		_currentBoard->insert(tmp, p2->getName());
+		_currentBoard->insert(tmp, p2);
 		_currentBoard->stockAlignement(tmp);
 		// exit(0);
 	}
@@ -114,7 +114,7 @@ int					Gomoku::render( OpenGlLib *	_renderLib ) const
 	{
 		int x = (int)_renderLib->OpenGlLib::lastClick[0];
 		int y = (int)_renderLib->OpenGlLib::lastClick[1];
-		_currentBoard->insert(std::make_pair(x, y), 1);
+		_currentBoard->insert(std::make_pair(x, y), _player1);
 		_renderLib->OpenGlLib::lastClick[2] = 0.0;
 
 	}
