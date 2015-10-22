@@ -1,6 +1,7 @@
 #include "Gomoku.hpp"
 #include "../engine/CoreEngine.hpp"
 #include <stdlib.h>
+#include <stdio.h>
 
 Gomoku::Gomoku( void )
 {

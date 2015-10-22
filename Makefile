@@ -34,9 +34,9 @@ OBJS			=	$(SRCS:.cpp=.o)
 
 HEADS			=	$(SRCS:.cpp=.hpp)
 
-INC				=	-I ~/.brew/include/
+INC				=	`pkg-config --cflags gl glfw3 x11 xxf86vm xrandr xi xcursor xinerama`
 
-LIB				=	-L ~/.brew/lib/ -lglfw3 -framework OpenGL
+LIB				=	`pkg-config --libs gl glfw3 x11 xxf86vm xrandr xi xcursor xinerama` -lpthread
 
 
 all:			$(NAME)
