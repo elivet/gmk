@@ -4,32 +4,36 @@
 # include "Player.hpp"
 # include "Board.hpp"
 # include "Computer.hpp"
-#include "../engine/OpenGlLib.hpp"
-#include "../core/GameObject.hpp"
+# include "../engine/OpenGlLib.hpp"
+# include "../core/GameObject.hpp"
 
-#define COLOR_BLACK 0x000000
-#define COLOR_WHITE 0xFFFFFF
+class CoreEngine;
 
 class Gomoku: public GameObject
 {
 public:
 	Gomoku( void );
-	Gomoku( bool comp );
  	~Gomoku( void );
 	Gomoku( Gomoku const & src );
 
 	Gomoku &	operator=( Gomoku const & rhs );
 
-	void		play();
-	void		turns(Player* p1, Player* p2);
+	void						init( void );
+	void						play( void );
+	void						turns(Player* p1, Player* p2);
+	void						endGame( void );
 
+	void						setCoreEngine( CoreEngine * coreEngine );
+	CoreEngine*					getCoreEngine( void ) const;
 	virtual int					update( OpenGlLib *	_renderLib, double delta );
 	virtual int					render( OpenGlLib *	_renderLib ) const;
 
 private:
-	Board*		_currentBoard;
-	Player*		_player1;
-	Player*		_player2;
+	CoreEngine *				_coreEngine;
+	Board*						_currentBoard;
+	Player*						_player1;
+	Player*						_player2;
+	bool						_firstPlayerTurn;
 
 };
 

@@ -208,6 +208,22 @@ int 			Board::getWin()
 
 int					Board::render( OpenGlLib *	_renderLib )
 {
+	for (int i = 1; i < 20; i++)
+		_renderLib->drawLine(i, 1, i, 19, COLOR_BLACK);
+	for (int i = 1; i < 20; i++)
+		_renderLib->drawLine(1, i, 19, i, COLOR_BLACK);
+	_renderLib->drawSquare(3.9, 3.9, 0.2, COLOR_BLACK);
+	_renderLib->drawSquare(9.9, 3.9, 0.2, COLOR_BLACK);
+	_renderLib->drawSquare(15.9, 3.9, 0.2, COLOR_BLACK);
+
+	_renderLib->drawSquare(3.9, 9.9, 0.2, COLOR_BLACK);
+	_renderLib->drawSquare(9.9, 9.9, 0.2, COLOR_BLACK);
+	_renderLib->drawSquare(15.9, 9.9, 0.2, COLOR_BLACK);
+
+	_renderLib->drawSquare(3.9, 15.9, 0.2, COLOR_BLACK);
+	_renderLib->drawSquare(9.9, 15.9, 0.2, COLOR_BLACK);
+	_renderLib->drawSquare(15.9, 15.9, 0.2, COLOR_BLACK);
+
 	for(std::map<std::pair<int,int>, Pawn*>::iterator it=_pawns.begin() ; it!=_pawns.end() ; ++it)
 	{
 		int x = it->first.first;

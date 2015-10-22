@@ -73,12 +73,9 @@ bool			CoreEngine::start( void )
 			this->stop();
 			break ;
 		}
-
-		// this->_game->update( this->_renderLib, dt );
-		this->render();
-
+		this->_game->update( this->_renderLib, dt );
+		this->_game->render( this->_renderLib );
 		this->_renderLib->refreshWindow();
-		
 		endFrame = this->getTime();
 		dt = (endFrame - startFrame);
 		sleep = (SECOND / this->_fps) - (dt * SECOND);
@@ -91,19 +88,19 @@ bool			CoreEngine::start( void )
 	return ( true );
 }
 
-int			CoreEngine::update( double delta )
-{
-	for ( size_t i = 0; i < this->_objects.size(); i++ )
-		this->_objects[i]->update( _renderLib, delta );
-	return ( true );
-}
+// int			CoreEngine::update( double delta )
+// {
+// 	for ( size_t i = 0; i < this->_objects.size(); i++ )
+// 		this->_objects[i]->update( _renderLib, delta );
+// 	return ( true );
+// }
 
-int			CoreEngine::render( void ) const
-{
-	for ( size_t i = 0; i < this->_objects.size(); i++ )
-		this->_objects[i]->render( _renderLib );
-	return ( true );
-}
+// int			CoreEngine::render( void ) const
+// {
+// 	for ( size_t i = 0; i < this->_objects.size(); i++ )
+// 		this->_objects[i]->render( _renderLib );
+// 	return ( true );
+// }
 
 int			CoreEngine::setRunnig( int state )
 {
@@ -111,11 +108,12 @@ int			CoreEngine::setRunnig( int state )
 	return true;
 }
 
-int			CoreEngine::addObject( GameObject * object )
+int			CoreEngine::setGame( Gomoku *game )
 {
-	object->setCoreEngine(this);
-	object->init();
-	this->_objects.push_back( object );
+	game->setCoreEngine(this);
+	// object->init();
+	this->_game = game;
+	this->_game->init();
 	return ( true );
 }
 
@@ -132,3 +130,4 @@ void			CoreEngine::setFPS( int fps )
 {
 	this->_fps = fps;
 }
+

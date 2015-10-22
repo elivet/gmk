@@ -6,6 +6,9 @@
 # include <vector>
 # include "../engine/OpenGlLib.hpp"
 
+#define COLOR_BLACK 0x000000
+#define COLOR_WHITE 0xFFFFFF
+
 class Board
 {
 public:

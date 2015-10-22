@@ -11,7 +11,12 @@ CC				=	g++
 
 NAME			=	gomoku
 
-FILES			=	main.cpp \
+FILES			=	\
+					engine/OpenGlLib.cpp\
+					engine/CoreEngine.cpp\
+					core/GameObject.cpp\
+					\
+					main.cpp \
 					game/Board.cpp \
 					game/Pawn.cpp \
 					game/Gomoku.cpp \
@@ -20,9 +25,7 @@ FILES			=	main.cpp \
 					game/Possibility.cpp \
 					game/Alignement.cpp \
 					\
-					engine/OpenGlLib.cpp\
-					engine/CoreEngine.cpp\
-					core/GameObject.cpp\
+
 
 
 SRCS			=	$(FILES)
