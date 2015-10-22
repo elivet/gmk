@@ -5,6 +5,10 @@
 Gomoku::Gomoku( void )
 {
 	this->_currentBoard = new Board();
+	this->_lastClick = new double[3];
+	this->_lastClick[0] = 0;
+	this->_lastClick[1] = 0;
+	this->_lastClick[2] = 0;
 	this->_firstPlayerTurn = true;
 	return ;
 }
@@ -70,14 +74,23 @@ void				Gomoku::play()
 {
 	if (this->_currentBoard->checkwin())
 		this->endGame();
-	// if (this->_firstPlayerTurn)
-	// {
-	// 	tmp = p1->play(this->_currentBoard);
-	// }
-	// else
-	// {
-
-	// }
+	if (this->_firstPlayerTurn)
+	{
+		if (isClicked())
+		{
+			printf("coord %f - %f\n", _lastClick[0], _lastClick[1]);
+			_currentBoard->insert(getPair(), 1);
+			endTurn();
+		}
+	}
+	else
+	{
+		if (isClicked())
+		{
+			_currentBoard->insert(getPair(), 2);
+			endTurn();
+		}
+	}
 	// _currentBoard->insert(std::make_pair(1,2), 1);
 	// _currentBoard->insert(std::make_pair(2,3), 1);
 	// _currentBoard->insert(std::make_pair(3,4), 1);
@@ -88,24 +101,43 @@ void				Gomoku::play()
 	return ;
 }
 
-void				Gomoku::turns(Player* p1, Player* p2)
-{
-	std::pair<int, int> tmp;
-	while (!this->_currentBoard->checkwin())
-	{
-		tmp = p1->play(this->_currentBoard);
-		// _currentBoard->insert(tmp, p1->getName());
-		tmp = p2->play(this->_currentBoard);
-		// _currentBoard->insert(tmp, p2->getName());
-	}
-	return ;
-}
+// void				Gomoku::turns(Player* p1, Player* p2)
+// {
+// 	std::pair<int, int> tmp;
+// 	while (!this->_currentBoard->checkwin())
+// 	{
+// 		tmp = p1->play(this->_currentBoard);
+// 		// _currentBoard->insert(tmp, p1->getName());
+// 		tmp = p2->play(this->_currentBoard);
+// 		// _currentBoard->insert(tmp, p2->getName());
+// 	}
+// 	return ;
+// }
 
 void				Gomoku::endGame( void )
 {
 	this->getCoreEngine()->setRunnig(false);
 }
 
+
+std::pair<int, int>	Gomoku::getPair( void )
+{
+	int x = this->_lastClick[0];
+	int y = this->_lastClick[1];
+	return std::make_pair( x, y );
+}
+
+bool				Gomoku::isClicked( void )
+{
+	return (this->_lastClick[2]);
+}
+
+void				Gomoku::endTurn( void )
+{
+	this->_lastClick[2] = 0;
+	this->_firstPlayerTurn = !this->_firstPlayerTurn;
+
+}
 
 /****************************************************************
 ***************************ENGINE********************************
@@ -125,7 +157,7 @@ int					Gomoku::update( OpenGlLib *	_renderLib, double delta )
 {
 	(void)_renderLib;
 	(void)delta;
-
+	this->_lastClick = &(_renderLib->OpenGlLib::lastClick[0]);
 	this->play();
 
 	return true;

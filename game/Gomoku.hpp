@@ -20,8 +20,11 @@ public:
 
 	void						init( void );
 	void						play( void );
-	void						turns(Player* p1, Player* p2);
+	// void						turns(Player* p1, Player* p2);
 	void						endGame( void );
+	bool						isClicked( void );
+	void						endTurn( void );
+	std::pair<int, int>			getPair( void );
 
 	void						setCoreEngine( CoreEngine * coreEngine );
 	CoreEngine*					getCoreEngine( void ) const;
@@ -34,6 +37,7 @@ private:
 	Player*						_player1;
 	Player*						_player2;
 	bool						_firstPlayerTurn;
+	double *					_lastClick;
 
 };
 

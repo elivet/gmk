@@ -27,7 +27,7 @@ Board &	Board::operator=( Board const & rhs )
 
 void		Board::insert(std::pair<int, int> xy, int player)
 {
-	std::cout << "insertPawn x: " << xy.first << " y: " << xy.second << std::endl;
+	std::cout << "P"<< player << "insertPawn x: " << xy.first << " y: " << xy.second << std::endl;
 	Pawn	*pawn = new Pawn(player);
 	_pawns[xy] = pawn;
 	return ;
@@ -229,7 +229,7 @@ int					Board::render( OpenGlLib *	_renderLib )
 		int x = it->first.first;
 		int y = it->first.second;
 
-		if (it->second->getPlayer())
+		if (it->second->getPlayer() == 1)
 			_renderLib->drawCircle(x, y, 1, 0xFFFFFF);
 		else
 			_renderLib->drawCircle(x, y, 1, 0x000000);
