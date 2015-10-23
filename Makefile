@@ -1,10 +1,20 @@
 #DEV, BUID
 MODE			=	BUILD
+ENVIRONEMENT	=	MAC
+
 
 ifeq ($(MODE), DEV)
 	CPPFLAGS	=	-Wall -Wextra -ansi -O3 -DDEBUG
 else
 	CPPFLAGS	=	-Wall -Wextra -Werror -ansi -O3
+endif
+
+ifeq ($(ENVIRONEMENT), MAC)
+	INC				=	-I ~/.brew/include/
+	LIB				=	-L ~/.brew/lib/ -lglfw3 -framework OpenGL
+else
+	INC				=	`pkg-config --cflags gl glfw3 x11 xxf86vm xrandr xi xcursor xinerama`
+	LIB				=	`pkg-config --libs gl glfw3 x11 xxf86vm xrandr xi xcursor xinerama` -lpthread
 endif
 
 CC				=	g++
@@ -27,16 +37,11 @@ FILES			=	\
 					\
 
 
-
 SRCS			=	$(FILES)
 
 OBJS			=	$(SRCS:.cpp=.o)
 
 HEADS			=	$(SRCS:.cpp=.hpp)
-
-INC				=	`pkg-config --cflags gl glfw3 x11 xxf86vm xrandr xi xcursor xinerama`
-
-LIB				=	`pkg-config --libs gl glfw3 x11 xxf86vm xrandr xi xcursor xinerama` -lpthread
 
 
 all:			$(NAME)
