@@ -73,24 +73,45 @@ void				Gomoku::init( void )
 
 void				Gomoku::play()
 {
+	std::pair<int, int> ret;
 	if (this->_currentBoard->checkwin())
 	{
 		this->endGame();
 		return ;
 	}
 	if (this->_firstPlayerTurn)
-	{
-		if (isClicked())
+	{	
+		Computer* check = dynamic_cast<Computer*>(_player1);
+		if (!check && isClicked())
 		{
-			_currentBoard->insert(getPair(), _player1);
+			ret = _player1->play(_currentBoard, getPair());
+			_currentBoard->insert(ret, _player1);
+			_currentBoard->stockAlignement(ret);
+			endTurn();
+		}
+		else
+		{
+			ret = check->play(_currentBoard);
+			_currentBoard->insert(ret, _player1);
+			_currentBoard->stockAlignement(ret);
 			endTurn();
 		}
 	}
 	else
 	{
-		if (isClicked())
+		Computer* check2 = dynamic_cast<Computer*>(_player2);
+		if (!check2 && isClicked())
 		{
-			_currentBoard->insert(getPair(), _player2);
+			ret = _player2->play(_currentBoard, getPair());
+			_currentBoard->insert(ret, _player2);
+			_currentBoard->stockAlignement(ret);
+			endTurn();
+		}
+		else
+		{
+			ret = check2->play(_currentBoard);
+			_currentBoard->insert(ret, _player2);
+			_currentBoard->stockAlignement(ret);
 			endTurn();
 		}
 	}

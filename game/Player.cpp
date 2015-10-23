@@ -29,11 +29,12 @@ Player &	Player::operator=( Player const & rhs )
 	return ( *this );
 }
 
-std::pair<int, int>		Player::play(Board* currentBoard)
+std::pair<int, int>		Player::play(Board* currentBoard, std::pair<int, int> xy)
 {
 	std::cout << this->_name << " playing" << std::endl;
 	std::pair<int, int> key = std::make_pair(4, 5);
 	(void)currentBoard;
+	(void)xy;
 	return key;
 }
 
