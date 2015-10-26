@@ -18,6 +18,14 @@ public:
 
 	int			isAligned(std::pair<int, int> key, Board* currentBoard);
 
+	int		getNbr();
+	int		getNx();
+	int		getPx();
+	int		getNy();
+	int		getPy();
+	Pawn*	getPawnBegin();
+	Pawn*	getPawnEnd();
+
 private:
 	Pawn*					_pawnBegin;
 	Pawn*					_pawnEnd;
@@ -25,6 +33,7 @@ private:
 	int 					_ny;
 	int 					_px;
 	int 					_py;
+	int 					_nbr;
 };
 
 #endif

@@ -5,6 +5,7 @@
 # include "Board.hpp"
 // # include "Pawn.hpp"
 # include "Possibility.hpp"
+# include "Alignement.hpp"
 # include <vector>
 
 class Computer : public Player
@@ -25,6 +26,12 @@ public:
 	void								displaySons();
 	void								lookAround(int x, int y, bool bill);
 	void								setWeight(int x, int y);
+	int 								spyAround(int x, int y);
+	int 								spyOpponent(int x, int y, Pawn* currentPawn);
+	bool 								inAlignementWay(Alignement* alignement, Pawn* currentPawn);
+	bool 								spaceDisp(Alignement* alignement, int nbr);
+	int 								observeAround(int x, int y);
+	int 								observeOwn(int x, int y, Pawn* currentPawn);
 
 private:
 	std::vector<Possibility*> 	_sons;

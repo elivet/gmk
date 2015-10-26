@@ -223,7 +223,7 @@ void		Board::findAlignement(Pawn* neighbour, std::pair<int,int> key)
 	for (unsigned int i = 0; i < neighbour->getAlignements().size(); i++)
 		top += neighbour->_alignements[i]->isAligned(key, this);
 	if (!top)
-		createAlignement(neighbour, key);
+		createAlignement(neighbour, key); // si *.* --> *** creation alignement mauvaise
 	return ;
 }
 

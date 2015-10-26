@@ -123,6 +123,116 @@ void					Computer::displaySons()
 	return ;
 }
 
+bool 					Computer::spaceDisp(Alignement* alignement, int nbr)
+{
+	int count = 1;
+	nbr = 5 - nbr;
+
+	std::pair<int, int> currentKey = std::make_pair(alignement->getPawnEnd()->getX() + alignement->getNx(), alignement->getPawnEnd()->getY() + alignement->getNy());
+	while (!_currentBoard->findPawn(currentKey.first, currentKey.second) && currentKey.first >= 0 && currentKey.first < 19 && currentKey.second >= 0 && currentKey.second < 19)
+	{
+		currentKey = std::make_pair(currentKey.first + alignement->getNx(), currentKey.second + alignement->getNy());
+		count++;
+	}
+	currentKey = std::make_pair(alignement->getPawnBegin()->getX() + alignement->getPx(), alignement->getPawnBegin()->getY() + alignement->getPy());
+	while (!_currentBoard->findPawn(currentKey.first, currentKey.second) && currentKey.first >= 0 && currentKey.first < 19 && currentKey.second >= 0 && currentKey.second < 19)
+	{
+		currentKey = std::make_pair(currentKey.first + alignement->getPx(), currentKey.second + alignement->getPy());
+		count++;
+	}
+	if (count >= nbr)
+		return true;
+	return false;
+}
+
+bool 					Computer::inAlignementWay(Alignement* alignement, Pawn* currentPawn)
+{
+	if (alignement->getPawnEnd()->getX() + alignement->getNx() == currentPawn->getX() && alignement->getPawnEnd()->getY() + alignement->getNy() == currentPawn->getY())
+		return true;
+	if (alignement->getPawnBegin()->getX() + alignement->getPx() == currentPawn->getX() && alignement->getPawnBegin()->getY() + alignement->getPy() == currentPawn->getY())
+		return true;
+	return false;
+}
+
+int 					Computer::spyOpponent(int x, int y, Pawn* currentPawn)
+{
+	int 	weight = 0;
+	Pawn*	neighbourg = _currentBoard->findPawn(x, y);
+
+	if (neighbourg && neighbourg->getPlayer()->getName() != currentPawn->getPlayer()->getName())
+	{
+		for (unsigned int i = 0; i < neighbourg->_alignements.size(); i++)
+		{
+			std::cout << "spyOpponent alignementloop" << std::endl;
+			if (inAlignementWay(neighbourg->_alignements[i], currentPawn) && spaceDisp(neighbourg->_alignements[i], neighbourg->_alignements[i]->getNbr()))
+			{
+				weight = neighbourg->_alignements[i]->getNbr() * 100 - 50;
+				return weight;
+			}
+		}
+	}
+	return weight;
+}
+
+int 					Computer::spyAround(int x, int y)
+{
+	int weight = 0;
+	Pawn*	current = _currentBoard->findPawn(x, y);
+
+	if (current)
+	{
+		spyOpponent(x - 1, y, current);
+		spyOpponent(x - 1, y - 1, current);
+		spyOpponent(x + 1, y, current);
+		spyOpponent(x + 1, y + 1, current);
+		spyOpponent(x, y - 1, current);
+		spyOpponent(x, y + 1, current);
+		spyOpponent(x + 1, y - 1, current);
+		spyOpponent(x - 1, y + 1, current);
+	}
+	
+	return weight;
+}
+
+int 					Computer::observeOwn(int x, int y, Pawn* currentPawn)
+{
+	int 	weight = 0;
+	Pawn*	neighbourg = _currentBoard->findPawn(x, y);
+
+	if (neighbourg && neighbourg->getPlayer()->getName() == currentPawn->getPlayer()->getName())
+	{
+		for (unsigned int i = 0; i < neighbourg->_alignements.size(); i++)
+		{
+			std::cout << "observeOwn alignementloop" << std::endl;
+			if (inAlignementWay(neighbourg->_alignements[i], currentPawn) && spaceDisp(neighbourg->_alignements[i], neighbourg->_alignements[i]->getNbr()))
+			{
+				weight = neighbourg->_alignements[i]->getNbr() * 100;
+				return weight;
+			}
+		}
+	}
+	return weight;
+}
+
+int 					Computer::observeAround(int x, int y)
+{
+	int weight = 0;
+	Pawn*	current = _currentBoard->findPawn(x, y);
+
+	if (current)
+	{
+		observeOwn(x - 1, y, current);
+		observeOwn(x - 1, y - 1, current);
+		observeOwn(x + 1, y, current);
+		observeOwn(x + 1, y + 1, current);
+		observeOwn(x, y - 1, current);
+		observeOwn(x, y + 1, current);
+		observeOwn(x + 1, y - 1, current);
+		observeOwn(x - 1, y + 1, current);
+	}
+	
+	return weight;
+}
 void			Computer::setWeight(int x, int y)
 {
 	int weight = 0;
@@ -134,11 +244,14 @@ void			Computer::setWeight(int x, int y)
 		else
 			weight -= 1000;
 	}
-	this->_tmp->getGrandSons()[std::make_pair(x, y)]->_capturedPawns = _currentBoard->checkCapture(x, y);
+
+	this->_tmp->getGrandSons()[std::make_pair(x, y)]->_capturedPawns = _currentBoard->checkCapture(x, y); // nbr de pions captures
 	weight += this->_tmp->getGrandSons()[std::make_pair(x, y)]->_capturedPawns.size(); // * 10 a revoir
 
+	weight += spyAround(x, y);
+	weight += observeAround(x, y);
 
-
+	std::cout << "WEIGHT: " << weight << std::endl;
 	this->_tmp->getGrandSons()[std::make_pair(x, y)]->setWeight(weight);
 	return ;
 }

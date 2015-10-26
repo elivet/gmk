@@ -9,6 +9,7 @@ Alignement::Alignement( Pawn* p1, Pawn* p2 )
 {
 	this->_pawnBegin = p1;
 	this->_pawnEnd = p2;
+	this->_nbr = 2; // a changer ; peut etre 3 a la creation
 
 	this->_px = p1->getX() - p2->getX();
 	this->_py = p1->getY() - p2->getY();
@@ -47,6 +48,7 @@ int			Alignement::isAligned(std::pair<int, int> key, Board* currentBoard)
 
 		Pawn*	newPawn = currentBoard->findPawn(key.first, key.second);
 		this->_pawnBegin = newPawn;
+		this->_nbr++;
 		newPawn->_alignements.push_back(this);
 		newPawn->getPlayer()->_alignements.push_back(this);
 		return 1;
@@ -57,9 +59,58 @@ int			Alignement::isAligned(std::pair<int, int> key, Board* currentBoard)
 
 		Pawn*	newPawn = currentBoard->findPawn(key.first, key.second);
 		this->_pawnEnd = newPawn;
+		this->_nbr++;
 		newPawn->_alignements.push_back(this);
 		newPawn->getPlayer()->_alignements.push_back(this);
 		return 1;
 	}
 	return 0;
 }
+
+int			Alignement::getNbr()
+{
+	return this->_nbr;
+}
+
+int			Alignement::getNx()
+{
+	return this->_nx;
+}
+
+int			Alignement::getPx()
+{
+	return this->_px;
+}
+
+int			Alignement::getNy()
+{
+	return this->_ny;
+}
+
+int			Alignement::getPy()
+{
+	return this->_py;
+}
+
+Pawn*		Alignement::getPawnBegin()
+{
+	return this->_pawnBegin;
+}
+
+Pawn*		Alignement::getPawnEnd()
+{
+	return this->_pawnEnd;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
