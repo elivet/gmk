@@ -89,7 +89,7 @@ void				Gomoku::play()
 			_currentBoard->stockAlignement(ret);
 			endTurn();
 		}
-		else
+		else if (check)
 		{
 			ret = check->play(_currentBoard);
 			_currentBoard->insert(ret, _player1);
@@ -107,7 +107,7 @@ void				Gomoku::play()
 			_currentBoard->stockAlignement(ret);
 			endTurn();
 		}
-		else
+		else if (check2)
 		{
 			ret = check2->play(_currentBoard);
 			_currentBoard->insert(ret, _player2);
