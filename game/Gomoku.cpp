@@ -84,10 +84,13 @@ void				Gomoku::play()
 		Computer* check = dynamic_cast<Computer*>(_player1);
 		if (!check && isClicked())
 		{
-			ret = _player1->play(_currentBoard, getPair());
-			_currentBoard->insert(ret, _player1);
-			_currentBoard->stockAlignement(ret);
-			endTurn();
+			while (_player1->referee(_currentBoard, getPair()) == true)
+			{
+				ret = _player1->play(_currentBoard, getPair());
+				_currentBoard->insert(ret, _player1);
+				_currentBoard->stockAlignement(ret);
+				endTurn();
+			}
 		}
 		else if (check)
 		{
@@ -102,10 +105,13 @@ void				Gomoku::play()
 		Computer* check2 = dynamic_cast<Computer*>(_player2);
 		if (!check2 && isClicked())
 		{
-			ret = _player2->play(_currentBoard, getPair());
-			_currentBoard->insert(ret, _player2);
-			_currentBoard->stockAlignement(ret);
-			endTurn();
+			while (_player2->referee(_currentBoard, getPair()) == true)
+			{
+				ret = _player2->play(_currentBoard, getPair());
+				_currentBoard->insert(ret, _player2);
+				_currentBoard->stockAlignement(ret);
+				endTurn();
+			}
 		}
 		else if (check2)
 		{
