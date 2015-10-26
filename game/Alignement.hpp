@@ -10,7 +10,7 @@ class Alignement
 {
 public:
 	Alignement( void );
-	Alignement( Pawn* p1, Pawn* p2 );
+	Alignement( Pawn* p1, Pawn* p2, Board* currentBoard );
  	~Alignement( void );
 	Alignement( Alignement const & src );
 

@@ -5,8 +5,9 @@ Alignement::Alignement( void )
 	return ;
 }
 
-Alignement::Alignement( Pawn* p1, Pawn* p2 )
+Alignement::Alignement( Pawn* p1, Pawn* p2, Board* currentBoard )
 {
+	Pawn	*tmp;
 	this->_pawnBegin = p1;
 	this->_pawnEnd = p2;
 	this->_nbr = 2; // a changer ; peut etre 3 a la creation
@@ -15,6 +16,23 @@ Alignement::Alignement( Pawn* p1, Pawn* p2 )
 	this->_py = p1->getY() - p2->getY();
 	this->_nx = p2->getX() - p1->getX();
 	this->_ny = p2->getY() - p1->getY();
+	if ((tmp = currentBoard->findPawn(p1->getX() + this->_px, p1->getY() + this->_py)) != NULL)
+	{
+		if (tmp->getPlayer()->getName() == p2->getPlayer()->getName())
+		{
+			this->_pawnBegin = tmp;
+			this->_nbr++;
+		}
+	}
+	if ((tmp = currentBoard->findPawn(p2->getX() + this->_nx, p2->getY() + this->_ny)) != NULL)
+	{
+		if (tmp->getPlayer()->getName() == p2->getPlayer()->getName())
+		{
+			this->_pawnEnd = tmp;
+			this->_nbr++;
+		}
+	}
+	std::cout << "alignement BEGIN = x:" << this->_pawnBegin->getX() << "/y:" << this->_pawnBegin->getY() << " END = x:" << this->_pawnEnd->getX() << "/y:" << this->_pawnEnd->getY() << std::endl;
 	return ;
 }
 

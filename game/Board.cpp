@@ -211,7 +211,7 @@ int 			Board::getWin()
 void		Board::createAlignement(Pawn* neighbour, std::pair<int,int> key)
 {
 	Pawn* current = findPawn(key.first, key.second);
-	Alignement* 	newAlignement = new Alignement(neighbour, current);
+	Alignement* 	newAlignement = new Alignement(neighbour, current, this);
 	neighbour->_alignements.push_back(newAlignement);
 	current->_alignements.push_back(newAlignement);
 	return ;
@@ -223,7 +223,7 @@ void		Board::findAlignement(Pawn* neighbour, std::pair<int,int> key)
 	for (unsigned int i = 0; i < neighbour->getAlignements().size(); i++)
 		top += neighbour->_alignements[i]->isAligned(key, this);
 	if (!top)
-		createAlignement(neighbour, key); // si *.* --> *** creation alignement mauvaise
+		createAlignement(neighbour, key); // a modifier car creation de deux alignements si *.*
 	return ;
 }
 
