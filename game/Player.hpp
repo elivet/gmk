@@ -18,6 +18,7 @@ public:
 	Player &	operator=( Player const & rhs );
 
 	std::pair<int, int>			play(Board* currentBoard, std::pair<int, int> xy);
+	bool						referee(Board* currentBoard, std::pair<int, int> xy);
 
 	int			getName() const;
 	int			getColor() const;
