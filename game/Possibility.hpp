@@ -21,6 +21,7 @@ public:
 	int											getX( void );
 	int											getY( void );
 	std::map<std::pair<int,int>,Possibility*>	getGrandSons( void );
+	int											getWeight( void );
 
 	void 										setWeight(int weight);
 

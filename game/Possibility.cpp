@@ -51,6 +51,11 @@ int		Possibility::getY( void )
 	return this->_y;
 }
 
+int		Possibility::getWeight( void )
+{
+	return this->_weight;
+}
+
 std::map<std::pair<int,int>,Possibility*>	Possibility::getGrandSons( void )
 {
 	return this->_grandSons;

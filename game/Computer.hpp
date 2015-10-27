@@ -32,6 +32,8 @@ public:
 	bool 								spaceDisp(Alignement* alignement, int nbr);
 	int 								observeAround(int x, int y);
 	int 								observeOwn(int x, int y, Pawn* currentPawn);
+	int 								getGrandSonsMin(Possibility* son);
+	Possibility* 						getSonsMax();
 
 private:
 	std::vector<Possibility*> 	_sons;
