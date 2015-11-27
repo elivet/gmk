@@ -29,28 +29,26 @@ Computer &	Computer::operator=( Computer const & rhs )
 	return ( *this );
 }
 
-std::pair<int, int>			Computer::play(Board* currentBoard)
+Possibility*			Computer::play(Board* currentBoard)
 {
-	std::cout << "Computer playing" << std::endl;
 	std::pair<int, int> key; // = std::make_pair(1,2);
+	Possibility* max;
 
 	_currentBoard = currentBoard;
 	if (_currentBoard->getPawns().size() == 0)
 	{
-		key = std::make_pair(9,9);
+		max = new Possibility(9, 9, this->getName());
 	}
 	else
 	{
 		getSons(false);
-		Possibility* max = getSonsMax();
-		std::cout << "Computer play x: " << max->getX() << " y: " << max->getY() << std::endl;
+		max = getSonsMax();
 		key = std::make_pair(max->getX(), max->getY());
 		_sons.clear();
 		// displaySons();
 		// exit(0);
 	}
-
-	return key;
+	return max;
 }
 
 void						Computer::getSons(bool bill)
@@ -132,11 +130,14 @@ void					Computer::createSon(int x, int y)
 	{
 		_tmp = new Possibility(x, y, this->_name);
 		_currentBoard->insert(std::make_pair(x, y), this);
+		_currentBoard->stockAlignement(std::make_pair(x, y));
+		this->_tmp->_capturedPawns = _currentBoard->checkCapture(_tmp->getX(), _tmp->getY()); // nbr de pions captures
 		getSons(true);
 		_tmp->setWeight(getGrandSonsMin(_tmp));
 		_currentBoard->erase(std::make_pair(x, y));
 		this->_sons.push_back(_tmp);
 	}
+	// std::cout << ">>>>>>>>>>>>>>>>               CURRENTBOARDSIZE: " << _currentBoard->getPawns().size() << std::endl;
 	return ;
 }
 
@@ -194,10 +195,10 @@ int 					Computer::spyOpponent(int x, int y, Pawn* currentPawn)
 	{
 		for (unsigned int i = 0; i < neighbourg->_alignements.size(); i++)
 		{
-			std::cout << "spyOpponent alignementloop" << std::endl;
+			// std::cout << "spyOpponent alignementloop" << std::endl;
 			if (inAlignementWay(neighbourg->_alignements[i], currentPawn) && spaceDisp(neighbourg->_alignements[i], neighbourg->_alignements[i]->getNbr()))
 			{
-				weight = neighbourg->_alignements[i]->getNbr() * 100 - 50;
+				weight = neighbourg->_alignements[i]->getNbr() * 50;
 				return weight;
 			}
 		}
@@ -212,16 +213,17 @@ int 					Computer::spyAround(int x, int y)
 
 	if (current)
 	{
-		spyOpponent(x - 1, y, current);
-		spyOpponent(x - 1, y - 1, current);
-		spyOpponent(x + 1, y, current);
-		spyOpponent(x + 1, y + 1, current);
-		spyOpponent(x, y - 1, current);
-		spyOpponent(x, y + 1, current);
-		spyOpponent(x + 1, y - 1, current);
-		spyOpponent(x - 1, y + 1, current);
+		weight += spyOpponent(x - 1, y, current);
+		weight += spyOpponent(x - 1, y - 1, current);
+		weight += spyOpponent(x + 1, y, current);
+		weight += spyOpponent(x + 1, y + 1, current);
+		weight += spyOpponent(x, y - 1, current);
+		weight += spyOpponent(x, y + 1, current);
+		weight += spyOpponent(x + 1, y - 1, current);
+		weight += spyOpponent(x - 1, y + 1, current);
 	}
-	
+	// if (weight > 2)
+	// 	std::cout << "spyAround weight: " << weight << std::endl;
 	return weight;
 }
 
@@ -234,7 +236,7 @@ int 					Computer::observeOwn(int x, int y, Pawn* currentPawn)
 	{
 		for (unsigned int i = 0; i < neighbourg->_alignements.size(); i++)
 		{
-			std::cout << "observeOwn alignementloop" << std::endl;
+			// std::cout << "observeOwn alignementloop" << std::endl;
 			if (inAlignementWay(neighbourg->_alignements[i], currentPawn) && spaceDisp(neighbourg->_alignements[i], neighbourg->_alignements[i]->getNbr()))
 			{
 				weight = neighbourg->_alignements[i]->getNbr() * 100;
@@ -252,37 +254,41 @@ int 					Computer::observeAround(int x, int y)
 
 	if (current)
 	{
-		observeOwn(x - 1, y, current);
-		observeOwn(x - 1, y - 1, current);
-		observeOwn(x + 1, y, current);
-		observeOwn(x + 1, y + 1, current);
-		observeOwn(x, y - 1, current);
-		observeOwn(x, y + 1, current);
-		observeOwn(x + 1, y - 1, current);
-		observeOwn(x - 1, y + 1, current);
+		weight += observeOwn(x - 1, y, current);
+		weight += observeOwn(x - 1, y - 1, current);
+		weight += observeOwn(x + 1, y, current);
+		weight += observeOwn(x + 1, y + 1, current);
+		weight += observeOwn(x, y - 1, current);
+		weight += observeOwn(x, y + 1, current);
+		weight += observeOwn(x + 1, y - 1, current);
+		weight += observeOwn(x - 1, y + 1, current);
 	}
-	
+	// if (weight > 2)
+	// 	std::cout << "observeAround weight: " << weight << std::endl;
 	return weight;
 }
 void			Computer::setWeight(int x, int y)
 {
 	int weight = 1;
 	_currentBoard->insert(std::make_pair(x, y), this);
-	if (_currentBoard->checkwin())
+	if (_currentBoard->checkwin(this, _opponent))
 	{
 		if (_currentBoard->getWin() == this->_name)
 			weight += 1000;
 		else
 			weight -= 1000;
 	}
-
 	this->_tmp->getGrandSons()[std::make_pair(x, y)]->_capturedPawns = _currentBoard->checkCapture(x, y); // nbr de pions captures
-	weight += this->_tmp->getGrandSons()[std::make_pair(x, y)]->_capturedPawns.size(); // * 10 a revoir
+	weight -= this->_tmp->getGrandSons()[std::make_pair(x, y)]->_capturedPawns.size() * 10; // * 10 a revoir
 
-	weight += spyAround(x, y);
+	weight += this->_tmp->_capturedPawns.size() * 10; // * 10 a revoir
+
+	// std::cout << "Computer::setWeight BEFORE spyAround: " << weight << std::endl;
+	weight += spyAround(x, y) * 100;
+	// std::cout << "Computer::setWeight AFTER spyAround: " << weight << std::endl;
 	weight += observeAround(x, y);
+	// std::cout << "Computer::setWeight AFTER observeAround: " << weight << std::endl;
 
-	std::cout << "WEIGHT: " << weight << std::endl;
 	this->_tmp->getGrandSons()[std::make_pair(x, y)]->setWeight(weight);
 	_currentBoard->erase(std::make_pair(x, y));
 

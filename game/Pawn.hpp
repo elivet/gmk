@@ -21,6 +21,7 @@ public:
 	int								getX();
 	int								getY();
 	std::vector<Alignement*>		getAlignements();
+	void							replaceAlignement(Alignement* al1, Alignement* al2);
 
 private:
 	Player*						_player;

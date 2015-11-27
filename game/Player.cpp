@@ -1,11 +1,11 @@
 #include "Player.hpp"
 
-Player::Player( void ) : _name(1), _capturedPawns(0), _color(0x000000)
+Player::Player( void ) : _name(1), _color(0x000000), _capturedPawns(0)
 {
 	return ;
 }
 
-Player::Player( int name, int color ) : _name(name), _capturedPawns(0), _color(color)
+Player::Player( int name, int color ) : _name(name), _color(color), _capturedPawns(0)
 {
 	return ;
 }
@@ -63,6 +63,12 @@ int						Player::getName() const
 int						Player::getColor() const
 {
 	return this->_color;
+}
+
+void				Player::setOpponent(Player* opponent)
+{
+	_opponent = opponent;
+	return ;
 }
 
 

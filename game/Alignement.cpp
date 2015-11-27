@@ -62,7 +62,7 @@ int			Alignement::isAligned(std::pair<int, int> key, Board* currentBoard)
 	std::pair<int,int> currentKey2 = std::make_pair(_pawnEnd->getX() + this->_nx, _pawnEnd->getY() + this->_ny); // check si cest bien dans le bon sens maybe linverse
 	if (currentKey.first == key.first && currentKey.second == key.second)  
 	{
-		std::cout << "isAligned6 YAAAAAAASSSSSSSSSSSS IS ALIGNEDDDDDD YAAAAAAASSSSSSSSSSSS" << std::endl;
+		// std::cout << "isAligned6 YAAAAAAASSSSSSSSSSSS IS ALIGNEDDDDDD YAAAAAAASSSSSSSSSSSS" << std::endl;
 
 		Pawn*	newPawn = currentBoard->findPawn(key.first, key.second);
 		this->_pawnBegin = newPawn;
@@ -73,7 +73,7 @@ int			Alignement::isAligned(std::pair<int, int> key, Board* currentBoard)
 	}
 	if (currentKey2.first == key.first && currentKey2.second == key.second)
 	{
-		std::cout << "isAligned6 YAAAAAAASSSSSSSSSSSS IS ALIGNEDDDDDD YAAAAAAASSSSSSSSSSSS" << std::endl;
+		// std::cout << "isAligned7 YAAAAAAASSSSSSSSSSSS IS ALIGNEDDDDDD YAAAAAAASSSSSSSSSSSS" << std::endl;
 
 		Pawn*	newPawn = currentBoard->findPawn(key.first, key.second);
 		this->_pawnEnd = newPawn;
@@ -120,8 +120,23 @@ Pawn*		Alignement::getPawnEnd()
 	return this->_pawnEnd;
 }
 
+void		Alignement::setPawnBegin(Pawn* pawn)
+{
+	_pawnBegin = pawn;
+	return ;
+}
 
+void		Alignement::setPawnEnd(Pawn* pawn)
+{
+	_pawnEnd = pawn;
+	return ;
+}
 
+void		Alignement::setNbr(int nbr)
+{
+	_nbr = nbr;
+	return ;
+}
 
 
 

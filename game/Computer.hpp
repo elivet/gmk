@@ -17,7 +17,7 @@ public:
 
 	Computer &	operator=( Computer const & rhs );
 
-	std::pair<int, int>			play(Board* currentBoard);
+	Possibility*						play(Board* currentBoard);
 
 	void								getSons(bool bill);
 	void								emptyAround(int x, int y, bool bill);

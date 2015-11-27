@@ -7,7 +7,8 @@ Possibility::Possibility( void ): _weight(0)
 
 Possibility::Possibility( int x, int y, int player ): _player(player), _x(x), _y(y), _weight(0)
 {
-	std::cout << "tg : " << _player << std::endl;
+	// std::cout << "tg : " << _player << std::endl;
+	_player = player;
 	return ;
 }
 

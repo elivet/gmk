@@ -26,6 +26,11 @@ public:
 	Pawn*	getPawnBegin();
 	Pawn*	getPawnEnd();
 
+
+	void		setPawnBegin(Pawn* pawn);
+	void		setPawnEnd(Pawn* pawn);
+	void		setNbr(int nbr);
+
 private:
 	Pawn*					_pawnBegin;
 	Pawn*					_pawnEnd;

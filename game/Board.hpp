@@ -26,7 +26,7 @@ public:
 	void								erase(std::pair<int, int> xy);
 	void								displayPawns( void );
 	Pawn*								findPawn( int x, int y);
-	bool 								checkwin();
+	bool 								checkwin(Player* player1, Player* player2);
 	// void								checkAround(std::map<std::pair<int,int>, Pawn*>::iterator it);
 	// int 								checkFriend(int x, int y, std::pair<int, int> key);
 	std::vector<std::pair<int, int> > 	checkOpponent(int x, int y, std::pair<int, int> key);
@@ -37,6 +37,9 @@ public:
 	void								findAlignement(Pawn* neighbour, std::pair<int,int> key);
 	void								checkNeighbour(std::pair<int,int> key1, std::pair<int,int> key2);
 	void								createAlignement(Pawn* neighbour, std::pair<int,int> key);
+	void								determinePawnBegin(Alignement* alignement);
+	void								determinePawnEnd(Alignement* alignement);
+	void 								eraseAlignementFromPawnsBegin(Alignement* al1, Alignement* al2);
 
 
 

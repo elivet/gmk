@@ -23,13 +23,15 @@ public:
 	int			getName() const;
 	int			getColor() const;
 
+	void		setOpponent(Player* opponent);
 
 protected:
 	int										_name;
-	int										_capturedPawns;
 	int										_color;
+	Player*									_opponent;
 public:
 	std::vector<Alignement*>				_alignements;
+	int										_capturedPawns;
 
 };
 

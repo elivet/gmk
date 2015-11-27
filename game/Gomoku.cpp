@@ -57,11 +57,15 @@ void				Gomoku::init( void )
 		{
 			this->_player1 = new Player();
 			this->_player2 = new Computer();
+			_player1->setOpponent(_player2);
+			_player2->setOpponent(_player1);
 		}
 		else
 		{
 			this->_player1 = new Player(1, 0x000000);
 			this->_player2 = new Player(2, 0xFFFFFF);
+			_player1->setOpponent(_player2);
+			_player2->setOpponent(_player1);
 		}
 
 		srand(time(NULL)); // initialisation de rand
@@ -73,8 +77,10 @@ void				Gomoku::init( void )
 
 void				Gomoku::play()
 {
+	// std::cout << "Gomoku::play1" << std::endl;
 	std::pair<int, int> ret;
-	if (this->_currentBoard->checkwin())
+	Possibility*		ret2;
+	if (this->_currentBoard->checkwin(_player1, _player2))
 	{
 		this->endGame();
 		return ;
@@ -88,13 +94,16 @@ void				Gomoku::play()
 			{
 				ret = _player1->play(_currentBoard, getPair());
 				_currentBoard->insert(ret, _player1);
+				capturePawns(_currentBoard->checkCapture(ret.first, ret.second), _player1);
 				_currentBoard->stockAlignement(ret);
 				endTurn();
 			}
 		}
 		else if (check)
 		{
-			ret = check->play(_currentBoard);
+			ret2 = check->play(_currentBoard);
+			ret = std::make_pair(ret2->getX(), ret2->getY());
+			capturePawns(ret2->_capturedPawns, _player1);
 			_currentBoard->insert(ret, _player1);
 			_currentBoard->stockAlignement(ret);
 			endTurn();
@@ -109,13 +118,16 @@ void				Gomoku::play()
 			{
 				ret = _player2->play(_currentBoard, getPair());
 				_currentBoard->insert(ret, _player2);
+				capturePawns(_currentBoard->checkCapture(ret.first, ret.second), _player2);
 				_currentBoard->stockAlignement(ret);
 				endTurn();
 			}
 		}
 		else if (check2)
 		{
-			ret = check2->play(_currentBoard);
+			ret2 = check2->play(_currentBoard);
+			ret = std::make_pair(ret2->getX(), ret2->getY());
+			capturePawns(ret2->_capturedPawns, _player2);
 			_currentBoard->insert(ret, _player2);
 			_currentBoard->stockAlignement(ret);
 			endTurn();
@@ -124,18 +136,17 @@ void				Gomoku::play()
 	return ;
 }
 
-// void				Gomoku::turns(Player* p1, Player* p2)
-// {
-// 	std::pair<int, int> tmp;
-// 	while (!this->_currentBoard->checkwin())
-// 	{
-// 		tmp = p1->play(this->_currentBoard);
-// 		// _currentBoard->insert(tmp, p1->getName());
-// 		tmp = p2->play(this->_currentBoard);
-// 		// _currentBoard->insert(tmp, p2->getName());
-// 	}
-// 	return ;
-// }
+void				Gomoku::capturePawns(std::vector<std::pair<int, int> >  capturedPawns, Player* player)
+{
+	for (unsigned int i = 0; i < capturedPawns.size(); i++)
+	{
+		std::cout << "++++++++++++++++++++++++++++++++++++++++++         Gomoku::capturePawns" << std::endl;
+		_currentBoard->erase(capturedPawns[i]);
+		player->_capturedPawns++;
+	}
+	std::cout << "Gomoku::capturePawns OUT" << std::endl;
+	return ; 
+}
 
 void				Gomoku::endGame( void )
 {
@@ -180,15 +191,20 @@ int					Gomoku::update( OpenGlLib *	_renderLib, double delta )
 {
 	(void)_renderLib;
 	(void)delta;
+	// std::cout << "Gomoku::update1" << std::endl;
 	this->_lastClick = &(_renderLib->OpenGlLib::lastClick[0]);
+	// std::cout << "Gomoku::update2" << std::endl;
 	this->play();
+	// std::cout << "Gomoku::update3" << std::endl;
 
 	return true;
 }
 
 int					Gomoku::render( OpenGlLib *	_renderLib ) const
 {
+	// std::cout << "Gomoku::render1" << std::endl;
 	_currentBoard->render(_renderLib);
+	// std::cout << "Gomoku::render2" << std::endl;
 
 	// if (_renderLib->isMouseClicked())
 	// {

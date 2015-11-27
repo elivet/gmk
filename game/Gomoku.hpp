@@ -29,6 +29,7 @@ public:
 	bool						isClicked( void );
 	void						endTurn( void );
 	std::pair<int, int>			getPair( void );
+	void						capturePawns(std::vector<std::pair<int, int> >  capturedPawns, Player* player);
 
 	void						setCoreEngine( CoreEngine * coreEngine );
 	CoreEngine*					getCoreEngine( void ) const;

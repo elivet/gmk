@@ -29,16 +29,91 @@ Board &	Board::operator=( Board const & rhs )
 
 void		Board::insert(std::pair<int, int> xy, Player* player)
 {
-	std::cout << "insertPawn x: " << xy.first << " y: " << xy.second << std::endl;
+	// std::cout << "XXXXXXXXXXXXXX                                             insertPawn x: " << xy.first << " y: " << xy.second << std::endl;
+	if (player->getName() == 0)
+		std::cout << " player DOESNT EXIST SHIT SHIT SHIT SHIT SHIT SHIT " <<  std::endl;
 	Pawn	*pawn = new Pawn(player, xy.first, xy.second);
 	_pawns[xy] = pawn;
 	return ;
 }
 
+void		Board::determinePawnBegin(Alignement* alignement)
+{
+	std::pair<int,int> currentKey = std::make_pair(alignement->getPawnBegin()->getX() + alignement->getNx(), alignement->getPawnBegin()->getY() + alignement->getNy()); // check si cest bien dans le bon sens maybe linverse
+	alignement->setPawnBegin(findPawn(currentKey.first, currentKey.second));
+	alignement->setNbr(alignement->getNbr()-1);
+	return ;
+}
+
+void		Board::determinePawnEnd(Alignement* alignement)
+{
+	std::pair<int,int> currentKey = std::make_pair(alignement->getPawnEnd()->getX() + alignement->getPx(), alignement->getPawnEnd()->getY() + alignement->getPy()); // check si cest bien dans le bon sens maybe linverse
+	alignement->setPawnEnd(findPawn(currentKey.first, currentKey.second));
+	alignement->setNbr(alignement->getNbr()-1);
+	return ;
+}
+
+void 		Board::eraseAlignementFromPawnsBegin(Alignement* al1, Alignement* al2)
+{
+	if (al1->getPawnBegin() == NULL || al2->getPawnBegin() == NULL || al2->getPawnEnd() == NULL || al1->getPawnEnd() == NULL)
+		return ;
+	std::pair<int, int> currentKey = std::make_pair(al2->getPawnBegin()->getX() + al2->getNx(), al2->getPawnBegin()->getY() + al2->getNy());
+	Pawn* pawn = findPawn(currentKey.first, currentKey.second);
+	if (pawn == NULL)
+		return ;
+	while (pawn->getX() != al2->getPawnEnd()->getX() || pawn->getY() != al2->getPawnEnd()->getY())
+	{
+		pawn->replaceAlignement(al1, al2);
+		currentKey = std::make_pair(currentKey.first + al2->getNx(), currentKey.second + al2->getNy());
+		pawn = findPawn(currentKey.first, currentKey.second);
+	}
+	pawn->_alignements.push_back(al2);
+	return ;
+}
+
+
 void		Board::erase(std::pair<int, int> xy)
 {
-	std::cout << "erasePawn x: " << xy.first << " y: " << xy.second << std::endl;
+	// std::cout << "Board::erase1" << std::endl;
+	Pawn* pawn = findPawn(xy.first, xy.second);
+	if (!pawn)
+		return;
+	// std::cout << "Board::erase2" << std::endl;
+	for (unsigned int j = 0; j < pawn->_alignements.size(); j++)
+	{
+	// std::cout << "Board::erase3" << std::endl;
+		if (pawn->_alignements[j]->getPawnBegin()->getX() == pawn->getX() && pawn->_alignements[j]->getPawnBegin()->getY() == pawn->getY())
+		{
+	// std::cout << "Board::erase4" << std::endl;
+			determinePawnBegin(pawn->_alignements[j]);
+		}
+		else if (pawn->_alignements[j]->getPawnEnd()->getX() == pawn->getX() && pawn->_alignements[j]->getPawnEnd()->getY() == pawn->getY())
+		{
+	// std::cout << "Board::erase5" << std::endl;
+			determinePawnEnd(pawn->_alignements[j]);
+		}
+		else
+		{
+	// std::cout << "Board::erase6.1" << std::endl;
+			Alignement* clone = new Alignement(*_alignements[j]);			
+	// std::cout << "Board::erase6.2" << std::endl;
+			_alignements[j]->setPawnBegin(pawn);
+	// std::cout << "Board::erase6.3" << std::endl;
+			clone->setPawnEnd(pawn);
+	// std::cout << "Board::erase6.4" << std::endl;
+			eraseAlignementFromPawnsBegin(pawn->_alignements[j], clone);
+	// std::cout << "Board::erase6.5" << std::endl;
+			determinePawnBegin(pawn->_alignements[j]);
+	// std::cout << "Board::erase6.6" << std::endl;
+			determinePawnEnd(clone);
+	// std::cout << "Board::erase6.7" << std::endl;
+			pawn->getPlayer()->_alignements.push_back(clone);
+	// std::cout << "Board::erase7" << std::endl;
+		}
+	}
+	// std::cout << "Board::erase8" << std::endl;
 	_pawns.erase(xy);
+	// std::cout << "Board::erase9" << std::endl;
 	return ;
 }
 
@@ -46,8 +121,16 @@ void		Board::displayPawns( void )
 {
 	for(std::map<std::pair<int,int>, Pawn*>::iterator it=_pawns.begin() ; it!=_pawns.end() ; ++it)
 	{
-		std::cout << "x: " << it->first.first << " y: " << it->first.second << " player: " << it->second->getPlayer()->getName() << std::endl;
+	std::cout << "displayPawns loop begin" << std::endl;
+		if (it->second == NULL)
+			std::cout << "PLAYER IS NULL DANS DISLPAY PAWNS" << std::endl;
+		if (it->second->getPlayer()->getName() != 1 && it->second->getPlayer()->getName() != 2)
+			std::cout << "PLAYER HAS NO NAME DANS DISLPAY PAWNS" << std::endl;
+		else
+			std::cout << "x: " << it->first.first << " y: " << it->first.second << " player: " << it->second->getPlayer()->getName() << std::endl;
+	std::cout << "displayPawns loop end" << std::endl;
 	}
+	std::cout << "displayPawns end" << std::endl;
 
 }
 
@@ -62,37 +145,6 @@ Pawn*		Board::findPawn( int x, int y)
 	return ( NULL );
 }
 
-// int 		Board::checkAlignement(std::pair<int, int> key, std::pair<int, int> key2) // opti
-// {
-// 	int count = 2;
-// 	int px = key.first - key2.first;
-// 	int py = key.second - key2.second;
-// 	int nx = key2.first - key.first;
-// 	int ny = key2.second - key.second;
-// 	int player = findPawn(key.first, key.second)->getPlayer()->getName();
-
-// 	std::pair<int, int> currentKey = std::make_pair(key2.first + nx, key2.second + ny);
-// 	while (findPawn(currentKey.first, currentKey.second) && findPawn(currentKey.first, currentKey.second)->getPlayer()->getName() == player)
-// 	{
-// 		currentKey = std::make_pair(currentKey.first + nx, currentKey.second + ny);
-// 		count++;
-// 	}
-// 	currentKey = std::make_pair(key.first + px, key.second + py);
-// 	while (findPawn(currentKey.first, currentKey.second) && findPawn(currentKey.first, currentKey.second)->getPlayer()->getName() == player)
-// 	{
-// 		currentKey = std::make_pair(currentKey.first + px, currentKey.second + py);
-// 		count++;
-// 	}
-// 	if (count > 5) // weird but ok
-// 	{
-// 		std::cout << "INWINWININWINWINWINWNINWINWWINWINWIWNIWNWIWNIWNWIWNIWNIWNWIWNIWNWINWIWNIWNWIWNIWNWIWNWIWNWINWIWNWIWNIWNWIWNIWNWIN" << std::endl;
-// 		_win = player;
-// 		std::cout << "INWINWININWINWINWINWNINWINWWINWINWIWNIWNWIWNIWNWIWNIWNIWNWIWNIWNWINWIWNIWNWIWNIWNWIWNWIWNWINWIWNWIWNIWNWIWNIWNWIN" << std::endl;
-// 		std::cout << "checkAlignement count: " << count << std::endl;
-// 	}
-// 	return count;
-// }
-
 std::vector<std::pair<int, int> > 	Board::checkTrap(std::pair<int, int> key, std::pair<int, int> key2)
 {
 	int nx = key2.first - key.first;
@@ -104,8 +156,8 @@ std::vector<std::pair<int, int> > 	Board::checkTrap(std::pair<int, int> key, std
 	std::pair<int, int> currentKey = std::make_pair(key2.first + nx, key2.second + ny);
 	if (findPawn(currentKey.first, currentKey.second) && findPawn(currentKey.first, currentKey.second)->getPlayer()->getName() == opponent)
 	{
-		currentKey = std::make_pair(currentKey.first + nx, currentKey.second + ny);
-		if (findPawn(currentKey.first, currentKey.second) && findPawn(currentKey.first, currentKey.second)->getPlayer()->getName() == player)
+		std::pair<int, int> currentKey2 = std::make_pair(currentKey.first + nx, currentKey.second + ny);
+		if (findPawn(currentKey2.first, currentKey2.second) && findPawn(currentKey2.first, currentKey2.second)->getPlayer()->getName() == player)
 		{
 			capturedPawns.push_back(key2);
 			capturedPawns.push_back(currentKey);
@@ -114,14 +166,7 @@ std::vector<std::pair<int, int> > 	Board::checkTrap(std::pair<int, int> key, std
 	return capturedPawns;
 }
 
-// int 		Board::checkFriend(int x, int y, std::pair<int, int> key)
-// {
-// 	std::pair<int, int> key2 = std::make_pair(x, y);
 
-// 	if (findPawn(x, y))
-// 		return (checkAlignement(key, key2));
-// 	return 0;
-// }
 
 std::vector<std::pair<int, int> >	Board::checkOpponent(int x, int y, std::pair<int, int> key)
 {
@@ -136,24 +181,6 @@ std::vector<std::pair<int, int> >	Board::checkOpponent(int x, int y, std::pair<i
 	}
 	return capturedPawns;
 }
-
-// void		Board::checkAround(std::map<std::pair<int,int>, Pawn*>::iterator it)
-// {
-// 	std::pair<int, int> key = std::make_pair(it->first.first, it->first.second);
-
-// 	if (checkFriend(it->first.first - 1, it->first.second, key) == 0)
-// 		checkFriend(it->first.first + 1, it->first.second, key);
-
-// 	if (checkFriend(it->first.first - 1, it->first.second - 1, key) == 0)
-// 		checkFriend(it->first.first + 1, it->first.second + 1, key);
-
-// 	if (checkFriend(it->first.first - 1, it->first.second + 1, key) == 0)
-// 		checkFriend(it->first.first + 1, it->first.second - 1, key);
-
-// 	if (checkFriend(it->first.first, it->first.second + 1, key) == 0)
-// 		checkFriend(it->first.first, it->first.second - 1, key);
-// 	return ;
-// }
 
 std::vector<std::pair<int, int> >		Board::checkCapture(int x, int y)
 {
@@ -189,7 +216,7 @@ std::vector<std::pair<int, int> >		Board::checkCapture(int x, int y)
 	return tmp2;
 }
 
-bool 		Board::checkwin()
+bool 		Board::checkwin(Player* player1, Player* player2)
 {
 	for (unsigned int i = 0; i < _alignements.size(); i++)
 	{
@@ -200,6 +227,18 @@ bool 		Board::checkwin()
 			return true;
 		}
 	}
+	if (player1->_capturedPawns >= 10)
+	{
+		_win = player1->getName();
+		std::cout << "Player: " << _win << " win !" << std::endl;
+		return true;
+	}
+	if (player2->_capturedPawns >= 10)
+	{
+		_win = player2->getName();
+		std::cout << "Player: " << _win << " win !" << std::endl;
+		return true;
+	} 
 	return false;
 }
 
@@ -237,7 +276,7 @@ void		Board::checkNeighbour(std::pair<int,int> key1, std::pair<int,int> key2)
 {
 	Pawn	*tmpPawn;
 
-	if ((tmpPawn = findPawn(key1.first, key1.second)) != NULL)
+	if ((tmpPawn = findPawn(key1.first, key1.second)) != NULL && _pawns[key2] != NULL)
 	{
 		if (tmpPawn->getPlayer()->getName() == _pawns[key2]->getPlayer()->getName())
 			findAlignement(tmpPawn, key2);
@@ -260,6 +299,7 @@ void		Board::stockAlignement(std::pair<int,int> xy)
 
 int					Board::render( OpenGlLib *	_renderLib )
 {
+	// std::cout << "Board::render1" << std::endl;
 	for (int i = 1; i < 20; i++)
 		_renderLib->drawLine(i, 1, i, 19, COLOR_BLACK);
 	for (int i = 1; i < 20; i++)
@@ -275,14 +315,18 @@ int					Board::render( OpenGlLib *	_renderLib )
 	_renderLib->drawSquare(3.9, 15.9, 0.2, COLOR_BLACK);
 	_renderLib->drawSquare(9.9, 15.9, 0.2, COLOR_BLACK);
 	_renderLib->drawSquare(15.9, 15.9, 0.2, COLOR_BLACK);
+	// std::cout << "Board::render2 size: " << _pawns.size() << std::endl;
 
 	for(std::map<std::pair<int,int>, Pawn*>::iterator it=_pawns.begin() ; it!=_pawns.end() ; ++it)
 	{
+	// std::cout << "Board::render3 X: " << it->first.first << " Y: " << it->first.second << std::endl;
+	// std::cout << " name: " << it->second->getPlayer()->getName() << std::endl;
 		int x = it->first.first;
 		int y = it->first.second;
 
 		_renderLib->drawCircle(x, y, 1, it->second->getPlayer()->getColor());
 	}
+	// std::cout << "Board::render4" << std::endl;
 	return (true);
 }
 
