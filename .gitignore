@@ -1,3 +1,4 @@
 *.o
 gomoku
 .nfs.*
+.DS_Store

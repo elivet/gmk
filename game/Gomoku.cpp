@@ -75,11 +75,36 @@ void				Gomoku::init( void )
 			this->_firstPlayerTurn = false;
 }
 
-void				Gomoku::play()
+void			Gomoku::playerTurn(Player *player)
 {
-	// std::cout << "Gomoku::play1" << std::endl;
 	std::pair<int, int> ret;
 	Possibility*		ret2;
+
+	Computer* check = dynamic_cast<Computer*>(player);
+	if (!check && isClicked())
+	{
+		while (player->referee(_currentBoard, getPair()) == true)
+		{
+			ret = player->play(_currentBoard, getPair());
+			_currentBoard->insert(ret, player);
+			capturePawns(_currentBoard->checkCapture(ret.first, ret.second), player);
+			_currentBoard->stockAlignement(ret);
+			endTurn();
+		}
+	}
+	else if (check)
+	{
+		ret2 = check->play(_currentBoard);
+		ret = std::make_pair(ret2->getX(), ret2->getY());
+		capturePawns(ret2->_capturedPawns, player);
+		_currentBoard->insert(ret, player);
+		_currentBoard->stockAlignement(ret);
+		endTurn();
+	}
+}
+
+void				Gomoku::play()
+{
 	if (this->_currentBoard->checkwin(_player1, _player2))
 	{
 		this->endGame();
@@ -87,51 +112,11 @@ void				Gomoku::play()
 	}
 	if (this->_firstPlayerTurn)
 	{	
-		Computer* check = dynamic_cast<Computer*>(_player1);
-		if (!check && isClicked())
-		{
-			while (_player1->referee(_currentBoard, getPair()) == true)
-			{
-				ret = _player1->play(_currentBoard, getPair());
-				_currentBoard->insert(ret, _player1);
-				capturePawns(_currentBoard->checkCapture(ret.first, ret.second), _player1);
-				_currentBoard->stockAlignement(ret);
-				endTurn();
-			}
-		}
-		else if (check)
-		{
-			ret2 = check->play(_currentBoard);
-			ret = std::make_pair(ret2->getX(), ret2->getY());
-			capturePawns(ret2->_capturedPawns, _player1);
-			_currentBoard->insert(ret, _player1);
-			_currentBoard->stockAlignement(ret);
-			endTurn();
-		}
+		playerTurn(_player1);
 	}
 	else
 	{
-		Computer* check2 = dynamic_cast<Computer*>(_player2);
-		if (!check2 && isClicked())
-		{
-			while (_player2->referee(_currentBoard, getPair()) == true)
-			{
-				ret = _player2->play(_currentBoard, getPair());
-				_currentBoard->insert(ret, _player2);
-				capturePawns(_currentBoard->checkCapture(ret.first, ret.second), _player2);
-				_currentBoard->stockAlignement(ret);
-				endTurn();
-			}
-		}
-		else if (check2)
-		{
-			ret2 = check2->play(_currentBoard);
-			ret = std::make_pair(ret2->getX(), ret2->getY());
-			capturePawns(ret2->_capturedPawns, _player2);
-			_currentBoard->insert(ret, _player2);
-			_currentBoard->stockAlignement(ret);
-			endTurn();
-		}
+		playerTurn(_player2);
 	}
 	return ;
 }
@@ -213,9 +198,6 @@ int					Gomoku::render( OpenGlLib *	_renderLib ) const
 	// 	_currentBoard->insert(std::make_pair(x, y), 1);
 	// 	_renderLib->OpenGlLib::lastClick[2] = 0.0;
 	// }
-	
-
-
 	return true;
 }
 

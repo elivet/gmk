@@ -24,6 +24,7 @@ public:
 
 	void						init( void );
 	void						play( void );
+	void						playerTurn(Player *player);
 	// void						turns(Player* p1, Player* p2);
 	void						endGame( void );
 	bool						isClicked( void );
