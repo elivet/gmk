@@ -265,9 +265,9 @@ void		Board::createAlignement(Pawn* neighbour, std::pair<int,int> key)
 void		Board::findAlignement(Pawn* neighbour, std::pair<int,int> key)
 {
 	int top = 0;
-	for (unsigned int i = 0; i < neighbour->getAlignements().size(); i++)
-		top += neighbour->_alignements[i]->isAligned(key, this);
-	if (!top)
+	for (unsigned int i = 0; i < neighbour->getAlignements().size(); i++) // on parcourt les alignement du neighbour
+		top += neighbour->_alignements[i]->isAligned(key, this); // on le rajoute a un alignement deja existant dans isaligned
+	if (!top) // ne cree un alignement que si yen a pas??! hein ?
 		createAlignement(neighbour, key); // a modifier car creation de deux alignements si *.*
 	return ;
 }
@@ -278,6 +278,7 @@ void		Board::checkNeighbour(std::pair<int,int> key1, std::pair<int,int> key2)
 
 	if ((tmpPawn = findPawn(key1.first, key1.second)) != NULL && _pawns[key2] != NULL)
 	{
+		std::cout << "Board::checkNeighbour PL1: " << tmpPawn->getPlayer()->getName() << " PL2: " << _pawns[key2]->getPlayer()->getName() << std::endl;
 		if (tmpPawn->getPlayer()->getName() == _pawns[key2]->getPlayer()->getName())
 			findAlignement(tmpPawn, key2);
 	}
