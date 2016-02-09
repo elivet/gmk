@@ -264,11 +264,19 @@ void		Board::createAlignement(Pawn* neighbour, std::pair<int,int> key)
 
 void		Board::findAlignement(Pawn* neighbour, std::pair<int,int> key)
 {
+	std::cout << "##checking alignement ..." << std::endl;
+
+	//TODO : j'ai pas tout compris la check le retour de getAlignements
+	std::cout<< "NB alignements: " << neighbour->getAlignements().size() << std::endl;
+
 	int top = 0;
 	for (unsigned int i = 0; i < neighbour->getAlignements().size(); i++) // on parcourt les alignement du neighbour
 		top += neighbour->_alignements[i]->isAligned(key, this); // on le rajoute a un alignement deja existant dans isaligned
 	if (!top) // ne cree un alignement que si yen a pas??! hein ?
+	{
+		std::cout<< "creating an alignement while top is equal to:" << top << std::endl;
 		createAlignement(neighbour, key); // a modifier car creation de deux alignements si *.*
+	}
 	return ;
 }
 
@@ -287,14 +295,14 @@ void		Board::checkNeighbour(std::pair<int,int> key1, std::pair<int,int> key2)
 
 void		Board::stockAlignement(std::pair<int,int> xy)
 {
-	checkNeighbour(std::make_pair(xy.first - 1, xy.second), xy);
-	checkNeighbour(std::make_pair(xy.first + 1, xy.second), xy);
-	checkNeighbour(std::make_pair(xy.first - 1, xy.second - 1), xy);
-	checkNeighbour(std::make_pair(xy.first + 1, xy.second + 1), xy);
-	checkNeighbour(std::make_pair(xy.first - 1, xy.second + 1), xy);
-	checkNeighbour(std::make_pair(xy.first + 1, xy.second - 1), xy);
-	checkNeighbour(std::make_pair(xy.first, xy.second + 1), xy);
-	checkNeighbour(std::make_pair(xy.first, xy.second - 1), xy);
+	checkNeighbour(std::make_pair(xy.first - 1, xy.second), xy); //left
+	checkNeighbour(std::make_pair(xy.first + 1, xy.second), xy); //right
+	checkNeighbour(std::make_pair(xy.first - 1, xy.second - 1), xy); //bottom left
+	checkNeighbour(std::make_pair(xy.first + 1, xy.second + 1), xy); //top right
+	checkNeighbour(std::make_pair(xy.first - 1, xy.second + 1), xy); //top left
+	checkNeighbour(std::make_pair(xy.first + 1, xy.second - 1), xy); //bottom right
+	checkNeighbour(std::make_pair(xy.first, xy.second + 1), xy); //top
+	checkNeighbour(std::make_pair(xy.first, xy.second - 1), xy); //bottom
 	return ;
 }
 

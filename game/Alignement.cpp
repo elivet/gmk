@@ -32,7 +32,7 @@ Alignement::Alignement( Pawn* p1, Pawn* p2, Board* currentBoard )
 			this->_nbr++;
 		}
 	}
-	std::cout << "alignement BEGIN = x:" << this->_pawnBegin->getX() << "/y:" << this->_pawnBegin->getY() << " END = x:" << this->_pawnEnd->getX() << "/y:" << this->_pawnEnd->getY() << std::endl;
+	this->toString();
 	return ;
 }
 
@@ -136,6 +136,16 @@ void		Alignement::setNbr(int nbr)
 {
 	_nbr = nbr;
 	return ;
+}
+
+void		Alignement::toString()
+{
+	std::cout << "alignement BEGIN = x:"
+		<< this->_pawnBegin->getX() << "/y:"
+		<< this->_pawnBegin->getY() << " END = x:"
+		<< this->_pawnEnd->getX() << "/y:"
+		<< this->_pawnEnd->getY()
+		<< std::endl;
 }
 
 

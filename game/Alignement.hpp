@@ -31,6 +31,8 @@ public:
 	void		setPawnEnd(Pawn* pawn);
 	void		setNbr(int nbr);
 
+	void 		toString();
+
 private:
 	Pawn*					_pawnBegin;
 	Pawn*					_pawnEnd;
