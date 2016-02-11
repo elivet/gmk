@@ -256,8 +256,9 @@ void		Board::createAlignement(Pawn* neighbour, std::pair<int,int> key)
 {
 	Pawn* current = findPawn(key.first, key.second);
 	Alignement* 	newAlignement = new Alignement(neighbour, current, this);
-	neighbour->_alignements.push_back(newAlignement);
+	newAlignement->checkJoinAlignements(findPawn(key.first, key.second));
 	current->_alignements.push_back(newAlignement);
+	neighbour->_alignements.push_back(newAlignement);
 	_alignements.push_back(newAlignement);
 	return ;
 }
@@ -289,7 +290,6 @@ void		Board::checkNeighbour(std::pair<int,int> key1, std::pair<int,int> key2)
 
 	if ((tmpPawn = findPawn(key1.first, key1.second)) != NULL && _pawns[key2] != NULL)
 	{
-		std::cout << "Board::checkNeighbour PL1: " << tmpPawn->getPlayer()->getName() << " PL2: " << _pawns[key2]->getPlayer()->getName() << std::endl;
 		if (tmpPawn->getPlayer()->getName() == _pawns[key2]->getPlayer()->getName())
 			findAlignement(tmpPawn, key2);
 	}
