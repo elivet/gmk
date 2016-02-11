@@ -17,6 +17,8 @@ public:
 	Alignement &	operator=( Alignement const & rhs );
 
 	int			isAligned(std::pair<int, int> key, Board* currentBoard);
+	void 		joinAlignements(Alignement *align, Pawn *current);
+	void		checkJoinAlignements(Pawn *current);
 
 	int		getNbr();
 	int		getNx();

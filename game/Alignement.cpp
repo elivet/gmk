@@ -55,9 +55,56 @@ Alignement &	Alignement::operator=( Alignement const & rhs )
 	return ( *this );
 }
 
+void 		Alignement::joinAlignements(Alignement *align, Pawn *current)
+{
+	if (align->getPawnBegin()->getX() != current->getX() ||
+		align->getPawnBegin()->getY() != current->getY())
+	{
+		if (this->getPawnBegin()->getX() != current->getX() || this->getPawnBegin()->getY() != current->getY())
+		{
+			this->_pawnBegin = align->getPawnBegin();
+		}
+		else if (this->getPawnEnd()->getX() != current->getX() || this->getPawnEnd()->getY() != current->getY())
+		{
+			this->_pawnEnd = align->getPawnEnd();
+		}
+	}
+	else if (align->getPawnEnd()->getX() != current->getX() ||
+		align->getPawnEnd()->getY() != current->getY())
+	{
+		if (this->getPawnBegin()->getX() != current->getX() || this->getPawnBegin()->getY() != current->getY())
+		{
+			this->_pawnBegin = align->getPawnEnd();
+		}
+		else if (this->getPawnEnd()->getX() != current->getX() || this->getPawnEnd()->getY() != current->getY())
+		{
+			this->_pawnEnd = align->getPawnEnd();
+		}
+	}
+}
+
+void		Alignement::checkJoinAlignements(Pawn *current)
+{
+	for (unsigned int i = 0; i < current->getAlignements().size(); i++)
+	{
+		if (this->_nx == current->getAlignements()[i]->getNx() &&
+			this->_ny == current->getAlignements()[i]->getNy() &&
+			this->_py == current->getAlignements()[i]->getPy() &&
+			this->_px == current->getAlignements()[i]->getPx())
+		{
+			joinAlignements(current->getAlignements()[i], current);
+			return ;
+		}
+	}
+	return ;
+}
+
 int			Alignement::isAligned(std::pair<int, int> key, Board* currentBoard) // prblm ici en joignant un alignement a un pion solo
 {
-
+	_pawnBegin->toString();
+	std::cout << "_px" << this->_px << "_py" << this->_py << std::endl;
+	_pawnEnd->toString();
+	std::cout << "_nx" << this->_nx << "_ny" << this->_ny << std::endl;
 	std::pair<int,int> currentKey = std::make_pair(_pawnBegin->getX() + this->_px, _pawnBegin->getY() + this->_py); // check si cest bien dans le bon sens maybe linverse
 	std::pair<int,int> currentKey2 = std::make_pair(_pawnEnd->getX() + this->_nx, _pawnEnd->getY() + this->_ny); // check si cest bien dans le bon sens maybe linverse
 	if (currentKey.first == key.first && currentKey.second == key.second)  
@@ -65,8 +112,10 @@ int			Alignement::isAligned(std::pair<int, int> key, Board* currentBoard) // prb
 		std::cout << "isAligned6 YAAAAAAASSSSSSSSSSSS IS ALIGNEDDDDDD YAAAAAAASSSSSSSSSSSS" << std::endl;
 
 		Pawn*	newPawn = currentBoard->findPawn(key.first, key.second);
+
 		this->_pawnBegin = newPawn;
 		this->_nbr++;
+		checkJoinAlignements(newPawn);
 		newPawn->_alignements.push_back(this);
 		newPawn->getPlayer()->_alignements.push_back(this);
 		return 1;
@@ -78,6 +127,7 @@ int			Alignement::isAligned(std::pair<int, int> key, Board* currentBoard) // prb
 		Pawn*	newPawn = currentBoard->findPawn(key.first, key.second);
 		this->_pawnEnd = newPawn;
 		this->_nbr++;
+		checkJoinAlignements(newPawn);
 		newPawn->_alignements.push_back(this);
 		newPawn->getPlayer()->_alignements.push_back(this);
 		return 1;

@@ -64,3 +64,8 @@ void	Pawn::replaceAlignement(Alignement* al1, Alignement* al2)
 	}
 	return ;
 }
+
+void Pawn::toString()
+{
+	std::cout << "Pawn x:" << this->_x << " ,y:" << this->_y << std::endl;
+}
