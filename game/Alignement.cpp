@@ -226,6 +226,7 @@ int			Alignement::isAligned(std::pair<int, int> key, Board* currentBoard) // prb
 		this->_nbr++;
 		std::cout << "isAligned6 YAAAAAAASSSSSSSSSSSS IS ALIGNEDDDDDD YAAAAAAASSSSSSSSSSSS SIZE: " << this->_nbr << std::endl;
 		checkJoinAlignements(newPawn, currentBoard);
+		std::cout << "_alignements.size()" << newPawn->_alignements.size() << std::endl;
 		newPawn->_alignements.push_back(this);
 		newPawn->getPlayer()->_alignements.push_back(this);
 		return 1;
@@ -238,6 +239,7 @@ int			Alignement::isAligned(std::pair<int, int> key, Board* currentBoard) // prb
 		this->_nbr++;
 		std::cout << "isAligned7 YAAAAAAASSSSSSSSSSSS IS ALIGNEDDDDDD YAAAAAAASSSSSSSSSSSS SIZE: " << this->_nbr << std::endl;
 		checkJoinAlignements(newPawn, currentBoard);
+		std::cout << "_alignements.size()" << newPawn->_alignements.size() << std::endl;
 		newPawn->_alignements.push_back(this);
 		newPawn->getPlayer()->_alignements.push_back(this);
 		return 1;
