@@ -256,7 +256,7 @@ void		Board::createAlignement(Pawn* neighbour, std::pair<int,int> key)
 {
 	Pawn* current = findPawn(key.first, key.second);
 	Alignement* 	newAlignement = new Alignement(neighbour, current, this);
-	newAlignement->checkJoinAlignements(findPawn(key.first, key.second));
+	newAlignement->checkJoinAlignements(findPawn(key.first, key.second), this);
 	current->_alignements.push_back(newAlignement);
 	neighbour->_alignements.push_back(newAlignement);
 	_alignements.push_back(newAlignement);

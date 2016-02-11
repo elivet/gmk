@@ -16,12 +16,15 @@ public:
 	Pawn( Pawn const & src );
 
 	Pawn &	operator=( Pawn const & rhs );
+	bool 	operator==(Pawn &rhs);
+	//bool 	operator==(Pawn const &other) const;
 
 	Player*							getPlayer();
 	int								getX();
 	int								getY();
 	std::vector<Alignement*>		getAlignements();
 	void							replaceAlignement(Alignement* al1, Alignement* al2);
+	void							deleteAlignement(Alignement* al);
 	void							toString();
 
 private:

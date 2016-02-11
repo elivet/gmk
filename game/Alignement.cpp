@@ -57,40 +57,130 @@ Alignement &	Alignement::operator=( Alignement const & rhs )
 	return ( *this );
 }
 
-void 		Alignement::joinAlignements(Alignement *align, Pawn *current)
+bool Alignement::operator==(Alignement &rhs)
 {
-	if (align->getPawnBegin()->getX() != current->getX() ||
-		align->getPawnBegin()->getY() != current->getY()) // on cherche les deux extremites qui ne sont pas en commun pour les mettre aux extremites de lalignement
+	return (
+			(
+				(this->_pawnBegin == rhs.getPawnBegin() && this->_pawnEnd == rhs.getPawnEnd()) ||
+				(this->_pawnBegin == rhs.getPawnEnd() && this->_pawnEnd == rhs.getPawnBegin())
+			)
+			&&
+			(
+				(
+					(this->_nx == rhs.getNx() && this->_ny == rhs.getNy()) &&
+					(this->_px == rhs.getPx() && this->_py == rhs.getPy())  
+				)
+				||
+				(
+					(this->_nx == rhs.getNy() && this->_ny == rhs.getNx()) &&
+					(this->_px == rhs.getPy() && this->_py == rhs.getPx()) 
+				)
+			)
+			&&
+				this->_nbr == rhs.getNbr()
+		);
+}
+
+void		Alignement::deleteAlignement(Alignement *align, Board* currentBoard)
+{
+	(void)align;
+	(void)currentBoard;
+	// delete de tous les pawns
+	// std::cout << "STARRT align = ";
+	// align->toString();
+	Pawn *tmp = align->_pawnBegin;
+	// std::cout << "Alignement::deleteAlignement IIIINNN" << std::endl;
+	// std::cout << "STARRT tmp = ";
+	// tmp->toString();
+	// std::cout << "START this->_pawnEnd = ";
+	// this->_pawnEnd->toString();
+	tmp->deleteAlignement(align);
+	tmp->_alignements.push_back(this);
+
+	while (tmp->getX() != align->_pawnEnd->getX() || tmp->getY() != align->_pawnEnd->getY())
 	{
-		if (this->getPawnBegin()->getX() == current->getX() && this->getPawnBegin()->getY() == current->getY())
-		{
-			this->_pawnBegin = align->getPawnBegin();
-		}
-		else if (this->getPawnEnd()->getX() == current->getX() && this->getPawnEnd()->getY() == current->getY())
-		{
-			this->_pawnEnd = align->getPawnEnd();
-		}
+		std::cout << "Alignement::deleteAlignement LOOOP" << std::endl;
+		std::pair<int, int> currentKey = std::make_pair(tmp->getX()+ align->getNx(), tmp->getY() + align->getNy());
+		tmp = currentBoard->findPawn(currentKey.first, currentKey.second);
+		tmp->deleteAlignement(align);
+		std::cout << "					111	tmp->alignements.size(): " << tmp->_alignements.size() << std::endl;
+		std::cout << "tmp = ";
+		tmp->toString();
+		std::cout << "align->_pawnEnd = ";
+		align->_pawnEnd->toString();
+		tmp->_alignements.push_back(this);
+		std::cout << "					222	tmp->alignements.size(): " << tmp->_alignements.size() << std::endl;
 	}
-	else if (align->getPawnEnd()->getX() != current->getX() ||
-		align->getPawnEnd()->getY() != current->getY())
+
+	//delete du player
+}
+
+void 		Alignement::joinAlignements(Alignement *align, Pawn *current, Board* currentBoard)
+{
+
+	if (this->_pawnBegin == current)
 	{
-		if (this->getPawnBegin()->getX() == current->getX() && this->getPawnBegin()->getY() == current->getY())
+		if (align->getPawnBegin() == current)
 		{
 			this->_pawnBegin = align->getPawnEnd();
 		}
-		else if (this->getPawnEnd()->getX() == current->getX() && this->getPawnEnd()->getY() == current->getY())
+		else if (align->getPawnEnd() == current)
+		{
+			this->_pawnBegin = align->getPawnBegin();
+		}
+	}
+	else if (this->_pawnEnd == current)
+	{
+		if (align->getPawnBegin() == current)
 		{
 			this->_pawnEnd = align->getPawnEnd();
 		}
+		else if (align->getPawnEnd() == current)
+		{
+			this->_pawnEnd = align->getPawnBegin();
+		}
 	}
+
+
+
+	// if (align->getPawnBegin()->getX() != current->getX() ||
+	// 	align->getPawnBegin()->getY() != current->getY()) // on cherche les deux extremites qui ne sont pas en commun pour les mettre aux extremites de lalignement
+	// {
+	// 	if (this->getPawnBegin()->getX() == current->getX() && this->getPawnBegin()->getY() == current->getY())
+	// 	{
+	// 		this->_pawnBegin = align->getPawnBegin();
+	// 	}
+	// 	else if (this->getPawnEnd()->getX() == current->getX() && this->getPawnEnd()->getY() == current->getY())
+	// 	{
+	// 		this->_pawnEnd = align->getPawnEnd();
+	// 	}
+	// }
+	// else if (align->getPawnEnd()->getX() != current->getX() ||
+	// 	align->getPawnEnd()->getY() != current->getY())
+	// {
+	// 	if (this->getPawnBegin()->getX() == current->getX() && this->getPawnBegin()->getY() == current->getY())
+	// 	{
+	// 		this->_pawnBegin = align->getPawnEnd();
+	// 	}
+	// 	else if (this->getPawnEnd()->getX() == current->getX() && this->getPawnEnd()->getY() == current->getY())
+	// 	{
+	// 		this->_pawnEnd = align->getPawnEnd();
+	// 	}
+	// }
+
+
+
+	std::cout << "JOINALIGNEMENT THIS: " << std::endl;
+	this->toString();
 	std::cout << "joinAlignements JOOOOIIIIINN ?! this->nbr = " << this->_nbr << " align->getNbr() = " << align->getNbr() << std::endl;
 	this->_nbr += align->getNbr() - 1; // met pas -2 cest pas normal
 	// delete align;
-	current->replaceAlignement(align, this);
+	// current->replaceAlignement(this, align);
+	deleteAlignement(align, currentBoard);
 	std::cout << "joinAlignements JOOOOIIIIINN ???????????????????????????????????????????????????????????????? this->nbr = " << this->_nbr << std::endl;
 }
 
-void		Alignement::checkJoinAlignements(Pawn *current) // ! peut etre n et p inverses
+void		Alignement::checkJoinAlignements(Pawn *current, Board* currentBoard) // ! peut etre n et p inverses
 {
 	for (unsigned int i = 0; i < current->getAlignements().size(); i++)
 	{
@@ -101,7 +191,7 @@ void		Alignement::checkJoinAlignements(Pawn *current) // ! peut etre n et p inve
 			this->_px == current->getAlignements()[i]->getPx()) // si le pion a deja un alignement sur le meme vecteur, joindre les alignements
 		{
 			std::cout << "Alignement::checkJoinAlignements IN" << std::endl;
-			joinAlignements(current->getAlignements()[i], current);
+			joinAlignements(current->getAlignements()[i], current, currentBoard);
 			return ;
 		}
 		if (this->_nx == current->getAlignements()[i]->getPx() &&
@@ -110,7 +200,7 @@ void		Alignement::checkJoinAlignements(Pawn *current) // ! peut etre n et p inve
 			this->_px == current->getAlignements()[i]->getNx()) // si le pion a deja un alignement sur le meme vecteur, joindre les alignements
 		{
 			std::cout << "Alignement::checkJoinAlignements IN" << std::endl;
-			joinAlignements(current->getAlignements()[i], current);
+			joinAlignements(current->getAlignements()[i], current, currentBoard);
 			return ;
 		}
 	}
@@ -135,7 +225,7 @@ int			Alignement::isAligned(std::pair<int, int> key, Board* currentBoard) // prb
 		this->_pawnBegin = newPawn;
 		this->_nbr++;
 		std::cout << "isAligned6 YAAAAAAASSSSSSSSSSSS IS ALIGNEDDDDDD YAAAAAAASSSSSSSSSSSS SIZE: " << this->_nbr << std::endl;
-		checkJoinAlignements(newPawn);
+		checkJoinAlignements(newPawn, currentBoard);
 		newPawn->_alignements.push_back(this);
 		newPawn->getPlayer()->_alignements.push_back(this);
 		return 1;
@@ -147,7 +237,7 @@ int			Alignement::isAligned(std::pair<int, int> key, Board* currentBoard) // prb
 		this->_pawnEnd = newPawn;
 		this->_nbr++;
 		std::cout << "isAligned7 YAAAAAAASSSSSSSSSSSS IS ALIGNEDDDDDD YAAAAAAASSSSSSSSSSSS SIZE: " << this->_nbr << std::endl;
-		checkJoinAlignements(newPawn);
+		checkJoinAlignements(newPawn, currentBoard);
 		newPawn->_alignements.push_back(this);
 		newPawn->getPlayer()->_alignements.push_back(this);
 		return 1;

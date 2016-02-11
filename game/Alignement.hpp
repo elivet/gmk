@@ -15,10 +15,12 @@ public:
 	Alignement( Alignement const & src );
 
 	Alignement &	operator=( Alignement const & rhs );
+	bool 			operator==(Alignement &rhs);
 
 	int			isAligned(std::pair<int, int> key, Board* currentBoard);
-	void 		joinAlignements(Alignement *align, Pawn *current);
-	void		checkJoinAlignements(Pawn *current);
+	void 		joinAlignements(Alignement *align, Pawn *current, Board* currentBoard);
+	void		checkJoinAlignements(Pawn *current, Board* currentBoard);
+	void		deleteAlignement(Alignement *align, Board* currentBoard);
 
 	int		getNbr();
 	int		getNx();
