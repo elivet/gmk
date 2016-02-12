@@ -134,30 +134,40 @@ void		Alignement::checkJoinAlignements(Pawn *current, Board* currentBoard) // ! 
 
 int			Alignement::isAligned(std::pair<int, int> key, Board* currentBoard) // prblm ici en joignant un alignement a un pion solo
 {
+	std::cout << "Alignement::isAligned 1" << std::endl;
 	std::pair<int,int> currentKey = std::make_pair(_pawnBegin->getX() + this->_px, _pawnBegin->getY() + this->_py); // check si cest bien dans le bon sens maybe linverse
 	std::pair<int,int> currentKey2 = std::make_pair(_pawnEnd->getX() + this->_nx, _pawnEnd->getY() + this->_ny); // check si cest bien dans le bon sens maybe linverse
 	
+	std::cout << "Alignement::isAligned 2" << std::endl;
 	if (currentKey.first == key.first && currentKey.second == key.second)  
 	{
 		Pawn*	newPawn = currentBoard->findPawn(key.first, key.second);
 
 		this->_pawnBegin = newPawn;
 		this->_nbr++;
+	std::cout << "Alignement::isAligned 3" << std::endl;
 		checkJoinAlignements(newPawn, currentBoard);
+	std::cout << "Alignement::isAligned 4" << std::endl;
 		newPawn->_alignements.push_back(this);
 		newPawn->getPlayer()->_alignements.push_back(this);
+	std::cout << "Alignement::isAligned 5" << std::endl;
 		return 1;
 	}
 	if (currentKey2.first == key.first && currentKey2.second == key.second)
 	{
+	std::cout << "Alignement::isAligned 6" << std::endl;
 		Pawn*	newPawn = currentBoard->findPawn(key.first, key.second);
 		this->_pawnEnd = newPawn;
 		this->_nbr++;
+	std::cout << "Alignement::isAligned 7" << std::endl;
 		checkJoinAlignements(newPawn, currentBoard);
+	std::cout << "Alignement::isAligned 8" << std::endl;
 		newPawn->_alignements.push_back(this);
 		newPawn->getPlayer()->_alignements.push_back(this);
+	std::cout << "Alignement::isAligned 9" << std::endl;
 		return 1;
 	}
+	std::cout << "Alignement::isAligned 10" << std::endl;
 	return 0;
 }
 
