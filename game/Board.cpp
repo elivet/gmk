@@ -37,7 +37,7 @@ void		Board::insert(std::pair<int, int> xy, Player* player)
 	return ;
 }
 
-void		Board::determinePawnBegin(Alignement* alignement)
+void		Board::determinePawnBegin(Alignement* alignement) // plutot linverse ? se retracte dune case 
 {
 	std::pair<int,int> currentKey = std::make_pair(alignement->getPawnBegin()->getX() + alignement->getNx(), alignement->getPawnBegin()->getY() + alignement->getNy()); // check si cest bien dans le bon sens maybe linverse
 	alignement->setPawnBegin(findPawn(currentKey.first, currentKey.second));
@@ -45,7 +45,7 @@ void		Board::determinePawnBegin(Alignement* alignement)
 	return ;
 }
 
-void		Board::determinePawnEnd(Alignement* alignement)
+void		Board::determinePawnEnd(Alignement* alignement)// plutot linverse ? se retracte dune case 
 {
 	std::pair<int,int> currentKey = std::make_pair(alignement->getPawnEnd()->getX() + alignement->getPx(), alignement->getPawnEnd()->getY() + alignement->getPy()); // check si cest bien dans le bon sens maybe linverse
 	alignement->setPawnEnd(findPawn(currentKey.first, currentKey.second));
@@ -265,21 +265,15 @@ void		Board::createAlignement(Pawn* neighbour, std::pair<int,int> key)
 
 void		Board::findAlignement(Pawn* neighbour, std::pair<int,int> key)
 {
-	std::cout << "##checking alignement ..." << std::endl;
-
-	//TODO : j'ai pas tout compris la. A faire check le retour de getAlignements
-	std::cout<< "NB alignements: " << neighbour->getAlignements().size() << std::endl;
-
 	int top = 0;
 	
 	for (unsigned int i = 0; i < neighbour->getAlignements().size(); i++) // on parcourt les alignement du neighbour
 	{
 		top += neighbour->_alignements[i]->isAligned(key, this); // on le rajoute a un alignement deja existant dans isaligned
 	}
-	if (top == 0) // ne cree un alignement que si yen a pas??! hein ?
+	if (top == 0)
 	{
-		std::cout<< "creating an alignement while top is equal to:" << top << std::endl;
-		createAlignement(neighbour, key); // a modifier car creation de deux alignements si *.*
+		createAlignement(neighbour, key);
 	}
 	return ;
 }

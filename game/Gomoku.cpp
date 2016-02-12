@@ -125,11 +125,9 @@ void				Gomoku::capturePawns(std::vector<std::pair<int, int> >  capturedPawns, P
 {
 	for (unsigned int i = 0; i < capturedPawns.size(); i++)
 	{
-		std::cout << "++++++++++++++++++++++++++++++++++++++++++         Gomoku::capturePawns" << std::endl;
 		_currentBoard->erase(capturedPawns[i]);
 		player->_capturedPawns++;
 	}
-	std::cout << "Gomoku::capturePawns OUT" << std::endl;
 	return ; 
 }
 

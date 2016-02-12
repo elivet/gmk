@@ -95,6 +95,7 @@ void					Computer::createGrandSon(int x, int y)
 	if (x >= 0 && x < 19 && y >= 0 && y < 19)
 	{
 		this->_tmp->insert(x, y, _name);
+		// manque alignements et check capture ?
 		this->setWeight(x, y);
 	}
 	return ;
@@ -132,9 +133,9 @@ void					Computer::createSon(int x, int y)
 		_currentBoard->insert(std::make_pair(x, y), this);
 		_currentBoard->stockAlignement(std::make_pair(x, y));
 		this->_tmp->_capturedPawns = _currentBoard->checkCapture(_tmp->getX(), _tmp->getY()); // nbr de pions captures
-		getSons(true);
+		getSons(true); // !!!! ne doit pas reparcourir tous les pions mais seulement les emplacements autour du nouveau son
 		_tmp->setWeight(getGrandSonsMin(_tmp));
-		_currentBoard->erase(std::make_pair(x, y));
+		_currentBoard->erase(std::make_pair(x, y)); // doit erase aussi les petits fils ? ou sont coupe automatiquement quand on tranche les alignements sur le fils ?
 		this->_sons.push_back(_tmp);
 	}
 	// std::cout << ">>>>>>>>>>>>>>>>               CURRENTBOARDSIZE: " << _currentBoard->getPawns().size() << std::endl;
@@ -270,7 +271,7 @@ int 					Computer::observeAround(int x, int y)
 void			Computer::setWeight(int x, int y)
 {
 	int weight = 1;
-	_currentBoard->insert(std::make_pair(x, y), this);
+	_currentBoard->insert(std::make_pair(x, y), this); // est pas deja insert ?
 	if (_currentBoard->checkwin(this, _opponent))
 	{
 		if (_currentBoard->getWin() == this->_name)
@@ -278,7 +279,7 @@ void			Computer::setWeight(int x, int y)
 		else
 			weight -= 1000;
 	}
-	this->_tmp->getGrandSons()[std::make_pair(x, y)]->_capturedPawns = _currentBoard->checkCapture(x, y); // nbr de pions captures
+	this->_tmp->getGrandSons()[std::make_pair(x, y)]->_capturedPawns = _currentBoard->checkCapture(x, y); // nbr de pions captures par le petit fils
 	weight -= this->_tmp->getGrandSons()[std::make_pair(x, y)]->_capturedPawns.size() * 10; // * 10 a revoir
 
 	weight += this->_tmp->_capturedPawns.size() * 10; // * 10 a revoir
@@ -290,7 +291,7 @@ void			Computer::setWeight(int x, int y)
 	// std::cout << "Computer::setWeight AFTER observeAround: " << weight << std::endl;
 
 	this->_tmp->getGrandSons()[std::make_pair(x, y)]->setWeight(weight);
-	_currentBoard->erase(std::make_pair(x, y));
+	_currentBoard->erase(std::make_pair(x, y)); // erase 2*
 
 	return ;
 }

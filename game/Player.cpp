@@ -31,7 +31,7 @@ Player &	Player::operator=( Player const & rhs )
 
 std::pair<int, int>		Player::play(Board* currentBoard, std::pair<int, int> xy)
 {
-	std::cout << this->_name << " playing" << std::endl;
+	// std::cout << this->_name << " playing" << std::endl;
 	(void)currentBoard;
 	return xy;
 }
@@ -43,15 +43,15 @@ bool					Player::referee(Board* currentBoard, std::pair<int, int> key)
 
 	if (x > 18 || x < 0 || y > 18 || y < 0)
 	{
-		std::cout << "DEHORS DE LA GRILLE PUTE" << std::endl;
+		// std::cout << "DEHORS DE LA GRILLE PUTE" << std::endl;
 		return ( false );
 	}
 	if (currentBoard->findPawn(x, y))
 	{
-		std::cout << "DEJA UN PION BIAAAATCH" << std::endl;
+		// std::cout << "DEJA UN PION BIAAAATCH" << std::endl;
 		return (false);
 	}
-	std::cout << "CEST OK MA CATIN DES ILES" << std::endl;
+	// std::cout << "CEST OK MA CATIN DES ILES" << std::endl;
 	return ( true );
 }
 

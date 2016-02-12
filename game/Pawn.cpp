@@ -82,25 +82,15 @@ void	Pawn::replaceAlignement(Alignement* al1, Alignement* al2)
 
 void	Pawn::deleteAlignement(Alignement* al)
 {
-	std::cout << "ERASEALGINEMENT START al " <<std::endl;
-	al->toString();	
-	std::cout << "STAYIN ALIVE" << std::endl;
-	std::cout << "ERASEALGINEMENT IIIINNN _alignements.size(): " << _alignements.size() << std::endl;
-	std::cout << "OU PAS" << std::endl;
 	for (unsigned int i = 0; i < _alignements.size(); i++)
 	{
-			std::cout << "ERASEALGINEMENT LOOP _alignements[i] " <<std::endl;
-		_alignements[i]->toString();
 		if (_alignements[i] == al)
 		{
-			std::cout << "ERASEALGINEMENT SIIIIIIIZE: " << _alignements.size() << std::endl;
 			if (_alignements.size() > 1)
 				_alignements.erase(_alignements.begin() + i);
 			else
 				_alignements.clear();
-			std::cout << "ERASEALGINEMENT SIIIIIIIZE2: " << _alignements.size() << std::endl;
 		}
-
 	}
 }
 
