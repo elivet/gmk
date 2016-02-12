@@ -40,6 +40,8 @@ public:
 	void								determinePawnBegin(Alignement* alignement);
 	void								determinePawnEnd(Alignement* alignement);
 	void 								eraseAlignementFromPawnsBegin(Alignement* al1, Alignement* al2);
+	void								erasePawnInsideAlignement(Alignement *align, Pawn* pawn);
+	void								deleteAlignement(Alignement *align);
 
 
 

@@ -17,6 +17,7 @@ public:
 
 	Pawn &	operator=( Pawn const & rhs );
 	bool 	operator==(Pawn &rhs);
+	bool 	operator!=(Pawn &rhs);
 	//bool 	operator==(Pawn const &other) const;
 
 	Player*							getPlayer();

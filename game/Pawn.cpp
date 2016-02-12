@@ -39,6 +39,15 @@ bool Pawn::operator==(Pawn &rhs)
 	);
 }
 
+bool Pawn::operator!=(Pawn &rhs)
+{
+	return (this->_player->getName() != rhs.getPlayer()->getName() ||
+		this->_x != rhs.getX() ||
+		this->_y != rhs.getY()
+	);
+}
+
+
 // bool Pawn::operator==( Pawn const &rhs) const
 // {
 // 	return (this->_player->getName() == rhs.getPlayer()->getName())// &&

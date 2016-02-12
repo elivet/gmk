@@ -85,20 +85,30 @@ void			Gomoku::playerTurn(Player *player)
 	{
 		while (player->referee(_currentBoard, getPair()) == true)
 		{
+			std::cout << "Gomoku::playerTurn 2" << std::endl;
 			ret = player->play(_currentBoard, getPair());
+			std::cout << "Gomoku::playerTurn 3" << std::endl;
 			_currentBoard->insert(ret, player);
+			std::cout << "Gomoku::playerTurn 4" << std::endl;
 			capturePawns(_currentBoard->checkCapture(ret.first, ret.second), player);
+			std::cout << "Gomoku::playerTurn 5" << std::endl;
 			_currentBoard->stockAlignement(ret);
+			std::cout << "Gomoku::playerTurn 6" << std::endl;
 			endTurn();
 		}
 	}
 	else if (check)
 	{
 		ret2 = check->play(_currentBoard);
+		std::cout << "Gomoku::playerTurn 7" << std::endl;
 		ret = std::make_pair(ret2->getX(), ret2->getY());
+		std::cout << "Gomoku::playerTurn 8" << std::endl;
 		capturePawns(ret2->_capturedPawns, player);
+		std::cout << "Gomoku::playerTurn 9" << std::endl;
 		_currentBoard->insert(ret, player);
+		std::cout << "Gomoku::playerTurn 10" << std::endl;
 		_currentBoard->stockAlignement(ret);
+		std::cout << "Gomoku::playerTurn 11" << std::endl;
 		endTurn();
 	}
 }
@@ -107,7 +117,7 @@ void				Gomoku::play()
 {
 	if (this->_currentBoard->checkwin(_player1, _player2))
 	{
-		this->endGame();
+		// this->endGame();
 		return ;
 	}
 	if (this->_firstPlayerTurn)
@@ -123,11 +133,15 @@ void				Gomoku::play()
 
 void				Gomoku::capturePawns(std::vector<std::pair<int, int> >  capturedPawns, Player* player)
 {
+		std::cout << "Gomoku::capturePawns 1" << std::endl;
 	for (unsigned int i = 0; i < capturedPawns.size(); i++)
 	{
+		std::cout << "Gomoku::capturePawns 2" << std::endl;
 		_currentBoard->erase(capturedPawns[i]);
+		std::cout << "Gomoku::capturePawns 3" << std::endl;
 		player->_capturedPawns++;
 	}
+		std::cout << "Gomoku::capturePawns 2" << std::endl;
 	return ; 
 }
 

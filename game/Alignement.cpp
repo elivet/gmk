@@ -62,8 +62,9 @@ bool Alignement::operator==(Alignement &rhs)
 		);
 }
 
-void		Alignement::deleteAlignement(Alignement *align, Board* currentBoard)
+void		Alignement::deleteAlignement(Alignement *align, Board* currentBoard) // replace + que deleta
 {
+	std::cout << "Alignement::deleteAlignement 1" << std::endl;
 
 	Pawn *tmp = align->_pawnBegin;
 
@@ -77,12 +78,14 @@ void		Alignement::deleteAlignement(Alignement *align, Board* currentBoard)
 		tmp->deleteAlignement(align);
 		tmp->_alignements.push_back(this);
 	}
+	std::cout << "Alignement::deleteAlignement 2" << std::endl;
 
 	//delete du player
 }
 
 void 		Alignement::joinAlignements(Alignement *align, Pawn *current, Board* currentBoard)
 {
+	std::cout << "Alignement::joinAlignements 1" << std::endl;
 
 	if (this->_pawnBegin == current)
 	{
@@ -108,10 +111,12 @@ void 		Alignement::joinAlignements(Alignement *align, Pawn *current, Board* curr
 	}
 	this->_nbr += align->getNbr() - 1; // met pas -2 cest pas normal
 	deleteAlignement(align, currentBoard);
+	std::cout << "Alignement::joinAlignements 2" << std::endl;
 }
 
 void		Alignement::checkJoinAlignements(Pawn *current, Board* currentBoard) // ! peut etre n et p inverses
 {
+	std::cout << "Alignement::checkJoinAlignements 1" << std::endl;
 	for (unsigned int i = 0; i < current->getAlignements().size(); i++)
 	{
 		if (this->_nx == current->getAlignements()[i]->getNx() &&
@@ -131,11 +136,13 @@ void		Alignement::checkJoinAlignements(Pawn *current, Board* currentBoard) // ! 
 			return ;
 		}
 	}
+	std::cout << "Alignement::checkJoinAlignements 2" << std::endl;
 	return ;
 }
 
 int			Alignement::isAligned(std::pair<int, int> key, Board* currentBoard) // prblm ici en joignant un alignement a un pion solo
 {
+	std::cout << "Alignement::isAligned 1" << std::endl;
 	std::pair<int,int> currentKey = std::make_pair(_pawnBegin->getX() + this->_px, _pawnBegin->getY() + this->_py); // check si cest bien dans le bon sens maybe linverse
 	std::pair<int,int> currentKey2 = std::make_pair(_pawnEnd->getX() + this->_nx, _pawnEnd->getY() + this->_ny); // check si cest bien dans le bon sens maybe linverse
 	
@@ -160,6 +167,7 @@ int			Alignement::isAligned(std::pair<int, int> key, Board* currentBoard) // prb
 		newPawn->getPlayer()->_alignements.push_back(this);
 		return 1;
 	}
+	std::cout << "Alignement::isAligned 2" << std::endl;
 	return 0;
 }
 
