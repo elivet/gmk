@@ -297,15 +297,121 @@ std::vector<std::pair<int, int> >		Board::checkCapture(int x, int y)
 	return tmp2;
 }
 
+bool		Board::isPawnInAlignement(Pawn *p, Alignement *al)
+{
+	Pawn *tmp = al->getPawnBegin();
+	while (tmp != al->getPawnEnd())
+	{
+		if (tmp == p)
+			return true;
+		tmp = findPawn(tmp->getX() + al->getNx(), tmp->getY() + al->getNy());
+	}
+	return (tmp == p);
+}
+
+bool		Board::checkWinCaptureAroundPawn(Pawn *p, Alignement *al, int x, int y)
+{
+
+	Pawn* neighbour = findPawn(p->getX() + x, p->getY() + y);
+	if (neighbour != NULL && !isPawnInAlignement(neighbour, al))
+	{
+		std::cout << "[" << x << ":" << y << "]";
+		std::cout << "not in Alignement " << "PawnL" << ": " << neighbour->getX() << " - " << neighbour->getY() << std::endl;
+		if (neighbour->getPlayer()->getName() == p->getPlayer()->getName())
+		{
+			std::cout << "same player pawn" << std::endl;
+			Pawn *second = findPawn(neighbour->getX() + x , neighbour->getY() + y);
+			if (second != NULL && second->getPlayer()->getName() != p->getPlayer()->getName())
+			{
+				
+				Pawn *empty = findPawn(p->getX() - x, p->getY() - y);
+				if (!empty)
+				{	
+					std::cout << "space is empty" << std::endl;
+					return false;				
+				}
+			}
+		}
+		else if (neighbour->getPlayer()->getName() != p->getPlayer()->getName() && neighbour)
+		{
+			std::cout << "different player pawn" << std::endl;
+			Pawn *second = findPawn(p->getX() - x , p->getY() - y);
+			if (second != NULL && second->getPlayer()->getName() == p->getPlayer()->getName())
+			{
+				Pawn *empty = findPawn(second->getX() - x, second->getY() - y);
+				if (!empty)
+				{	
+					std::cout << "space is empty" << std::endl;
+					return false;				
+				}
+			}
+		}
+	}
+	return true;
+}
+
+bool		Board::checkWinCapturePawn(Pawn *p, Alignement *al)
+{
+	//left
+	if (!checkWinCaptureAroundPawn(p, al, -1, 0))
+		return false;
+	//right
+	if (!checkWinCaptureAroundPawn(p, al, 1, 0))
+		return false;
+	//bottom left
+	if (!checkWinCaptureAroundPawn(p, al, -1, -1))
+		return false;
+	//top right
+	if (!checkWinCaptureAroundPawn(p, al, 1, 1))
+		return false;
+	//top left
+	if (!checkWinCaptureAroundPawn(p, al, -1, 1))
+		return false;
+	//bottom right
+	if (!checkWinCaptureAroundPawn(p, al, 1, -1))
+		return false;
+	//top
+	if (!checkWinCaptureAroundPawn(p, al, 0, 1))
+		return false;
+	//bottom
+	if (!checkWinCaptureAroundPawn(p, al, 0, -1))
+		return false;
+
+	return true;
+}
+
+bool		Board::checkWinCapture(Alignement *al)
+{
+	Pawn *tmp = al->getPawnBegin();
+	int i = 0;
+
+	while (tmp != al->getPawnEnd())
+	{
+		std::cout << "Pawn" << i << ": " << tmp->getX() << " - " << tmp->getY() << std::endl;
+		if (!checkWinCapturePawn(tmp, al))
+			return false;
+		tmp = findPawn(tmp->getX() + al->getNx(), tmp->getY() + al->getNy());
+		i++;
+	}
+	std::cout << "Pawn" << i << ": " << tmp->getX() << " - " << tmp->getY() << std::endl;
+	//cehcking last Pawn because its eclude from the loop with the condition of tmp != al->getPawnEnd()
+	return checkWinCapturePawn(tmp, al);
+	//return true;
+}
+
 bool 		Board::checkwin(Player* player1, Player* player2)
 {
 	for (unsigned int i = 0; i < _alignements.size(); i++)
 	{
 		if (_alignements[i]->getNbr() >= 5)
 		{
-			std::cout << "WINNNERNNENRNNENRNRNENRNNRENRNRNRNRN" << std::endl;
-			_win = _alignements[i]->getPawnBegin()->getPlayer()->getName();
-			return true;
+			if (checkWinCapture(_alignements[i]))
+			{
+				std::cout << "WINNNERNNENRNNENRNRNENRNNRENRNRNRNRN" << std::endl;
+				_win = _alignements[i]->getPawnBegin()->getPlayer()->getName();
+
+				return true;
+			}
 		}
 		// checkCapture
 	}

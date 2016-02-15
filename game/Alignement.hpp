@@ -40,10 +40,10 @@ public:
 private:
 	Pawn*					_pawnBegin;
 	Pawn*					_pawnEnd;
-	int						_nx;
-	int 					_ny;
-	int 					_px;
-	int 					_py;
+	int						_nx; //next
+	int 					_ny; //next
+	int 					_px; //previous
+	int 					_py; //previous
 	int 					_nbr;
 };
 

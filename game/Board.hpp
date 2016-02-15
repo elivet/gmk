@@ -27,6 +27,10 @@ public:
 	void								displayPawns( void );
 	Pawn*								findPawn( int x, int y);
 	bool 								checkwin(Player* player1, Player* player2);
+	bool								checkWinCapture(Alignement *al);
+	bool								checkWinCapturePawn(Pawn *p, Alignement *al);
+	bool								checkWinCaptureAroundPawn(Pawn *p, Alignement *al, int x, int y);
+	bool								isPawnInAlignement(Pawn *p, Alignement *al);
 	// void								checkAround(std::map<std::pair<int,int>, Pawn*>::iterator it);
 	// int 								checkFriend(int x, int y, std::pair<int, int> key);
 	std::vector<std::pair<int, int> > 	checkOpponent(int x, int y, std::pair<int, int> key);
