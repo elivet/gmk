@@ -41,7 +41,8 @@ public:
 	void								determinePawnEnd(Alignement* alignement);
 	void 								eraseAlignementFromPawnsBegin(Alignement* al1, Alignement* al2);
 	void								erasePawnInsideAlignement(Alignement *align, Pawn* pawn);
-	void								deleteAlignement(Alignement *align);
+	void								deleteAlignement(Alignement* align);
+	void								deleteAlignementFromBoard(Alignement* align);
 
 
 
@@ -52,8 +53,11 @@ public:
 
 private:
 	std::map<std::pair<int,int>, Pawn*>		_pawns;
-	std::vector<Alignement*> 				_alignements;
 	int										_win;
+
+public:
+	std::vector<Alignement*> 				_alignements;
+
 };
 
 #endif

@@ -91,16 +91,29 @@ void	Pawn::replaceAlignement(Alignement* al1, Alignement* al2)
 
 void	Pawn::deleteAlignement(Alignement* al)
 {
+	std::cout << "Pawn::deleteAlignement 1" << std::endl;
 	for (unsigned int i = 0; i < _alignements.size(); i++)
 	{
-		if (_alignements[i] == al)
+		std::cout << "Pawn::deleteAlignement 2" << std::endl;
+	if (_alignements[i] == al)
 		{
-			if (_alignements.size() > 1)
+	std::cout << "Pawn::deleteAlignement 3" << std::endl;
+			// if (_alignements.size() > 1)
+			// {
+	std::cout << "Pawn::deleteAlignement 4" << std::endl;
 				_alignements.erase(_alignements.begin() + i);
-			else
-				_alignements.clear();
+	// std::cout << "Pawn::deleteAlignement 5" << std::endl;
+	// 		}
+	// 		else
+	// 		{
+	// std::cout << "Pawn::deleteAlignement 6" << std::endl;
+	// 			_alignements.clear();
+	// std::cout << "Pawn::deleteAlignement 7" << std::endl;
+	// 		}
+	std::cout << "Pawn::deleteAlignement 8" << std::endl;
 		}
 	}
+	std::cout << "Pawn::deleteAlignement 9" << std::endl;
 }
 
 void Pawn::toString()

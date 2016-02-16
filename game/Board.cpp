@@ -41,7 +41,13 @@ void		Board::determinePawnBegin(Alignement* alignement) // plutot linverse ? se 
 {
 	std::pair<int,int> currentKey = std::make_pair(alignement->getPawnBegin()->getX() + alignement->getNx(), alignement->getPawnBegin()->getY() + alignement->getNy()); // check si cest bien dans le bon sens maybe linverse
 	alignement->setPawnBegin(findPawn(currentKey.first, currentKey.second));
+	std::cout << "Board::determinePawnBegin1 nbr: " << alignement->getNbr() << std::endl;
 	alignement->setNbr(alignement->getNbr()-1);
+	std::cout << "Board::determinePawnBegin2 nbr: " << alignement->getNbr() << std::endl;
+	if (alignement->getNbr() <= 1)
+		deleteAlignement(alignement);
+		std::cout << "Board::determinePawnBegin 3 "  << std::endl;
+
 	return ;
 }
 
@@ -49,7 +55,12 @@ void		Board::determinePawnEnd(Alignement* alignement)// plutot linverse ? se ret
 {
 	std::pair<int,int> currentKey = std::make_pair(alignement->getPawnEnd()->getX() + alignement->getPx(), alignement->getPawnEnd()->getY() + alignement->getPy()); // check si cest bien dans le bon sens maybe linverse
 	alignement->setPawnEnd(findPawn(currentKey.first, currentKey.second));
+	std::cout << "Board::determinePawnEnd1 nbr: " << alignement->getNbr() << std::endl;
 	alignement->setNbr(alignement->getNbr()-1);
+	std::cout << "Board::determinePawnEnd1 nbr: " << alignement->getNbr() << std::endl;
+	if (alignement->getNbr() <= 1)
+		deleteAlignement(alignement);
+		std::cout << "Board::determinePawnBegin 3 "  << std::endl;
 	return ;
 }
 
@@ -74,19 +85,37 @@ void 		Board::eraseAlignementFromPawnsBegin(Alignement* al1, Alignement* al2)
 void		Board::deleteAlignement(Alignement *align)
 {
 	std::cout << "Board::deleteAlignement 1" << std::endl;
+	if (!align || !align->getPawnBegin() || !align->getPawnEnd())
+	{
+		std::cout << "Board::deleteAlignement 1 ALIGN NULL" << std::endl;
+		return ;
+	}
 
 	Pawn *tmp = align->getPawnBegin();
-
-	tmp->deleteAlignement(align);
-
-	while (tmp->getX() != align->getPawnEnd()->getX() || tmp->getY() != align->getPawnEnd()->getY())
-	{
-		std::pair<int, int> currentKey = std::make_pair(tmp->getX()+ align->getNx(), tmp->getY() + align->getNy());
-		tmp = findPawn(currentKey.first, currentKey.second);
-		tmp->deleteAlignement(align);
-	}
 	std::cout << "Board::deleteAlignement 2" << std::endl;
 
+	std::cout << "Board::deleteAlignement 3 tmp" << std::endl;
+	tmp->toString();
+	std::cout << "Board::deleteAlignement 3 align" << std::endl;
+	align->toString();
+	tmp->deleteAlignement(align);
+	std::cout << "Board::deleteAlignement 4 tmp" << std::endl;
+	tmp->toString();
+	std::cout << "Board::deleteAlignement 4 align" << std::endl;
+	align->toString();
+	while (tmp->getX() != align->getPawnEnd()->getX() || tmp->getY() != align->getPawnEnd()->getY())
+	{
+	std::cout << "Board::deleteAlignement 4" << std::endl;
+		std::pair<int, int> currentKey = std::make_pair(tmp->getX()+ align->getNx(), tmp->getY() + align->getNy());
+	std::cout << "Board::deleteAlignement 5" << std::endl;
+		tmp = findPawn(currentKey.first, currentKey.second);
+	std::cout << "Board::deleteAlignement 6" << std::endl;
+		tmp->deleteAlignement(align);
+	std::cout << "Board::deleteAlignement 7" << std::endl;
+	}
+	std::cout << "Board::deleteAlignement 8" << std::endl;
+	deleteAlignementFromBoard(align);
+	std::cout << "Board::deleteAlignement 9" << std::endl;
 	//delete du player
 }
 
@@ -98,51 +127,67 @@ void		Board::erasePawnInsideAlignement(Alignement *align, Pawn* pawn)
 
 	while (tmp && tmp != pawn)
 	{
-	// std::cout << "Board::erasePawnInsideAlignement 2" << std::endl;
+	std::cout << "Board::erasePawnInsideAlignement 2" << std::endl;
 		currentKey = std::make_pair(tmp->getX() + align->getNx(), tmp->getY() + align->getNy());
 		tmp = findPawn(currentKey.first, currentKey.second);
 		// if (!tmp)
 		// 	std::cout << "LOLILOLILOLILOLILOL" << std::endl;
 		top++;
-	// std::cout << "Board::erasePawnInsideAlignement 3" << std::endl;
+	std::cout << "Board::erasePawnInsideAlignement 3" << std::endl;
 	}
 	if ( top == 2)
 	{
-	// std::cout << "Board::erasePawnInsideAlignement 4" << std::endl;
-		Alignement *al1 = new Alignement(align->getPawnBegin(), tmp, this);
+	std::cout << "Board::erasePawnInsideAlignement 4" << std::endl;
+		currentKey = std::make_pair(tmp->getX() + align->getPx(), tmp->getY() + align->getPy());
+		std::cout << "Board::erasePawnInsideAlignement 4.1" << std::endl;
+	tmp = findPawn(currentKey.first, currentKey.second);
+		std::cout << "Board::erasePawnInsideAlignement 4.2" << std::endl;
+	Alignement *al1 = new Alignement(align->getPawnBegin(), tmp, this);
+		std::cout << "Board::erasePawnInsideAlignement 4 PawnBegin :" << std::endl;
+		al1->getPawnBegin()->toString();
+		std::cout << "Board::erasePawnInsideAlignement 4 PawnEnd :" << std::endl;
+		al1->getPawnEnd()->toString();
 		align->getPawnBegin()->_alignements.push_back(al1);
 		tmp->_alignements.push_back(al1);
 		deleteAlignement(align);
-	// std::cout << "Board::erasePawnInsideAlignement 5" << std::endl;
+	std::cout << "Board::erasePawnInsideAlignement 5" << std::endl;
 		return ;
 	}
 	else if (top == 1)
 	{
-	// std::cout << "Board::erasePawnInsideAlignement 6" << std::endl;
+	std::cout << "Board::erasePawnInsideAlignement 6" << std::endl;
 		tmp = align->getPawnEnd();
 		top = 0;
 		while (tmp && tmp != pawn)
 		{
-	// std::cout << "Board::erasePawnInsideAlignement 7" << std::endl;
+	std::cout << "Board::erasePawnInsideAlignement 7" << std::endl;
 			currentKey = std::make_pair(tmp->getX() + align->getPx(), tmp->getY() + align->getPy());
 			tmp = findPawn(currentKey.first, currentKey.second);
 			// if (!tmp)
 			// std::cout << "LOLILOLILOLILOLILOL" << std::endl;
 			top++;
-	// std::cout << "Board::erasePawnInsideAlignement 8" << std::endl;
+	std::cout << "Board::erasePawnInsideAlignement 8" << std::endl;
 		}
 		if ( top == 2)
 		{
-	// std::cout << "Board::erasePawnInsideAlignement 9" << std::endl;
+	std::cout << "Board::erasePawnInsideAlignement 9" << std::endl;
+			currentKey = std::make_pair(tmp->getX() + align->getNx(), tmp->getY() + align->getNy());
+	std::cout << "Board::erasePawnInsideAlignement 9.1" << std::endl;
+			tmp = findPawn(currentKey.first, currentKey.second);
+	std::cout << "Board::erasePawnInsideAlignement 9.2" << std::endl;
 			Alignement *al2 = new Alignement(tmp, align->getPawnEnd(), this);
+			std::cout << "Board::erasePawnInsideAlignement 9 PawnBegin :" << std::endl;
+			al2->getPawnBegin()->toString();
+			std::cout << "Board::erasePawnInsideAlignement 9 PawnEnd :" << std::endl;
+			al2->getPawnEnd()->toString();
 			align->getPawnEnd()->_alignements.push_back(al2);
 			tmp->_alignements.push_back(al2);
 			deleteAlignement(align);
-	// std::cout << "Board::erasePawnInsideAlignement 10" << std::endl;
+	std::cout << "Board::erasePawnInsideAlignement 10" << std::endl;
 			return ;
 		}
 	}
-	// std::cout << "Board::erasePawnInsideAlignement 11" << std::endl;
+	std::cout << "Board::erasePawnInsideAlignement 11" << std::endl;
 	return ;
 }
 
@@ -154,13 +199,18 @@ void		Board::erase(std::pair<int, int> xy)
 	if (!pawn)
 		return;
 	unsigned int stop = pawn->_alignements.size();
+	std::cout << "Board::erase pawn:" << std::endl;
+	pawn->toString();
+
 	for (unsigned int j = 0; j < stop; j++)
 	{
 		// std::cout << "Board::erase 11 _alignements[j]->toString()" << std::endl;
 		// if (!pawn->_alignements[j])
 		// 	break ;
-		// std::cout << "Board::erase 11 pawn->_alignements[j]->getPawnBegin()->toString()" << std::endl;
+		std::cout << "Board::erase 11 pawn->_alignements[j]->getPawnBegin()->toString()" << std::endl;
 		pawn->_alignements[j]->getPawnBegin()->toString();
+		std::cout << "Board::erase 11 pawn->_alignements[j]->getPawnEnd()->toString()" << std::endl;
+		pawn->_alignements[j]->getPawnEnd()->toString();	
 		// std::cout << "Board::erase 11" << std::endl;
 		if (pawn->_alignements[j]->getPawnBegin()->getX() == pawn->getX() && pawn->_alignements[j]->getPawnBegin()->getY() == pawn->getY())
 		{
@@ -188,6 +238,10 @@ void		Board::erase(std::pair<int, int> xy)
 			// pawn->getPlayer()->_alignements.push_back(clone);
 		// std::cout << "Board::erase 17" << std::endl;
 		}
+		// std::cout << "Board::erase 22 pawn->_alignements[j]->getPawnBegin()->toString()" << std::endl;
+		// pawn->_alignements[j]->getPawnBegin()->toString();
+		// std::cout << "Board::erase 22 pawn->_alignements[j]->getPawnEnd()->toString()" << std::endl;
+		// pawn->_alignements[j]->getPawnEnd()->toString();	
 		// std::cout << "Board::erase 18" << std::endl;
 	}
 	// std::cout << "Board::erase 2" << std::endl;
@@ -263,7 +317,7 @@ std::vector<std::pair<int, int> >	Board::checkOpponent(int x, int y, std::pair<i
 
 std::vector<std::pair<int, int> >		Board::checkCapture(int x, int y)
 {
-	std::cout << "Board::checkCapture 1" << std::endl;
+	// std::cout << "Board::checkCapture 1" << std::endl;
 	std::vector<std::pair<int, int> >	tmp;
 	std::vector<std::pair<int, int> >	tmp2;
 	std::pair<int, int> key = std::make_pair(x, y);
@@ -292,7 +346,7 @@ std::vector<std::pair<int, int> >		Board::checkCapture(int x, int y)
 	tmp = checkOpponent(x, y - 1, key);
 	if (tmp.size() > 0)
 		tmp2.insert(tmp2.end(), tmp.begin(), tmp.end());
-	std::cout << "Board::checkCapture 2" << std::endl;
+	// std::cout << "Board::checkCapture 2" << std::endl;
 
 	return tmp2;
 }
@@ -345,21 +399,31 @@ void		Board::createAlignement(Pawn* neighbour, std::pair<int,int> key)
 	return ;
 }
 
+void		Board::deleteAlignementFromBoard(Alignement* align)
+{
+	for (unsigned int i = 0; i < _alignements.size(); i++)
+	{
+		if (_alignements[i] == align)
+			_alignements.erase(_alignements.begin() + i);
+	}
+	return ;
+}
+
 void		Board::findAlignement(Pawn* neighbour, std::pair<int,int> key)
 {
 	int top = 0;
-	std::cout << "Board::findAlignement 1" << std::endl;
+	// std::cout << "Board::findAlignement 1" << std::endl;
 	
 	for (unsigned int i = 0; i < neighbour->getAlignements().size(); i++) // on parcourt les alignement du neighbour
 	{
 		top += neighbour->_alignements[i]->isAligned(key, this); // on le rajoute a un alignement deja existant dans isaligned
 	}
-	std::cout << "Board::findAlignement 2" << std::endl;
+	// std::cout << "Board::findAlignement 2" << std::endl;
 	if (top == 0)
 	{
 		createAlignement(neighbour, key);
 	}
-	std::cout << "Board::findAlignement 3" << std::endl;
+	// std::cout << "Board::findAlignement 3" << std::endl;
 	return ;
 }
 
@@ -367,13 +431,13 @@ void		Board::checkNeighbour(std::pair<int,int> key1, std::pair<int,int> key2)
 {
 	Pawn	*tmpPawn;
 
-	std::cout << "Board::checkNeighbour 1" << std::endl;
+	// std::cout << "Board::checkNeighbour 1" << std::endl;
 	if ((tmpPawn = findPawn(key1.first, key1.second)) != NULL && _pawns[key2] != NULL)
 	{
 		if (tmpPawn->getPlayer()->getName() == _pawns[key2]->getPlayer()->getName())
 			findAlignement(tmpPawn, key2);
 	}
-	std::cout << "Board::checkNeighbour 2" << std::endl;
+	// std::cout << "Board::checkNeighbour 2" << std::endl;
 	return ;
 }
 
