@@ -9,7 +9,6 @@ Alignement::Alignement( Pawn* p1, Pawn* p2, Board* currentBoard )
 {
 	this->_pawnBegin = p1;
 	this->_pawnEnd = p2;
-	this->_nbr = 2; // a changer ; peut etre 3 a la creation
 
 	std::cout << "NEW ALIGNEMENT: _pawnBegin" << std::endl;
 	_pawnBegin->toString();
@@ -18,9 +17,49 @@ Alignement::Alignement( Pawn* p1, Pawn* p2, Board* currentBoard )
 
 
 	this->_px = p1->getX() - p2->getX();
+	if (this->_px < 0)
+		this->_px = -1;
+	else if (this->_px > 0)
+		this->_px = 1;
+	else
+		this->_px = 0;
 	this->_py = p1->getY() - p2->getY();
+	if (this->_py < 0)
+		this->_py = -1;
+	else if (this->_py > 0)
+		this->_py = 1;
+	else
+		this->_py = 0;
 	this->_nx = p2->getX() - p1->getX();
+	if (this->_nx < 0)
+		this->_nx = -1;
+	else if (this->_nx > 0)
+		this->_nx = 1;
+	else
+		this->_nx = 0;
 	this->_ny = p2->getY() - p1->getY();
+	if (this->_ny < 0)
+		this->_ny = -1;
+	else if (this->_ny > 0)
+		this->_ny = 1;
+	else
+		this->_ny = 0;
+
+	Pawn* tmp = this->_pawnBegin;
+	std::pair<int, int> currentKey;
+	this->_nbr = 1;
+
+	this->_pawnBegin->_alignements.push_back(this);
+	while (tmp && tmp != this->_pawnEnd)
+	{
+		currentKey = std::make_pair(tmp->getX() + this->_nx, tmp->getY() + this->_ny);
+		tmp = currentBoard->findPawn(currentKey.first, currentKey.second);
+		tmp->_alignements.push_back(this);
+		this->_nbr++;
+	}
+
+
+
 	currentBoard->_alignements.push_back(this);
 	return ;
 }
@@ -173,11 +212,19 @@ int			Alignement::isAligned(std::pair<int, int> key, Board* currentBoard) // prb
 	// _pawnEnd->toString();
 
 	// std::cout << "Alignement::isAligned 1" << std::endl;
+	// std::cout << "this->_nx: "<< this->_nx << std::endl;
+	// std::cout << "this->_ny: "<< this->_ny << std::endl;
+	// std::cout << "this->_px: "<< this->_px << std::endl;
+	// std::cout << "this->_py: "<< this->_py << std::endl;
 
-	std::pair<int,int> currentKey = std::make_pair(_pawnBegin->getX() + this->_px, _pawnBegin->getY() + this->_py); // check si cest bien dans le bon sens maybe linverse
-	std::pair<int,int> currentKey2 = std::make_pair(_pawnEnd->getX() + this->_nx, _pawnEnd->getY() + this->_ny); // check si cest bien dans le bon sens maybe linverse
+	std::pair<int,int> currentKey = std::make_pair(_pawnBegin->getX() - this->_nx, _pawnBegin->getY() - this->_ny); // check si cest bien dans le bon sens maybe linverse
+	std::pair<int,int> currentKey2 = std::make_pair(_pawnEnd->getX() - this->_px, _pawnEnd->getY() - this->_py); // check si cest bien dans le bon sens maybe linverse
 	
 	// std::cout << "Alignement::isAligned 2" << std::endl;
+	// std::cout << "currentKey.first: "<< currentKey.first << std::endl;
+	// std::cout << "currentKey.second: "<< currentKey.second << std::endl;
+	// std::cout << "currentKey2.first: "<< currentKey.first << std::endl;
+	// std::cout << "currentKey2.second: "<< currentKey.second << std::endl;
 	if (currentKey.first == key.first && currentKey.second == key.second)  
 	{
 

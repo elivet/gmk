@@ -92,6 +92,13 @@ void	Pawn::replaceAlignement(Alignement* al1, Alignement* al2)
 void	Pawn::deleteAlignement(Alignement* al)
 {
 	std::cout << "Pawn::deleteAlignement 1" << std::endl;
+	if (_alignements.empty() || !_alignements.size())
+	{
+		std::cout << "Pawn::deleteAlignement PROBLEM" << std::endl;
+		return ;
+	}
+		std::cout << "Pawn::deleteAlignement 1.5" << std::endl;
+
 	for (unsigned int i = 0; i < _alignements.size(); i++)
 	{
 		std::cout << "Pawn::deleteAlignement 2" << std::endl;
