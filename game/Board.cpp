@@ -224,19 +224,19 @@ void		Board::erase(std::pair<int, int> xy)
 		// std::cout << "Board::erase 11" << std::endl;
 		if (pawn->_alignements[j]->getPawnBegin()->getX() == pawn->getX() && pawn->_alignements[j]->getPawnBegin()->getY() == pawn->getY())
 		{
-		// std::cout << "Board::erase 12" << std::endl;
+		std::cout << "Board::erase 12" << std::endl;
 			determinePawnBegin(pawn->_alignements[j]);
-		// std::cout << "Board::erase 13" << std::endl;
+		std::cout << "Board::erase 13" << std::endl;
 		}
 		else if (pawn->_alignements[j]->getPawnEnd()->getX() == pawn->getX() && pawn->_alignements[j]->getPawnEnd()->getY() == pawn->getY())
 		{
-		// std::cout << "Board::erase 14" << std::endl;
+		std::cout << "Board::erase 14" << std::endl;
 			determinePawnEnd(pawn->_alignements[j]);
-		// std::cout << "Board::erase 15" << std::endl;
+		std::cout << "Board::erase 15" << std::endl;
 		}
 		else
 		{
-		// std::cout << "Board::erase 16" << std::endl;
+		std::cout << "Board::erase 16" << std::endl;
 			erasePawnInsideAlignement(pawn->_alignements[j], pawn);
 			stop =  pawn->_alignements.size();
 			// Alignement* clone = new Alignement(*_alignements[j]);			
@@ -246,17 +246,17 @@ void		Board::erase(std::pair<int, int> xy)
 			// determinePawnBegin(pawn->_alignements[j]);
 			// determinePawnEnd(clone);
 			// pawn->getPlayer()->_alignements.push_back(clone);
-		// std::cout << "Board::erase 17" << std::endl;
+		std::cout << "Board::erase 17" << std::endl;
 		}
 		// std::cout << "Board::erase 22 pawn->_alignements[j]->getPawnBegin()->toString()" << std::endl;
 		// pawn->_alignements[j]->getPawnBegin()->toString();
 		// std::cout << "Board::erase 22 pawn->_alignements[j]->getPawnEnd()->toString()" << std::endl;
 		// pawn->_alignements[j]->getPawnEnd()->toString();	
-		// std::cout << "Board::erase 18" << std::endl;
+		std::cout << "Board::erase 18" << std::endl;
 	}
-	// std::cout << "Board::erase 2" << std::endl;
+	std::cout << "Board::erase 2" << std::endl;
 	_pawns.erase(xy);
-	// std::cout << "Board::erase 3" << std::endl;
+	std::cout << "Board::erase 3" << std::endl;
 	return ;
 }
 
@@ -363,20 +363,28 @@ std::vector<std::pair<int, int> >		Board::checkCapture(int x, int y)
 
 bool		Board::isPawnInAlignement(Pawn *p, Alignement *al)
 {
+			std::cout << "Board::isPawnInAlignement 1" << std::endl;
 	Pawn *tmp = al->getPawnBegin();
+			std::cout << "Board::isPawnInAlignement 2" << std::endl;
 	while (tmp != al->getPawnEnd())
 	{
+			std::cout << "Board::isPawnInAlignement 3" << std::endl;
 		if (tmp == p)
 			return true;
 		tmp = findPawn(tmp->getX() + al->getNx(), tmp->getY() + al->getNy());
+			std::cout << "Board::isPawnInAlignement 4" << std::endl;
 	}
+			std::cout << "Board::isPawnInAlignement 5" << std::endl;
 	return (tmp == p);
 }
 
 bool		Board::checkWinCaptureAroundPawn(Pawn *p, Alignement *al, int x, int y)
 {
+			std::cout << "Board::checkWinCaptureAroundPawn 1" << std::endl;
 
 	Pawn* neighbour = findPawn(p->getX() + x, p->getY() + y);
+			std::cout << "Board::checkWinCaptureAroundPawn 2" << std::endl;
+
 	if (neighbour != NULL && !isPawnInAlignement(neighbour, al))
 	{
 		std::cout << "[" << x << ":" << y << "]";
@@ -411,6 +419,7 @@ bool		Board::checkWinCaptureAroundPawn(Pawn *p, Alignement *al, int x, int y)
 			}
 		}
 	}
+			std::cout << "Board::checkWinCaptureAroundPawn 3" << std::endl;
 	return true;
 }
 
@@ -448,17 +457,25 @@ bool		Board::checkWinCapture(Alignement *al)
 {
 	Pawn *tmp = al->getPawnBegin();
 	int i = 0;
-
+	std::cout << "Board::checkWinCapture 1" << std::endl;
 	while (tmp != al->getPawnEnd())
 	{
 		std::cout << "Pawn" << i << ": " << tmp->getX() << " - " << tmp->getY() << std::endl;
 		if (!checkWinCapturePawn(tmp, al))
 			return false;
+	std::cout << "Board::checkWinCapture 2" << std::endl;
 		tmp = findPawn(tmp->getX() + al->getNx(), tmp->getY() + al->getNy());
+	std::cout << "Board::checkWinCapture 3" << std::endl;
+		if (!tmp)
+		{
+			std::cout << "Board::checkWinCapture !tmp" << std::endl;
+		}
+	std::cout << "Board::checkWinCapture 4" << std::endl;
 		i++;
 	}
 	std::cout << "Pawn" << i << ": " << tmp->getX() << " - " << tmp->getY() << std::endl;
 	//cehcking last Pawn because its eclude from the loop with the condition of tmp != al->getPawnEnd()
+	std::cout << "Board::checkWinCapture 5" << std::endl;
 	return checkWinCapturePawn(tmp, al);
 	//return true;
 }
@@ -528,18 +545,18 @@ void		Board::deleteAlignementFromBoard(Alignement* align)
 void		Board::findAlignement(Pawn* neighbour, std::pair<int,int> key)
 {
 	int top = 0;
-	// std::cout << "Board::findAlignement 1" << std::endl;
+	std::cout << "Board::findAlignement 1" << std::endl;
 	
 	for (unsigned int i = 0; i < neighbour->getAlignements().size(); i++) // on parcourt les alignement du neighbour
 	{
 		top += neighbour->_alignements[i]->isAligned(key, this); // on le rajoute a un alignement deja existant dans isaligned
 	}
-	// std::cout << "Board::findAlignement 2" << std::endl;
+	std::cout << "Board::findAlignement 2" << std::endl;
 	if (top == 0)
 	{
 		createAlignement(neighbour, key);
 	}
-	// std::cout << "Board::findAlignement 3" << std::endl;
+	std::cout << "Board::findAlignement 3" << std::endl;
 	return ;
 }
 
@@ -547,18 +564,19 @@ void		Board::checkNeighbour(std::pair<int,int> key1, std::pair<int,int> key2)
 {
 	Pawn	*tmpPawn;
 
-	// std::cout << "Board::checkNeighbour 1" << std::endl;
+	std::cout << "Board::checkNeighbour 1" << std::endl;
 	if ((tmpPawn = findPawn(key1.first, key1.second)) != NULL && _pawns[key2] != NULL)
 	{
 		if (tmpPawn->getPlayer()->getName() == _pawns[key2]->getPlayer()->getName())
 			findAlignement(tmpPawn, key2);
 	}
-	// std::cout << "Board::checkNeighbour 2" << std::endl;
+	std::cout << "Board::checkNeighbour 2" << std::endl;
 	return ;
 }
 
 void		Board::stockAlignement(std::pair<int,int> xy)
 {
+	std::cout << "Board::stockAlignement 1" << std::endl;
 	checkNeighbour(std::make_pair(xy.first - 1, xy.second), xy); //left
 	checkNeighbour(std::make_pair(xy.first + 1, xy.second), xy); //right
 	checkNeighbour(std::make_pair(xy.first - 1, xy.second - 1), xy); //bottom left
@@ -567,6 +585,7 @@ void		Board::stockAlignement(std::pair<int,int> xy)
 	checkNeighbour(std::make_pair(xy.first + 1, xy.second - 1), xy); //bottom right
 	checkNeighbour(std::make_pair(xy.first, xy.second + 1), xy); //top
 	checkNeighbour(std::make_pair(xy.first, xy.second - 1), xy); //bottom
+	std::cout << "Board::stockAlignement 2" << std::endl;
 	return ;
 }
 

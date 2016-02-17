@@ -133,7 +133,7 @@ void					Computer::createSon(int x, int y)
 		_currentBoard->insert(std::make_pair(x, y), this);
 		_currentBoard->stockAlignement(std::make_pair(x, y));
 		this->_tmp->_capturedPawns = _currentBoard->checkCapture(_tmp->getX(), _tmp->getY()); // nbr de pions captures
-		getSons(true); // !!!! ne doit pas reparcourir tous les pions mais seulement les emplacements autour du nouveau son
+		getSons(true);
 		_tmp->setWeight(getGrandSonsMin(_tmp));
 		_currentBoard->erase(std::make_pair(x, y)); // doit erase aussi les petits fils ? ou sont coupe automatiquement quand on tranche les alignements sur le fils ?
 		this->_sons.push_back(_tmp);
