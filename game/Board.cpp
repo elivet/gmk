@@ -280,6 +280,7 @@ bool		Board::isPawnInAlignement(Pawn *p, Alignement *al)
 
 bool		Board::checkWinCaptureAroundPawn(Pawn *p, Alignement *al, int x, int y)
 {
+	// <=
 	Pawn* neighbour = findPawn(p->getX() + x, p->getY() + y);
 
 	if (neighbour != NULL && !isPawnInAlignement(neighbour, al))
@@ -288,9 +289,11 @@ bool		Board::checkWinCaptureAroundPawn(Pawn *p, Alignement *al, int x, int y)
 		{
 			Pawn *second = findPawn(neighbour->getX() + x , neighbour->getY() + y);
 			if (second != NULL && second->getPlayer()->getName() != p->getPlayer()->getName())
-			{				
-				Pawn *empty = findPawn(p->getX() - x, p->getY() - y);
-				if (!empty)
+			{	
+				int new_x = p->getX() - x;		
+				int new_y = p->getY() - y;	
+				Pawn *empty = findPawn(new_x, new_y);
+				if (!empty && new_x >= 0 && new_x <= 18 && new_y >= 0 && new_y <= 18)
 				{	
 					std::cout << "space is empty" << std::endl;
 					return false;				
@@ -302,8 +305,10 @@ bool		Board::checkWinCaptureAroundPawn(Pawn *p, Alignement *al, int x, int y)
 			Pawn *second = findPawn(p->getX() - x , p->getY() - y);
 			if (second != NULL && second->getPlayer()->getName() == p->getPlayer()->getName())
 			{
-				Pawn *empty = findPawn(second->getX() - x, second->getY() - y);
-				if (!empty)
+				int new_x = second->getX() - x;		
+				int new_y = second->getY() - y;
+				Pawn *empty = findPawn(new_x, new_y);
+				if (!empty && new_x >= 0 && new_x <= 18 && new_y >= 0 && new_y <= 18)
 				{	
 					std::cout << "space is empty" << std::endl;
 					return false;				
