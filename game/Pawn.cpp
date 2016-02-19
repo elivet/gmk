@@ -91,38 +91,16 @@ void	Pawn::replaceAlignement(Alignement* al1, Alignement* al2)
 
 void	Pawn::deleteAlignement(Alignement* al)
 {
-	std::cout << "Pawn::deleteAlignement 1" << std::endl;
 	if (_alignements.empty() || !_alignements.size())
-	{
-		std::cout << "Pawn::deleteAlignement PROBLEM" << std::endl;
-		return ;
-	}
-		std::cout << "Pawn::deleteAlignement 1.5" << std::endl;
+		std::cout << "PROBLEM >>>>>>>>>>>>>>>>>>>>>>>>             Pawn::deleteAlignement " << std::endl;
 	unsigned int i = 0;
 	while ( i < _alignements.size())
 	{
-		std::cout << "Pawn::deleteAlignement 2" << std::endl;
-	if (_alignements[i] == al)
-		{
-	std::cout << "Pawn::deleteAlignement 3" << std::endl;
-			// if (_alignements.size() > 1)
-			// {
-	std::cout << "Pawn::deleteAlignement 4" << std::endl;
-				_alignements.erase(_alignements.begin() + i);
-	// std::cout << "Pawn::deleteAlignement 5" << std::endl;
-	// 		}
-	// 		else
-	// 		{
-	// std::cout << "Pawn::deleteAlignement 6" << std::endl;
-	// 			_alignements.clear();
-	// std::cout << "Pawn::deleteAlignement 7" << std::endl;
-	// 		}
-	std::cout << "Pawn::deleteAlignement 8" << std::endl;
-		}
+		if (_alignements[i] == al)
+			_alignements.erase(_alignements.begin() + i);
 		else 
 			i++;
 	}
-	std::cout << "Pawn::deleteAlignement 9" << std::endl;
 }
 
 void Pawn::toString()
