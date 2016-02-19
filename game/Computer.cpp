@@ -43,6 +43,7 @@ Possibility*			Computer::play(Board* currentBoard)
 	{
 		getSons(false);
 		max = getSonsMax();
+		std::cout << "max->getX(): "<< max->getX() << "max->getY(): "<< max->getY() << std::endl;
 		key = std::make_pair(max->getX(), max->getY());
 		_sons.clear();
 		// displaySons();
@@ -107,8 +108,12 @@ Possibility* 					Computer::getSonsMax() //
 
 	for (unsigned int i = 0; i < _sons.size(); i++)
 	{
-		if (_sons[i]->getWeight() > ret->getWeight())
+			std::cout << "Computer::getSonsMax _sons[i]->getWeight() : " << _sons[i]->getWeight() << " ret->getWeight(): " <<  ret->getWeight() << std::endl;
+		if (_sons[i]->getWeight() >= ret->getWeight())
+		{
 			ret = _sons[i];
+			std::cout << " FOUND SONS MAAAAXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << std::endl;
+		}
 	}
 	return ret;
 }
@@ -119,8 +124,11 @@ int 					Computer::getGrandSonsMin(Possibility* son)
 
 	for (std::map<std::pair<int,int>, Possibility*>::iterator it=son->_grandSons.begin() ; it!=son->_grandSons.end() ; ++it)
 	{
-		if (it->second->getWeight() < weight)
-			weight = it->second->getWeight();
+		if (it->second->getWeight() <= weight && it->second->getWeight() > -2147483648)
+		{
+			weight = it->second->getWeight();	
+			std::cout << " FOUND GRANDSONS MINNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN" << std::endl;
+		}
 	}
 	return weight;
 }
@@ -268,6 +276,72 @@ int 					Computer::observeAround(int x, int y)
 	// 	std::cout << "observeAround weight: " << weight << std::endl;
 	return weight;
 }
+
+int			Computer::countAlignements()
+{
+	int weight = 0;
+
+	for (unsigned int i = 0; i < _currentBoard->_alignements.size(); i++)
+	{
+		if (_currentBoard->_alignements[i]->getNbr() == 5)
+		{
+			if (_currentBoard->_alignements[i]->getPawnBegin()->getPlayer()->getName() == getName())
+			{
+				weight += 10000;
+				// check si il peut etre capture. dans ce cas il vaut moins ?
+			}
+			else if (_currentBoard->_alignements[i]->getPawnBegin()->getPlayer()->getName() != getName())
+			{
+				weight -= 15000;
+				// check si il peut etre capture. dans ce cas il vaut moins ?
+			}
+		}
+		else if (_currentBoard->_alignements[i]->getNbr() == 4)
+		{
+			if (_currentBoard->_alignements[i]->getPawnBegin()->getPlayer()->getName() == getName())
+			{
+				weight += 1000;
+				// check si il peut etre capture. dans ce cas il vaut moins ?
+			}
+			else if (_currentBoard->_alignements[i]->getPawnBegin()->getPlayer()->getName() != getName())
+			{
+				weight -= 1500;
+				// check si il peut etre capture. dans ce cas il vaut moins ?
+			}
+		}
+		else if (_currentBoard->_alignements[i]->getNbr() == 3)
+		{
+			if (_currentBoard->_alignements[i]->getPawnBegin()->getPlayer()->getName() == getName())
+			{
+				weight += 100;
+				// check si il peut etre capture. dans ce cas il vaut moins ?
+			}
+			else if (_currentBoard->_alignements[i]->getPawnBegin()->getPlayer()->getName() != getName())
+			{
+				weight -= 110;
+				// check si il peut etre capture. dans ce cas il vaut moins ?
+			}
+		}
+		else if (_currentBoard->_alignements[i]->getNbr() == 2)
+		{
+			if (_currentBoard->_alignements[i]->getPawnBegin()->getPlayer()->getName() == getName())
+			{
+				weight += 10;
+				// check si il peut etre capture. dans ce cas il vaut moins ?
+			}
+			else if (_currentBoard->_alignements[i]->getPawnBegin()->getPlayer()->getName() != getName())
+			{
+				weight -= 11;
+				// check si il peut etre capture. dans ce cas il vaut moins ?
+			}
+		}
+	}
+	std::cout << "weight: " << weight << std::endl;
+	return weight;
+}
+
+
+
 void			Computer::setWeight(int x, int y)
 {
 	int weight = 1;
@@ -280,14 +354,21 @@ void			Computer::setWeight(int x, int y)
 			weight -= 1000;
 	}
 	this->_tmp->getGrandSons()[std::make_pair(x, y)]->_capturedPawns = _currentBoard->checkCapture(x, y); // nbr de pions captures par le petit fils
-	weight -= this->_tmp->getGrandSons()[std::make_pair(x, y)]->_capturedPawns.size() * 10; // * 10 a revoir
+	weight +=  (this->_tmp->_capturedPawns.size() - this->_tmp->getGrandSons()[std::make_pair(x, y)]->_capturedPawns.size()) * 100;
 
-	weight += this->_tmp->_capturedPawns.size() * 10; // * 10 a revoir
+
+	weight += countAlignements();
+
+
+
+	// weight -= this->_tmp->getGrandSons()[std::make_pair(x, y)]->_capturedPawns.size() * 10; // * 10 a revoir
+
+	// weight += this->_tmp->_capturedPawns.size() * 10; // * 10 a revoir
 
 	// std::cout << "Computer::setWeight BEFORE spyAround: " << weight << std::endl;
-	weight += spyAround(x, y) * 100;
+	// weight += spyAround(x, y) * 100;
 	// std::cout << "Computer::setWeight AFTER spyAround: " << weight << std::endl;
-	weight += observeAround(x, y);
+	// weight += observeAround(x, y);
 	// std::cout << "Computer::setWeight AFTER observeAround: " << weight << std::endl;
 
 	this->_tmp->getGrandSons()[std::make_pair(x, y)]->setWeight(weight);

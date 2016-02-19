@@ -34,6 +34,7 @@ public:
 	int 								observeOwn(int x, int y, Pawn* currentPawn);
 	int 								getGrandSonsMin(Possibility* son);
 	Possibility* 						getSonsMax();
+	int									countAlignements();
 
 private:
 	std::vector<Possibility*> 	_sons;

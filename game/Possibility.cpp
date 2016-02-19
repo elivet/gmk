@@ -1,14 +1,16 @@
 #include "Possibility.hpp"
 
-Possibility::Possibility( void ): _weight(0)
+Possibility::Possibility( void )
 {
+	_weight = -1 * 2147483648;
 	return ;
 }
 
-Possibility::Possibility( int x, int y, int player ): _player(player), _x(x), _y(y), _weight(0)
+Possibility::Possibility( int x, int y, int player ): _player(player), _x(x), _y(y)
 {
 	// std::cout << "tg : " << _player << std::endl;
 	_player = player;
+	_weight = -1 * 2147483648;
 	return ;
 }
 
