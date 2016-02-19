@@ -69,10 +69,11 @@ re:				fclean all
 install:
 	@if [ ! -d "~/.brew" ] ; \
 	then \
-		brew update; \
+		/usr/local/bin/brew update; \
 	fi;
-	@mkdir -p ~/Library/Caches
-	@mkdir -p ~/Library/Caches/Homebrew
+	@export HOMEBREW_TEMP=/tmp/mytemp
+	@export HOMEBREW_CACHE=/tmp/mycache
+	@mkdir -p /tmp/mycache /tmp/mytemp
 	@~/.brew/bin/brew install homebrew/versions/glfw3
 
 .PHONY:		all re fclean clean
