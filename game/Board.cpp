@@ -211,8 +211,9 @@ void		Board::erase(std::pair<int, int> xy)
 	unsigned int stop = pawn->_alignements.size();
 	std::cout << "Board::erase pawn:" << std::endl;
 	pawn->toString();
-
-	for (unsigned int j = 0; j < stop; j++)
+	std::cout << " >>>>>>>>>>>>>>>>>>>>>>>>>>>>            Board::erase FIRST SIZE: " << stop << std::endl;
+	unsigned int j = 0;
+	while ( j < stop)
 	{
 		// std::cout << "Board::erase 11 _alignements[j]->toString()" << std::endl;
 		// if (!pawn->_alignements[j])
@@ -227,18 +228,23 @@ void		Board::erase(std::pair<int, int> xy)
 		std::cout << "Board::erase 12" << std::endl;
 			determinePawnBegin(pawn->_alignements[j]);
 		std::cout << "Board::erase 13" << std::endl;
+			j++;
 		}
 		else if (pawn->_alignements[j]->getPawnEnd()->getX() == pawn->getX() && pawn->_alignements[j]->getPawnEnd()->getY() == pawn->getY())
 		{
 		std::cout << "Board::erase 14" << std::endl;
 			determinePawnEnd(pawn->_alignements[j]);
 		std::cout << "Board::erase 15" << std::endl;
+			j++;
 		}
 		else
 		{
 		std::cout << "Board::erase 16" << std::endl;
 			erasePawnInsideAlignement(pawn->_alignements[j], pawn);
+			if (stop == pawn->_alignements.size())
+				j++;
 			stop =  pawn->_alignements.size();
+			std::cout << " >>>>>>>>>>>>>>>>>>>>>>>>>>>>            Board::erase after erasePawnInsideAlignement SIZE: " << stop << std::endl;
 			// Alignement* clone = new Alignement(*_alignements[j]);			
 			// _alignements[j]->setPawnBegin(pawn);
 			// clone->setPawnEnd(pawn);

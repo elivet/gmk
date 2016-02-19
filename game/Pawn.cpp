@@ -98,8 +98,8 @@ void	Pawn::deleteAlignement(Alignement* al)
 		return ;
 	}
 		std::cout << "Pawn::deleteAlignement 1.5" << std::endl;
-
-	for (unsigned int i = 0; i < _alignements.size(); i++)
+	unsigned int i = 0;
+	while ( i < _alignements.size())
 	{
 		std::cout << "Pawn::deleteAlignement 2" << std::endl;
 	if (_alignements[i] == al)
@@ -119,6 +119,8 @@ void	Pawn::deleteAlignement(Alignement* al)
 	// 		}
 	std::cout << "Pawn::deleteAlignement 8" << std::endl;
 		}
+		else 
+			i++;
 	}
 	std::cout << "Pawn::deleteAlignement 9" << std::endl;
 }
