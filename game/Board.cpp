@@ -295,7 +295,7 @@ bool		Board::checkWinCaptureAroundPawn(Pawn *p, Alignement *al, int x, int y)
 				Pawn *empty = findPawn(new_x, new_y);
 				if (!empty && new_x >= 0 && new_x <= 18 && new_y >= 0 && new_y <= 18)
 				{	
-					std::cout << "space is empty" << std::endl;
+					//std::cout << "space is empty" << std::endl;
 					return false;				
 				}
 			}
@@ -310,7 +310,7 @@ bool		Board::checkWinCaptureAroundPawn(Pawn *p, Alignement *al, int x, int y)
 				Pawn *empty = findPawn(new_x, new_y);
 				if (!empty && new_x >= 0 && new_x <= 18 && new_y >= 0 && new_y <= 18)
 				{	
-					std::cout << "space is empty" << std::endl;
+					//std::cout << "space is empty" << std::endl;
 					return false;				
 				}
 			}
@@ -355,7 +355,7 @@ bool		Board::checkWinCapture(Alignement *al)
 	int i = 0;
 	while (tmp != al->getPawnEnd())
 	{
-		std::cout << "Pawn" << i << ": " << tmp->getX() << " - " << tmp->getY() << std::endl;
+		//std::cout << "Pawn" << i << ": " << tmp->getX() << " - " << tmp->getY() << std::endl;
 		if (!checkWinCapturePawn(tmp, al))
 			return false;
 		tmp = findPawn(tmp->getX() + al->getNx(), tmp->getY() + al->getNy());
@@ -456,6 +456,11 @@ void		Board::checkNeighbour(std::pair<int,int> key1, std::pair<int,int> key2)
 			findAlignement(tmpPawn, key2);
 	}
 	return ;
+}
+
+bool		Board::isPairInsideBoard(int x, int y)
+{
+	return (x >= 0 && x <= 18 && y >= 0 && y <= 18);
 }
 
 void		Board::stockAlignement(std::pair<int,int> xy)

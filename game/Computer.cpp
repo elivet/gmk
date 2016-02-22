@@ -371,7 +371,7 @@ int			Computer::countAlignements(int x, int y)
 			}
 		}
 	}
-	std::cout << "weight: " << weight << std::endl;
+	//std::cout << "weight: " << weight << std::endl;
 	return weight;
 }
 

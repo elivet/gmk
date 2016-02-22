@@ -48,7 +48,7 @@ public:
 	void								deleteAlignement(Alignement* align);
 	void								deleteAlignementFromBoard(Alignement* align);
 
-
+	bool								isPairInsideBoard(int x, int y);
 
 	std::map<std::pair<int,int>, Pawn*>		getPawns();
 	int 									getWin();
