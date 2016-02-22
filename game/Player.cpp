@@ -79,42 +79,50 @@ bool					Player::isDoubleThreeForVector(Board* board, std::pair<int, int> key, s
 	// _ 0 0 X 0
 	// 3 2 1 X O
 
-	std::cout << "1" << std::endl;
+	std::cout<< "tmp1" << " " << tmp1_x << ":" << tmp1_y;
+	std::cout<< " - tmp2" << " " << tmp2_x << ":" << tmp2_y;
+	std::cout<< " - tmp3" << " " << tmp3_x << ":" << tmp3_y;
+	std::cout<< " - tmpO" << " " << tmpO_x << ":" << tmpO_y << std::endl;
+	std::cout << "1 ";
 	if (board->isPairInsideBoard(tmp1_x, tmp1_y) && board->isPairInsideBoard(tmp2_x, tmp2_y) && board->isPairInsideBoard(tmpO_x, tmpO_y))
 	{
-		std::cout << "2" << std::endl;
+		std::cout << "2 ";
 		//if we are on the situation with three pawns aligned ? ? 0 X _ [X: the pawn we are checking | 0: current player pawn] 
 		tmp1 = board->findPawn(tmp1_x, tmp1_y);
+
 		if (tmp1 != NULL && tmp1->getPlayer()->getName() == this->getName())
 		{
-			std::cout << "3" << std::endl;
+			std::cout << "3 ";
 			// ? 0 0 X _
 			tmp2 = board->findPawn(tmp2_x, tmp2_y);
 			if (tmp2 != NULL && tmp2->getPlayer()->getName() == this->getName())
 			{
-				std::cout << "4" << std::endl;
+				std::cout << "4 ";
 				tmpOposite = board->findPawn(tmpO_x, tmpO_y);
 				//? 0 0 X _  TRUE ? 0 0 X . FALSE 
 				if (tmpOposite == NULL)
 					std::cout << "trouver "<< std::endl;
 				return (tmpOposite == NULL);
 			}
+			std::cout << "" << std::endl;
 		}
 		else if (board->isPairInsideBoard(tmp3_x, tmp3_y)) // ? ? _ X _
 		{
-			std::cout << "5" << std::endl;
+			std::cout << "5 ";
 			tmp2 = board->findPawn(tmp2_x, tmp2_y);
 			tmp3 = board->findPawn(tmp3_x, tmp3_y);
 			if (tmp2 != NULL && tmp2->getPlayer()->getName() == this->getName() &&
 				tmp3 != NULL && tmp3->getPlayer()->getName() == this->getName())
 			{
-				std::cout << "6" << std::endl;
+				std::cout << "6 " << std::endl;
 				tmpOposite = board->findPawn(tmpO_x, tmpO_y);
 				if (tmpOposite == NULL)
 					std::cout << "trouver "<< std::endl;
 				return (tmpOposite == NULL);
 			}
+			std::cout << "" << std::endl;
 		}
+		std::cout << "" << std::endl;
 	}
 	return false;
 }
