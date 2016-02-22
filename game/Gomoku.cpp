@@ -88,35 +88,28 @@ void			Gomoku::playerTurn(Player *player)
 
 	if (!check && isClicked())
 	{
-		std::cout << "Gomoku::playerTurn 1 " << std::endl;
 		while (player->referee(_currentBoard, getPair()) == true) // while ? 
 		{
-			std::cout << "Gomoku::playerTurn 1 start" << std::endl;
 			ret = player->play(_currentBoard, getPair());
 			_currentBoard->insert(ret, player);
 			capturePawns(_currentBoard->checkCapture(ret.first, ret.second), player);
 			_currentBoard->stockAlignement(ret);
-			std::cout << "Gomoku::playerTurn 1 end " << std::endl;
 			endTurn();
 		}
 	}
 	else if (check)
 	{
-			std::cout << "Gomoku::playerTurn 2 start " << std::endl;
 		ret2 = check->play(_currentBoard);
 		ret = std::make_pair(ret2->getX(), ret2->getY());
-		std::cout << "ret2->getX()" << ret2->getX() << "ret2->getY()" << ret2->getY() << std::endl;
 		capturePawns(ret2->_capturedPawns, player);
 		while (!check->referee(_currentBoard, ret))
 		{
 			ret2 = check->play(_currentBoard);
 			ret = std::make_pair(ret2->getX(), ret2->getY());
-			std::cout << "ret2->getX()" << ret2->getX() << "ret2->getY()" << ret2->getY() << std::endl;
 			capturePawns(ret2->_capturedPawns, player);
 		}
 		_currentBoard->insert(ret, player);
 		_currentBoard->stockAlignement(ret);
-			std::cout << "Gomoku::playerTurn 2 end " << std::endl;
 		endTurn();
 	}
 }

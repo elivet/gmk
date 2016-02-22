@@ -108,11 +108,11 @@ Possibility* 					Computer::getSonsMax() //
 
 	for (unsigned int i = 0; i < _sons.size(); i++)
 	{
-			std::cout << "Computer::getSonsMax _sons[i]->getWeight() : " << _sons[i]->getWeight() << " ret->getWeight(): " <<  ret->getWeight() << std::endl;
+			// std::cout << "Computer::getSonsMax _sons[i]->getWeight() : " << _sons[i]->getWeight() << " ret->getWeight(): " <<  ret->getWeight() << std::endl;
 		if (_sons[i]->getWeight() >= ret->getWeight())
 		{
 			ret = _sons[i];
-			std::cout << " FOUND SONS MAAAAXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << std::endl;
+			// std::cout << " FOUND SONS MAAAAXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << std::endl;
 		}
 	}
 	return ret;
@@ -127,7 +127,7 @@ int 					Computer::getGrandSonsMin(Possibility* son)
 		if (it->second->getWeight() <= weight && it->second->getWeight() > -2147483648)
 		{
 			weight = it->second->getWeight();	
-			std::cout << " FOUND GRANDSONS MINNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN" << std::endl;
+			// std::cout << " FOUND GRANDSONS MINNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN" << std::endl;
 		}
 	}
 	return weight;
@@ -186,100 +186,127 @@ bool 					Computer::spaceDisp(Alignement* alignement, int nbr)
 	return false;
 }
 
-bool 					Computer::inAlignementWay(Alignement* alignement, Pawn* currentPawn)
+int 					Computer::inAlignementWay(Alignement* alignement, Pawn* currentPawn)
 {
+	Pawn *tmp;
 	if (alignement->getPawnEnd()->getX() + alignement->getNx() == currentPawn->getX() && alignement->getPawnEnd()->getY() + alignement->getNy() == currentPawn->getY())
-		return true;
+	{
+		tmp = _currentBoard->findPawn(currentPawn->getX() + alignement->getNx(), currentPawn->getY() + alignement->getNy());
+		if (tmp && tmp->getPlayer()->getName() == getName())
+		{
+			tmp = _currentBoard->findPawn(currentPawn->getX() + (alignement->getNx() * 2), currentPawn->getY() + (alignement->getNy() * 2));
+			if (tmp && tmp->getPlayer()->getName() == getName())
+				return 3;
+			return 2;
+		}
+		return 1;
+	}	
 	if (alignement->getPawnBegin()->getX() + alignement->getPx() == currentPawn->getX() && alignement->getPawnBegin()->getY() + alignement->getPy() == currentPawn->getY())
-		return true;
-	return false;
-}
-
-int 					Computer::spyOpponent(int x, int y, Pawn* currentPawn)
-{
-	int 	weight = 0;
-	Pawn*	neighbourg = _currentBoard->findPawn(x, y);
-
-	if (neighbourg && neighbourg->getPlayer()->getName() != currentPawn->getPlayer()->getName())
 	{
-		for (unsigned int i = 0; i < neighbourg->_alignements.size(); i++)
+		tmp = _currentBoard->findPawn(currentPawn->getX() + alignement->getPx(), currentPawn->getY() + alignement->getPy());
+		if (tmp && tmp->getPlayer()->getName() == getName())
 		{
-			// std::cout << "spyOpponent alignementloop" << std::endl;
-			if (inAlignementWay(neighbourg->_alignements[i], currentPawn) && spaceDisp(neighbourg->_alignements[i], neighbourg->_alignements[i]->getNbr()))
-			{
-				weight = neighbourg->_alignements[i]->getNbr() * 50;
-				return weight;
-			}
+			tmp = _currentBoard->findPawn(currentPawn->getX() + (alignement->getPx() * 2), currentPawn->getY() + (alignement->getPy() * 2));
+			if (tmp && tmp->getPlayer()->getName() == getName())
+				return 3;
+			return 2;
 		}
+		return 1;
 	}
-	return weight;
+	return 0;
 }
 
-int 					Computer::spyAround(int x, int y)
+// int 					Computer::spyOpponent(int x, int y, Pawn* currentPawn)
+// {
+// 	int 	weight = 0;
+// 	Pawn*	neighbourg = _currentBoard->findPawn(x, y);
+
+// 	if (neighbourg && neighbourg->getPlayer()->getName() != currentPawn->getPlayer()->getName())
+// 	{
+// 		for (unsigned int i = 0; i < neighbourg->_alignements.size(); i++)
+// 		{
+// 			// std::cout << "spyOpponent alignementloop" << std::endl;
+// 			if (inAlignementWay(neighbourg->_alignements[i], currentPawn) && spaceDisp(neighbourg->_alignements[i], neighbourg->_alignements[i]->getNbr()))
+// 			{
+// 				weight = neighbourg->_alignements[i]->getNbr() * 50;
+// 				return weight;
+// 			}
+// 		}
+// 	}
+// 	return weight;
+// }
+
+// int 					Computer::spyAround(int x, int y)
+// {
+// 	int weight = 0;
+// 	Pawn*	current = _currentBoard->findPawn(x, y);
+
+// 	if (current)
+// 	{
+// 		weight += spyOpponent(x - 1, y, current);
+// 		weight += spyOpponent(x - 1, y - 1, current);
+// 		weight += spyOpponent(x + 1, y, current);
+// 		weight += spyOpponent(x + 1, y + 1, current);
+// 		weight += spyOpponent(x, y - 1, current);
+// 		weight += spyOpponent(x, y + 1, current);
+// 		weight += spyOpponent(x + 1, y - 1, current);
+// 		weight += spyOpponent(x - 1, y + 1, current);
+// 	}
+// 	// if (weight > 2)
+// 	// 	std::cout << "spyAround weight: " << weight << std::endl;
+// 	return weight;
+// }
+
+// int 					Computer::observeOwn(int x, int y, Pawn* currentPawn)
+// {
+// 	int 	weight = 0;
+// 	Pawn*	neighbourg = _currentBoard->findPawn(x, y);
+
+// 	if (neighbourg && neighbourg->getPlayer()->getName() == currentPawn->getPlayer()->getName())
+// 	{
+// 		for (unsigned int i = 0; i < neighbourg->_alignements.size(); i++)
+// 		{
+// 			// std::cout << "observeOwn alignementloop" << std::endl;
+// 			if (inAlignementWay(neighbourg->_alignements[i], currentPawn) && spaceDisp(neighbourg->_alignements[i], neighbourg->_alignements[i]->getNbr()))
+// 			{
+// 				weight = neighbourg->_alignements[i]->getNbr() * 100;
+// 				return weight;
+// 			}
+// 		}
+// 	}
+// 	return weight;
+// }
+
+// int 					Computer::observeAround(int x, int y)
+// {
+// 	int weight = 0;
+// 	Pawn*	current = _currentBoard->findPawn(x, y);
+
+// 	if (current)
+// 	{
+// 		weight += observeOwn(x - 1, y, current);
+// 		weight += observeOwn(x - 1, y - 1, current);
+// 		weight += observeOwn(x + 1, y, current);
+// 		weight += observeOwn(x + 1, y + 1, current);
+// 		weight += observeOwn(x, y - 1, current);
+// 		weight += observeOwn(x, y + 1, current);
+// 		weight += observeOwn(x + 1, y - 1, current);
+// 		weight += observeOwn(x - 1, y + 1, current);
+// 	}
+// 	// if (weight > 2)
+// 	// 	std::cout << "observeAround weight: " << weight << std::endl;
+// 	return weight;
+// }
+
+int			Computer::countAlignements(int x, int y)
 {
 	int weight = 0;
-	Pawn*	current = _currentBoard->findPawn(x, y);
+	Pawn *currentPawn = _currentBoard->findPawn(x, y);
 
-	if (current)
-	{
-		weight += spyOpponent(x - 1, y, current);
-		weight += spyOpponent(x - 1, y - 1, current);
-		weight += spyOpponent(x + 1, y, current);
-		weight += spyOpponent(x + 1, y + 1, current);
-		weight += spyOpponent(x, y - 1, current);
-		weight += spyOpponent(x, y + 1, current);
-		weight += spyOpponent(x + 1, y - 1, current);
-		weight += spyOpponent(x - 1, y + 1, current);
-	}
-	// if (weight > 2)
-	// 	std::cout << "spyAround weight: " << weight << std::endl;
-	return weight;
-}
+	if (!currentPawn)
+		std::cout << "PRBLM >>>>>>>>>>>>>>>>>>>>>>>       Computer::countAlignements !currentPawn" << std::endl;
 
-int 					Computer::observeOwn(int x, int y, Pawn* currentPawn)
-{
-	int 	weight = 0;
-	Pawn*	neighbourg = _currentBoard->findPawn(x, y);
-
-	if (neighbourg && neighbourg->getPlayer()->getName() == currentPawn->getPlayer()->getName())
-	{
-		for (unsigned int i = 0; i < neighbourg->_alignements.size(); i++)
-		{
-			// std::cout << "observeOwn alignementloop" << std::endl;
-			if (inAlignementWay(neighbourg->_alignements[i], currentPawn) && spaceDisp(neighbourg->_alignements[i], neighbourg->_alignements[i]->getNbr()))
-			{
-				weight = neighbourg->_alignements[i]->getNbr() * 100;
-				return weight;
-			}
-		}
-	}
-	return weight;
-}
-
-int 					Computer::observeAround(int x, int y)
-{
-	int weight = 0;
-	Pawn*	current = _currentBoard->findPawn(x, y);
-
-	if (current)
-	{
-		weight += observeOwn(x - 1, y, current);
-		weight += observeOwn(x - 1, y - 1, current);
-		weight += observeOwn(x + 1, y, current);
-		weight += observeOwn(x + 1, y + 1, current);
-		weight += observeOwn(x, y - 1, current);
-		weight += observeOwn(x, y + 1, current);
-		weight += observeOwn(x + 1, y - 1, current);
-		weight += observeOwn(x - 1, y + 1, current);
-	}
-	// if (weight > 2)
-	// 	std::cout << "observeAround weight: " << weight << std::endl;
-	return weight;
-}
-
-int			Computer::countAlignements()
-{
-	int weight = 0;
+	currentPawn = _currentBoard->findPawn(_tmp->getX(), _tmp->getY());
 
 	for (unsigned int i = 0; i < _currentBoard->_alignements.size(); i++)
 	{
@@ -287,16 +314,33 @@ int			Computer::countAlignements()
 		{
 			if (_currentBoard->_alignements[i]->getPawnBegin()->getPlayer()->getName() == getName())
 			{
+				weight += 100000;
+				// check si il peut etre capture. dans ce cas il vaut moins ?
+			}
+			else if (_currentBoard->_alignements[i]->getPawnBegin()->getPlayer()->getName() != getName())
+			{
+				weight -= 150000;
+				// check si il peut etre capture. dans ce cas il vaut moins ?
+			}
+		}
+		else if (_currentBoard->_alignements[i]->getNbr() == 4)
+		{
+			if (_currentBoard->_alignements[i]->getPawnBegin()->getPlayer()->getName() == getName())
+			{
 				weight += 10000;
+				// check si il est bloque. dans ce cas il vaut moins ?
+				
 				// check si il peut etre capture. dans ce cas il vaut moins ?
 			}
 			else if (_currentBoard->_alignements[i]->getPawnBegin()->getPlayer()->getName() != getName())
 			{
 				weight -= 15000;
+				// if (inAlignementWay(_currentBoard->_alignements[i], currentPawn))
+					weight += 50000 * inAlignementWay(_currentBoard->_alignements[i], currentPawn);			
 				// check si il peut etre capture. dans ce cas il vaut moins ?
 			}
 		}
-		else if (_currentBoard->_alignements[i]->getNbr() == 4)
+		else if (_currentBoard->_alignements[i]->getNbr() == 3)
 		{
 			if (_currentBoard->_alignements[i]->getPawnBegin()->getPlayer()->getName() == getName())
 			{
@@ -305,20 +349,9 @@ int			Computer::countAlignements()
 			}
 			else if (_currentBoard->_alignements[i]->getPawnBegin()->getPlayer()->getName() != getName())
 			{
-				weight -= 1500;
-				// check si il peut etre capture. dans ce cas il vaut moins ?
-			}
-		}
-		else if (_currentBoard->_alignements[i]->getNbr() == 3)
-		{
-			if (_currentBoard->_alignements[i]->getPawnBegin()->getPlayer()->getName() == getName())
-			{
-				weight += 100;
-				// check si il peut etre capture. dans ce cas il vaut moins ?
-			}
-			else if (_currentBoard->_alignements[i]->getPawnBegin()->getPlayer()->getName() != getName())
-			{
-				weight -= 110;
+				weight -= 1500;	
+				// if (inAlignementWay(_currentBoard->_alignements[i], currentPawn))
+					weight += 5000 * inAlignementWay(_currentBoard->_alignements[i], currentPawn);
 				// check si il peut etre capture. dans ce cas il vaut moins ?
 			}
 		}
@@ -326,12 +359,14 @@ int			Computer::countAlignements()
 		{
 			if (_currentBoard->_alignements[i]->getPawnBegin()->getPlayer()->getName() == getName())
 			{
-				weight += 10;
+				weight += 12;
 				// check si il peut etre capture. dans ce cas il vaut moins ?
 			}
 			else if (_currentBoard->_alignements[i]->getPawnBegin()->getPlayer()->getName() != getName())
 			{
-				weight -= 11;
+				weight -= 10;
+				// if (inAlignementWay(_currentBoard->_alignements[i], currentPawn))
+					weight += 500 * inAlignementWay(_currentBoard->_alignements[i], currentPawn);
 				// check si il peut etre capture. dans ce cas il vaut moins ?
 			}
 		}
@@ -346,18 +381,19 @@ void			Computer::setWeight(int x, int y)
 {
 	int weight = 1;
 	_currentBoard->insert(std::make_pair(x, y), this); // est pas deja insert ?
-	if (_currentBoard->checkwin(this, _opponent))
-	{
-		if (_currentBoard->getWin() == this->_name)
-			weight += 1000;
-		else
-			weight -= 1000;
-	}
+	// if (_currentBoard->checkwin(this, _opponent))
+	// {
+	// 	if (_currentBoard->getWin() == this->_name)
+	// 		weight += 1000;
+	// 	else
+	// 		weight -= 1000;
+	// }
 	this->_tmp->getGrandSons()[std::make_pair(x, y)]->_capturedPawns = _currentBoard->checkCapture(x, y); // nbr de pions captures par le petit fils
-	weight +=  (this->_tmp->_capturedPawns.size() - this->_tmp->getGrandSons()[std::make_pair(x, y)]->_capturedPawns.size()) * 100;
+	weight -=  (this->_tmp->_capturedPawns.size() - this->_tmp->getGrandSons()[std::make_pair(x, y)]->_capturedPawns.size()) * 50000;
+	weight += this->_tmp->_capturedPawns.size() * 25000; // * 10 a revoir
 
 
-	weight += countAlignements();
+	weight += countAlignements(x, y);
 
 
 
