@@ -121,6 +121,7 @@ void				Gomoku::play()
 	if (this->_currentBoard->checkwin(_player1, _player2))
 	{
 		// this->endGame();
+		this->_currentBoard->setGameEnded();
 		return ;
 	}
 	if (this->_firstPlayerTurn)

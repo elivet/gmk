@@ -52,12 +52,14 @@ public:
 
 	std::map<std::pair<int,int>, Pawn*>		getPawns();
 	int 									getWin();
+	void									setGameEnded();
 
 	int					render( OpenGlLib *	_renderLib );
 
 private:
 	std::map<std::pair<int,int>, Pawn*>		_pawns;
 	int										_win;
+	bool									_gameEnded;
 
 public:
 	std::vector<Alignement*> 				_alignements;

@@ -27,11 +27,14 @@ public:
 	void							replaceAlignement(Alignement* al1, Alignement* al2);
 	void							deleteAlignement(Alignement* al);
 	void							toString();
+	void							setIsWinnerAlignement();
+	bool							getIsInWinnerAlignement();
 
 private:
 	Player*						_player;
 	int							_x;
 	int							_y;
+	bool						_isWinnerAlignement;
 public:
 	std::vector<Alignement*>	_alignements;
 };
