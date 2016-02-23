@@ -33,6 +33,17 @@ Possibility &	Possibility::operator=( Possibility const & rhs )
 	return ( *this );
 }
 
+bool Possibility::operator==(Possibility &rhs)
+{
+	return(
+		this->_player == rhs.getPlayerName() &&
+		this->_x == rhs.getX() &&
+		this->_y == rhs.getY() &&
+		this->_weight == rhs.getWeight() &&
+		this->_capturedPawns.size() == rhs._capturedPawns.size()
+	);
+}
+
 
 void		Possibility::insert(int x, int y, int player)
 {
@@ -57,6 +68,11 @@ int		Possibility::getY( void )
 int		Possibility::getWeight( void )
 {
 	return this->_weight;
+}
+
+int		Possibility::getPlayerName( void )
+{
+	return this->_player;
 }
 
 std::map<std::pair<int,int>,Possibility*>	Possibility::getGrandSons( void )

@@ -99,17 +99,17 @@ void			Gomoku::playerTurn(Player *player)
 	}
 	else if (check)
 	{
-		std::cout << "brteiojt" << std::endl;
+		
 		ret2 = check->play(_currentBoard);
 		ret = std::make_pair(ret2->getX(), ret2->getY());
-		std::cout << "coord" << ret2->getX() << ":" << ret2->getY() << std::endl;
+		
 		capturePawns(ret2->_capturedPawns, player);
-		while (!check->referee(_currentBoard, ret))
-		{
+		// while (!check->referee(_currentBoard, ret))
+		// {
 			ret2 = check->play(_currentBoard);
 			ret = std::make_pair(ret2->getX(), ret2->getY());
 			capturePawns(ret2->_capturedPawns, player);
-		}
+		// }
 		_currentBoard->insert(ret, player);
 		_currentBoard->stockAlignement(ret);
 		endTurn();
