@@ -38,6 +38,8 @@ public:
 	bool						getVerbose( void ) const;
 	void						setAssist(bool isAssist);
 	bool						getAssist( void ) const;
+	void						setGameMode(int gameMode);
+	int							getGameMode( void ) const;
 	virtual int					update( OpenGlLib *	_renderLib, double delta );
 	virtual int					render( OpenGlLib *	_renderLib ) const;
 
@@ -48,8 +50,10 @@ private:
 	Player*						_player2;
 	bool						_firstPlayerTurn;
 	double *					_lastClick;
+
 	bool						_verbose;
 	bool						_assist;
+	int							_gameMode;
 
 };
 

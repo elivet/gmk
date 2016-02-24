@@ -15,6 +15,7 @@ Gomoku::Gomoku( void )
 	this->_firstPlayerTurn = true;
 	this->_verbose = false;
 	this->_assist = false;
+	this->_gameMode = 0;
 	return ;
 }
 
@@ -213,6 +214,16 @@ void				Gomoku::setAssist(bool isAssist)
 bool				Gomoku::getAssist( void ) const
 {
 	return this->_assist;
+}
+
+void				Gomoku::setGameMode(int gameMode)
+{
+	this->_gameMode = gameMode;
+}
+
+int				Gomoku::getGameMode( void ) const
+{
+	return this->_gameMode;
 }
 
 int					Gomoku::update( OpenGlLib *	_renderLib, double delta )
