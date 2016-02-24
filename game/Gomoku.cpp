@@ -3,8 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctime>
-#include <iostream>
-#include <cstdio>
+#include <time.h>
 
 Gomoku::Gomoku( void )
 {
@@ -104,10 +103,12 @@ void			Gomoku::playerTurn(Player *player)
 	}
 	else if (check)
 	{
-		std::clock_t start = 0;
-    	double duration = 0;
+		const clock_t begin_time = clock();
 
 		ret2 = check->play(_currentBoard);
+
+  		std::cout<<"Took " << float( clock () - begin_time ) /  CLOCKS_PER_SEC << "s to place pawn. "<< std::endl;
+
 		ret = std::make_pair(ret2->getX(), ret2->getY());
 		
 		capturePawns(ret2->_capturedPawns, player);
@@ -120,9 +121,7 @@ void			Gomoku::playerTurn(Player *player)
 		_currentBoard->insert(ret, player);
 		_currentBoard->stockAlignement(ret);
 
-		duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
 
-  		std::cout<<"Took " << duration << "s to place pawn. "<< std::endl;
 
 		endTurn();
 	}

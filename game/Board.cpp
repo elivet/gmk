@@ -79,7 +79,7 @@ void		Board::deleteAlignement(Alignement *align)
 {
 	if (!align || !align->getPawnBegin() || !align->getPawnEnd())
 	{
-		std::cout << "PRBLM >>>>>>>>>>>>>>>>>>>>>>         Board::deleteAlignement 1 ALIGN NULL" << std::endl;
+		//std::cout << "PRBLM >>>>>>>>>>>>>>>>>>>>>>         Board::deleteAlignement 1 ALIGN NULL" << std::endl;
 		return ;
 	}
 
@@ -91,8 +91,8 @@ void		Board::deleteAlignement(Alignement *align)
 	{
 		std::pair<int, int> currentKey = std::make_pair(tmp->getX()+ align->getNx(), tmp->getY() + align->getNy());
 		tmp = findPawn(currentKey.first, currentKey.second);
-		if (!tmp)
-			std::cout << "PRBLM >>>>>>>>>>>>>>>>>>>>>>>>>            Board::deleteAlignement !tmp" << std::endl;
+		// if (!tmp)
+		// 	std::cout << "PRBLM >>>>>>>>>>>>>>>>>>>>>>>>>            Board::deleteAlignement !tmp" << std::endl;
 		tmp->deleteAlignement(align);
 	}
 	deleteAlignementFromBoard(align);
@@ -139,8 +139,8 @@ void		Board::erase(std::pair<int, int> xy)
 {
 	Pawn* pawn = findPawn(xy.first, xy.second);
 
-	if (!pawn)
-		std::cout << "PRBLM >>>>>>>>>>>>>>>>>>>>>>>>>>>>            Board::erase" << std::endl;
+	// if (!pawn)
+	// 	std::cout << "PRBLM >>>>>>>>>>>>>>>>>>>>>>>>>>>>            Board::erase" << std::endl;
 
 	unsigned int stop = pawn->_alignements.size();
 	unsigned int j = 0;
@@ -359,8 +359,8 @@ bool		Board::checkWinCapture(Alignement *al)
 		if (!checkWinCapturePawn(tmp, al))
 			return false;
 		tmp = findPawn(tmp->getX() + al->getNx(), tmp->getY() + al->getNy());
-		if (!tmp)
-			std::cout << "PRBLM >>>>>>>>>>>>>>>>>>>>>>>                                 Board::checkWinCapture !tmp" << std::endl;
+		// if (!tmp)
+		// 	std::cout << "PRBLM >>>>>>>>>>>>>>>>>>>>>>>                                 Board::checkWinCapture !tmp" << std::endl;
 		i++;
 	}
 	std::cout << "Pawn" << i << ": " << tmp->getX() << " - " << tmp->getY() << std::endl;

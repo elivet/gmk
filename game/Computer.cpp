@@ -43,7 +43,7 @@ Possibility*			Computer::play(Board* currentBoard)
 	{
 		getSons(false);
 		max = getSonsMax();
-		std::cout << "max->getX(): "<< max->getX() << "max->getY(): "<< max->getY() << std::endl;
+		//std::cout << "max->getX(): "<< max->getX() << "max->getY(): "<< max->getY() << std::endl;
 		key = std::make_pair(max->getX(), max->getY());
 		_sons.clear();
 		// displaySons();
@@ -315,8 +315,8 @@ int			Computer::countAlignements(int x, int y)
 	int weight = 0;
 	Pawn *currentPawn = _currentBoard->findPawn(x, y);
 
-	if (!currentPawn)
-		std::cout << "PRBLM >>>>>>>>>>>>>>>>>>>>>>>       Computer::countAlignements !currentPawn" << std::endl;
+	// if (!currentPawn)
+	// 	std::cout << "PRBLM >>>>>>>>>>>>>>>>>>>>>>>       Computer::countAlignements !currentPawn" << std::endl;
 
 	currentPawn = _currentBoard->findPawn(_tmp->getX(), _tmp->getY());
 

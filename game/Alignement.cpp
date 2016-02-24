@@ -48,8 +48,8 @@ Alignement::Alignement( Pawn* p1, Pawn* p2, Board* currentBoard )
 	{
 		currentKey = std::make_pair(tmp->getX() + this->_nx, tmp->getY() + this->_ny);
 		tmp = currentBoard->findPawn(currentKey.first, currentKey.second);
-		if (!tmp)
-			std::cout << "PRBML >>>>>>>>>>>>>>>>>>>>>>>>>>>>>          NEW ALIGNEMENT !tmp" << std::endl;
+		// if (!tmp)
+		// 	std::cout << "PRBML >>>>>>>>>>>>>>>>>>>>>>>>>>>>>          NEW ALIGNEMENT !tmp" << std::endl;
 		tmp->_alignements.push_back(this);
 		this->_nbr++;
 	}
