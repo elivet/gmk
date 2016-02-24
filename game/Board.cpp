@@ -522,12 +522,12 @@ int					Board::render( OpenGlLib *	_renderLib )
 			if (_win == it->second->getPlayer()->getName())
 			{
 				if (it->second->getIsInWinnerAlignement())
-					_renderLib->drawCircle(x, y, 1, 0xFF0000);
+					_renderLib->drawCircle(x, y, 1, rand());
 				else
-					_renderLib->drawCircle(x, y, 1, 0x900000);
+					_renderLib->drawCircle(x, y, rand() % 2, it->second->getPlayer()->getColor());
 			}
 			else
-				_renderLib->drawCircle(x+0.1, y+0.1, 0.8, it->second->getPlayer()->getColor());
+				_renderLib->drawCircle(x, y, 1, it->second->getPlayer()->getColor());
 
 		}
 	}

@@ -15,6 +15,7 @@ Gomoku::Gomoku( void )
 	this->_firstPlayerTurn = true;
 	this->_verbose = false;
 	this->_assist = false;
+	this->_currentBoard->_assist = std::make_pair(-1, -1);
 	return ;
 }
 
@@ -90,13 +91,8 @@ void			Gomoku::playerTurn(Player *player)
 {
 	std::pair<int, int> ret;
 	Possibility*		ret2;
-	_currentBoard->_assist = std::make_pair(-1, -1);
 
 	Computer* check = dynamic_cast<Computer*>(player);
-	// if (check)
-	// 	std::cout << "Gomoku::playerTurn computer " << std::endl;
-	// else
-	// 	std::cout << "Gomoku::playerTurn not computer " << std::endl;
 
 	if (!check)
 	{
@@ -107,7 +103,7 @@ void			Gomoku::playerTurn(Player *player)
 		}
 		if (isClicked())
 		{
-
+			_currentBoard->_assist = std::make_pair(-1, -1);
 			while (player->referee(_currentBoard, getPair()) == true) // while ? 
 			{
 				ret = player->play(_currentBoard, getPair());
@@ -117,14 +113,6 @@ void			Gomoku::playerTurn(Player *player)
 				endTurn();
 			}
 		}
-		// while (player->referee(_currentBoard, getPair()) == true) // while ? 
-		// {
-		// 	ret = player->play(_currentBoard, getPair());
-		// 	_currentBoard->insert(ret, player);
-		// 	capturePawns(_currentBoard->checkCapture(ret.first, ret.second), player);
-		// 	_currentBoard->stockAlignement(ret);
-		// 	endTurn();
-		// }
 	}
 	else if (check)
 	{
@@ -234,28 +222,14 @@ int					Gomoku::update( OpenGlLib *	_renderLib, double delta )
 {
 	(void)_renderLib;
 	(void)delta;
-	// std::cout << "Gomoku::update1" << std::endl;
 	this->_lastClick = &(_renderLib->OpenGlLib::lastClick[0]);
-	// std::cout << "Gomoku::update2" << std::endl;
 	this->play();
-	// std::cout << "Gomoku::update3" << std::endl;
-
 	return true;
 }
 
 int					Gomoku::render( OpenGlLib *	_renderLib ) const
 {
-	// std::cout << "Gomoku::render1" << std::endl;
 	_currentBoard->render(_renderLib);
-	// std::cout << "Gomoku::render2" << std::endl;
-
-	// if (_renderLib->isMouseClicked())
-	// {
-	// 	int x = (int)_renderLib->OpenGlLib::lastClick[0];
-	// 	int y = (int)_renderLib->OpenGlLib::lastClick[1];
-	// 	_currentBoard->insert(std::make_pair(x, y), 1);
-	// 	_renderLib->OpenGlLib::lastClick[2] = 0.0;
-	// }
 	return true;
 }
 

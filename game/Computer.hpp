@@ -29,7 +29,7 @@ public:
 	void								setWeight(int x, int y);
 	int 								spyAround(int x, int y);
 	int 								spyOpponent(int x, int y, Pawn* currentPawn);
-	int 								inAlignementWay(Alignement* alignement, Pawn* currentPawn);
+	// int 								inAlignementWay(Alignement* alignement, Pawn* currentPawn);
 	bool 								spaceDisp(Alignement* alignement, int nbr);
 	int 								observeAround(int x, int y);
 	int 								observeOwn(int x, int y, Pawn* currentPawn);
