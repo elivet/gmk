@@ -43,7 +43,9 @@ Possibility*			Computer::play(Board* currentBoard)
 	{
 		getSons(false);
 		max = getSonsMax();
+
 		//std::cout << "max->getX(): "<< max->getX() << "max->getY(): "<< max->getY() << std::endl;
+
 		key = std::make_pair(max->getX(), max->getY());
 		_sons.clear();
 		// displaySons();
@@ -331,7 +333,7 @@ int			Computer::countAlignements(int x, int y)
 			}
 			else if (_currentBoard->_alignements[i]->getPawnBegin()->getPlayer()->getName() != getName())
 			{
-				weight -= 150000;
+				weight -= 500000;
 				// check si il peut etre capture. dans ce cas il vaut moins ?
 			}
 		}
@@ -346,9 +348,9 @@ int			Computer::countAlignements(int x, int y)
 			}
 			else if (_currentBoard->_alignements[i]->getPawnBegin()->getPlayer()->getName() != getName())
 			{
-				weight -= 15000;
+				weight -= 50000;
 				// if (inAlignementWay(_currentBoard->_alignements[i], currentPawn))
-					weight += 50000 * inAlignementWay(_currentBoard->_alignements[i], currentPawn);			
+					weight += 100000 * inAlignementWay(_currentBoard->_alignements[i], currentPawn);			
 				// check si il peut etre capture. dans ce cas il vaut moins ?
 			}
 		}
@@ -361,9 +363,9 @@ int			Computer::countAlignements(int x, int y)
 			}
 			else if (_currentBoard->_alignements[i]->getPawnBegin()->getPlayer()->getName() != getName())
 			{
-				weight -= 1500;	
+				weight -= 5000;	
 				// if (inAlignementWay(_currentBoard->_alignements[i], currentPawn))
-					weight += 5000 * inAlignementWay(_currentBoard->_alignements[i], currentPawn);
+					weight += 10000 * inAlignementWay(_currentBoard->_alignements[i], currentPawn);
 				// check si il peut etre capture. dans ce cas il vaut moins ?
 			}
 		}
@@ -371,19 +373,20 @@ int			Computer::countAlignements(int x, int y)
 		{
 			if (_currentBoard->_alignements[i]->getPawnBegin()->getPlayer()->getName() == getName())
 			{
-				weight += 12;
+				weight += 10;
 				// check si il peut etre capture. dans ce cas il vaut moins ?
 			}
 			else if (_currentBoard->_alignements[i]->getPawnBegin()->getPlayer()->getName() != getName())
 			{
-				weight -= 10;
+				weight -= 50;
 				// if (inAlignementWay(_currentBoard->_alignements[i], currentPawn))
-					weight += 500 * inAlignementWay(_currentBoard->_alignements[i], currentPawn);
+					weight += 100 * inAlignementWay(_currentBoard->_alignements[i], currentPawn);
 				// check si il peut etre capture. dans ce cas il vaut moins ?
 			}
 		}
 	}
-	//std::cout << "weight: " << weight << std::endl;
+	// std::cout << "weight: " << weight << std::endl;
+
 	return weight;
 }
 
