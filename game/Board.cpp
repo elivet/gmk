@@ -531,6 +531,12 @@ int					Board::render( OpenGlLib *	_renderLib )
 
 		}
 	}
+
+	if (_assist.first != -1 && _assist.second != -1)
+	{
+		_renderLib->drawCircle(_assist.first, _assist.second, 1, 0xFFD000);
+
+	}
 	return (true);
 }
 

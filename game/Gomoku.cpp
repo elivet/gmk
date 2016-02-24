@@ -63,6 +63,8 @@ void				Gomoku::init( void )
 			this->_player2 = new Computer();
 			_player1->setOpponent(_player2);
 			_player2->setOpponent(_player1);
+			if (getAssist())
+				this->_player1->_assistant = new Computer(1);
 		}
 		else
 		{
@@ -70,6 +72,11 @@ void				Gomoku::init( void )
 			this->_player2 = new Player(2, 0xFFFFFF);
 			_player1->setOpponent(_player2);
 			_player2->setOpponent(_player1);
+			if (getAssist())
+			{
+				this->_player1->_assistant = new Computer(1);
+				this->_player2->_assistant = new Computer(2);
+			}
 		}
 
 		srand(time(NULL)); // initialisation de rand
@@ -83,6 +90,7 @@ void			Gomoku::playerTurn(Player *player)
 {
 	std::pair<int, int> ret;
 	Possibility*		ret2;
+	_currentBoard->_assist = std::make_pair(-1, -1);
 
 	Computer* check = dynamic_cast<Computer*>(player);
 	// if (check)
@@ -90,16 +98,33 @@ void			Gomoku::playerTurn(Player *player)
 	// else
 	// 	std::cout << "Gomoku::playerTurn not computer " << std::endl;
 
-	if (!check && isClicked())
+	if (!check)
 	{
-		while (player->referee(_currentBoard, getPair()) == true) // while ? 
+		if (getAssist())
 		{
-			ret = player->play(_currentBoard, getPair());
-			_currentBoard->insert(ret, player);
-			capturePawns(_currentBoard->checkCapture(ret.first, ret.second), player);
-			_currentBoard->stockAlignement(ret);
-			endTurn();
+			ret2 = player->_assistant->play(_currentBoard);
+			_currentBoard->_assist = std::make_pair(ret2->getX(), ret2->getY());
 		}
+		if (isClicked())
+		{
+
+			while (player->referee(_currentBoard, getPair()) == true) // while ? 
+			{
+				ret = player->play(_currentBoard, getPair());
+				_currentBoard->insert(ret, player);
+				capturePawns(_currentBoard->checkCapture(ret.first, ret.second), player);
+				_currentBoard->stockAlignement(ret);
+				endTurn();
+			}
+		}
+		// while (player->referee(_currentBoard, getPair()) == true) // while ? 
+		// {
+		// 	ret = player->play(_currentBoard, getPair());
+		// 	_currentBoard->insert(ret, player);
+		// 	capturePawns(_currentBoard->checkCapture(ret.first, ret.second), player);
+		// 	_currentBoard->stockAlignement(ret);
+		// 	endTurn();
+		// }
 	}
 	else if (check)
 	{
@@ -110,19 +135,9 @@ void			Gomoku::playerTurn(Player *player)
   		std::cout<<"Took " << float( clock () - begin_time ) /  CLOCKS_PER_SEC << "s to place pawn. "<< std::endl;
 
 		ret = std::make_pair(ret2->getX(), ret2->getY());
-		
 		capturePawns(ret2->_capturedPawns, player);
-		// while (!check->referee(_currentBoard, ret))
-		// {
-			ret2 = check->play(_currentBoard);
-			ret = std::make_pair(ret2->getX(), ret2->getY());
-			capturePawns(ret2->_capturedPawns, player);
-		// }
 		_currentBoard->insert(ret, player);
 		_currentBoard->stockAlignement(ret);
-
-
-
 		endTurn();
 	}
 }

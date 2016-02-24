@@ -12,7 +12,8 @@ class Computer : public Player
 {
 public:
 	Computer( void );
- 	virtual ~Computer( void );
+ 	Computer( int name );
+	virtual ~Computer( void );
 	Computer( Computer const & src );
 
 	Computer &	operator=( Computer const & rhs );
@@ -35,6 +36,7 @@ public:
 	int 								getGrandSonsMin(Possibility* son);
 	Possibility* 						getSonsMax();
 	int									countAlignements(int x, int y);
+	int 								riskCapture(Alignement* alignement);
 
 private:
 	std::vector<Possibility*> 	_sons;
