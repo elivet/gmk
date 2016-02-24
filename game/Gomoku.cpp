@@ -2,6 +2,9 @@
 #include "../engine/CoreEngine.hpp"
 #include <stdlib.h>
 #include <stdio.h>
+#include <ctime>
+#include <iostream>
+#include <cstdio>
 
 Gomoku::Gomoku( void )
 {
@@ -11,6 +14,8 @@ Gomoku::Gomoku( void )
 	this->_lastClick[1] = 0;
 	this->_lastClick[2] = 0;
 	this->_firstPlayerTurn = true;
+	this->_verbose = false;
+	this->_assist = false;
 	return ;
 }
 
@@ -99,17 +104,26 @@ void			Gomoku::playerTurn(Player *player)
 	}
 	else if (check)
 	{
+		std::clock_t start = 0;
+    	double duration = 0;
+
 		ret2 = check->play(_currentBoard);
 		ret = std::make_pair(ret2->getX(), ret2->getY());
+		
 		capturePawns(ret2->_capturedPawns, player);
-		while (!check->referee(_currentBoard, ret))
-		{
+		// while (!check->referee(_currentBoard, ret))
+		// {
 			ret2 = check->play(_currentBoard);
 			ret = std::make_pair(ret2->getX(), ret2->getY());
 			capturePawns(ret2->_capturedPawns, player);
-		}
+		// }
 		_currentBoard->insert(ret, player);
 		_currentBoard->stockAlignement(ret);
+
+		duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
+
+  		std::cout<<"Took " << duration << "s to place pawn. "<< std::endl;
+
 		endTurn();
 	}
 }
@@ -119,6 +133,7 @@ void				Gomoku::play()
 	if (this->_currentBoard->checkwin(_player1, _player2))
 	{
 		// this->endGame();
+		this->_currentBoard->setGameEnded();
 		return ;
 	}
 	if (this->_firstPlayerTurn)
@@ -179,6 +194,26 @@ void				Gomoku::setCoreEngine(CoreEngine * coreEngine)
 CoreEngine*			Gomoku::getCoreEngine( void ) const
 {
 	return ( this->_coreEngine );
+}
+
+void				Gomoku::setVerbose(bool isDebugMode)
+{
+	this->_verbose = isDebugMode;
+}
+
+bool				Gomoku::getVerbose( void ) const
+{
+	return this->_verbose;
+}
+
+void				Gomoku::setAssist(bool isAssist)
+{
+	this->_assist = isAssist;
+}
+
+bool				Gomoku::getAssist( void ) const
+{
+	return this->_assist;
 }
 
 int					Gomoku::update( OpenGlLib *	_renderLib, double delta )

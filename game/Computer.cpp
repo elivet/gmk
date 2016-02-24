@@ -115,6 +115,18 @@ Possibility* 					Computer::getSonsMax() //
 			// std::cout << " FOUND SONS MAAAAXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << std::endl;
 		}
 	}
+	if (!this->referee(_currentBoard, std::make_pair(ret->getX(), ret->getY())))
+    {
+
+		for (std::vector<Possibility*>::iterator it = _sons.begin(); it != _sons.end(); /*it++*/)
+		{
+			if (*it == ret) 
+				it = _sons.erase(it);
+			else 
+	      		++it;
+	 	}
+        getSonsMax();
+    }
 	return ret;
 }
 
@@ -372,6 +384,7 @@ int			Computer::countAlignements(int x, int y)
 		}
 	}
 	// std::cout << "weight: " << weight << std::endl;
+
 	return weight;
 }
 

@@ -6,7 +6,7 @@ Pawn::Pawn( void )
 	return ;
 }
 
-Pawn::Pawn( Player* player, int x, int y) : _player( player ), _x(x), _y(y)
+Pawn::Pawn( Player* player, int x, int y) : _player( player ), _x(x), _y(y), _isWinnerAlignement(false)
 {
 	// std::cout << "PAWN CONST: " << _player->getName() << std::endl;
 	return ;
@@ -101,6 +101,16 @@ void	Pawn::deleteAlignement(Alignement* al)
 		else 
 			i++;
 	}
+}
+
+void	Pawn::setIsWinnerAlignement( )
+{
+	this->_isWinnerAlignement = true;
+}
+
+bool	Pawn::getIsInWinnerAlignement()
+{
+	return this->_isWinnerAlignement;
 }
 
 void Pawn::toString()

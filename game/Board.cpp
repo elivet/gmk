@@ -2,7 +2,7 @@
 #include "Pawn.hpp"
 #include "Alignement.hpp"
 
-Board::Board( void ): _win(0)
+Board::Board( void ): _win(0), _gameEnded(false)
 {
 	return ;
 }
@@ -295,7 +295,7 @@ bool		Board::checkWinCaptureAroundPawn(Pawn *p, Alignement *al, int x, int y)
 				Pawn *empty = findPawn(new_x, new_y);
 				if (!empty && new_x >= 0 && new_x <= 18 && new_y >= 0 && new_y <= 18)
 				{	
-					std::cout << "space is empty" << std::endl;
+					//std::cout << "space is empty" << std::endl;
 					return false;				
 				}
 			}
@@ -310,7 +310,7 @@ bool		Board::checkWinCaptureAroundPawn(Pawn *p, Alignement *al, int x, int y)
 				Pawn *empty = findPawn(new_x, new_y);
 				if (!empty && new_x >= 0 && new_x <= 18 && new_y >= 0 && new_y <= 18)
 				{	
-					std::cout << "space is empty" << std::endl;
+					//std::cout << "space is empty" << std::endl;
 					return false;				
 				}
 			}
@@ -355,7 +355,7 @@ bool		Board::checkWinCapture(Alignement *al)
 	int i = 0;
 	while (tmp != al->getPawnEnd())
 	{
-		std::cout << "Pawn" << i << ": " << tmp->getX() << " - " << tmp->getY() << std::endl;
+		//std::cout << "Pawn" << i << ": " << tmp->getX() << " - " << tmp->getY() << std::endl;
 		if (!checkWinCapturePawn(tmp, al))
 			return false;
 		tmp = findPawn(tmp->getX() + al->getNx(), tmp->getY() + al->getNy());
@@ -380,6 +380,16 @@ bool 		Board::checkwin(Player* player1, Player* player2)
 				std::cout << "WINNNERNNENRNNENRNRNENRNNRENRNRNRNRN" << std::endl;
 				_win = _alignements[i]->getPawnBegin()->getPlayer()->getName();
 
+				//******************************//
+				//Color Winning alignement
+				Pawn *tmp = _alignements[i]->getPawnBegin();
+				while (tmp != _alignements[i]->getPawnEnd())
+				{
+					tmp->setIsWinnerAlignement();
+					tmp = findPawn(tmp->getX() + _alignements[i]->getNx(), tmp->getY() + _alignements[i]->getNy());
+				}
+				tmp->setIsWinnerAlignement();
+				//******************************//
 				return true;
 			}
 		}
@@ -408,6 +418,11 @@ std::map<std::pair<int,int>, Pawn*>		Board::getPawns()
 int 			Board::getWin()
 {
 	return _win;
+}
+
+void		Board::setGameEnded()
+{
+	this->_gameEnded = true;
 }
 
 void		Board::createAlignement(Pawn* neighbour, std::pair<int,int> key)
@@ -458,6 +473,11 @@ void		Board::checkNeighbour(std::pair<int,int> key1, std::pair<int,int> key2)
 	return ;
 }
 
+bool		Board::isPairInsideBoard(int x, int y)
+{
+	return (x >= 0 && x <= 18 && y >= 0 && y <= 18);
+}
+
 void		Board::stockAlignement(std::pair<int,int> xy)
 {
 	checkNeighbour(std::make_pair(xy.first - 1, xy.second), xy); //left
@@ -494,7 +514,22 @@ int					Board::render( OpenGlLib *	_renderLib )
 		int x = it->first.first;
 		int y = it->first.second;
 
-		_renderLib->drawCircle(x, y, 1, it->second->getPlayer()->getColor());
+		if (!_gameEnded)
+			_renderLib->drawCircle(x, y, 1, it->second->getPlayer()->getColor());
+		else
+		{
+			
+			if (_win == it->second->getPlayer()->getName())
+			{
+				if (it->second->getIsInWinnerAlignement())
+					_renderLib->drawCircle(x, y, 1, 0xFF0000);
+				else
+					_renderLib->drawCircle(x, y, 1, 0x900000);
+			}
+			else
+				_renderLib->drawCircle(x+0.1, y+0.1, 0.8, it->second->getPlayer()->getColor());
+
+		}
 	}
 	return (true);
 }

@@ -15,6 +15,7 @@ public:
 	Possibility( Possibility const & src );
 
 	Possibility &	operator=( Possibility const & rhs );
+	bool 			operator==(Possibility &rhs);
 
 	void		insert(int x, int y, int player);
 
@@ -22,6 +23,7 @@ public:
 	int											getY( void );
 	std::map<std::pair<int,int>,Possibility*>	getGrandSons( void );
 	int											getWeight( void );
+	int											getPlayerName( void );
 
 	void 										setWeight(int weight);
 

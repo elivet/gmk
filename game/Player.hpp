@@ -19,6 +19,8 @@ public:
 
 	std::pair<int, int>			play(Board* currentBoard, std::pair<int, int> xy);
 	bool						referee(Board* currentBoard, std::pair<int, int> xy);
+	bool						isDoubleThree(Board* currentBoard, std::pair<int, int> key);
+	bool						isDoubleThreeForVector(Board* board, std::pair<int, int> key, std::pair<int, int> v);
 
 	int			getName() const;
 	int			getColor() const;
