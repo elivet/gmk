@@ -5,6 +5,7 @@
 # include <map>
 # include <vector>
 # include "../engine/OpenGlLib.hpp"
+# include <iostream>
 
 class Player;
 class Pawn;
@@ -63,6 +64,7 @@ private:
 
 public:
 	std::vector<Alignement*> 				_alignements;
+	std::pair<int, int> 					_assist;
 
 };
 

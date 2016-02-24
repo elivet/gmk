@@ -9,6 +9,13 @@ Computer::Computer( void )
 	return ;
 }
 
+Computer::Computer( int name )
+{
+	this->_name = name;
+	this->_capturedPawns = 0;
+	this->_color = 0xFFFFFF;
+	return ;
+}
 
 Computer::~Computer( void )
 {
@@ -200,193 +207,91 @@ bool 					Computer::spaceDisp(Alignement* alignement, int nbr)
 	return false;
 }
 
-int 					Computer::inAlignementWay(Alignement* alignement, Pawn* currentPawn)
+
+int 			Computer::riskCapture(Alignement* alignement)
 {
+	int ret = 0;
 	Pawn *tmp;
-	if (alignement->getPawnEnd()->getX() + alignement->getNx() == currentPawn->getX() && alignement->getPawnEnd()->getY() + alignement->getNy() == currentPawn->getY())
-	{
-		tmp = _currentBoard->findPawn(currentPawn->getX() + alignement->getNx(), currentPawn->getY() + alignement->getNy());
-		if (tmp && tmp->getPlayer()->getName() == getName())
-		{
-			tmp = _currentBoard->findPawn(currentPawn->getX() + (alignement->getNx() * 2), currentPawn->getY() + (alignement->getNy() * 2));
-			if (tmp && tmp->getPlayer()->getName() == getName())
-				return 3;
-			return 2;
-		}
-		return 1;
-	}	
-	if (alignement->getPawnBegin()->getX() + alignement->getPx() == currentPawn->getX() && alignement->getPawnBegin()->getY() + alignement->getPy() == currentPawn->getY())
-	{
-		tmp = _currentBoard->findPawn(currentPawn->getX() + alignement->getPx(), currentPawn->getY() + alignement->getPy());
-		if (tmp && tmp->getPlayer()->getName() == getName())
-		{
-			tmp = _currentBoard->findPawn(currentPawn->getX() + (alignement->getPx() * 2), currentPawn->getY() + (alignement->getPy() * 2));
-			if (tmp && tmp->getPlayer()->getName() == getName())
-				return 3;
-			return 2;
-		}
-		return 1;
-	}
-	return 0;
+	tmp = _currentBoard->findPawn(alignement->getPawnEnd()->getX() + alignement->getNx(), alignement->getPawnEnd()->getY() + alignement->getNy());
+	if (tmp && tmp->getPlayer()->getName() != alignement->getPawnBegin()->getPlayer()->getName())
+		ret++;
+	tmp = _currentBoard->findPawn(alignement->getPawnBegin()->getX() + alignement->getPx(), alignement->getPawnBegin()->getY() + alignement->getPy());
+	if (tmp && tmp->getPlayer()->getName() != alignement->getPawnBegin()->getPlayer()->getName())
+		ret++;
+	return ret;
+
 }
 
-// int 					Computer::spyOpponent(int x, int y, Pawn* currentPawn)
-// {
-// 	int 	weight = 0;
-// 	Pawn*	neighbourg = _currentBoard->findPawn(x, y);
 
-// 	if (neighbourg && neighbourg->getPlayer()->getName() != currentPawn->getPlayer()->getName())
-// 	{
-// 		for (unsigned int i = 0; i < neighbourg->_alignements.size(); i++)
-// 		{
-// 			// std::cout << "spyOpponent alignementloop" << std::endl;
-// 			if (inAlignementWay(neighbourg->_alignements[i], currentPawn) && spaceDisp(neighbourg->_alignements[i], neighbourg->_alignements[i]->getNbr()))
-// 			{
-// 				weight = neighbourg->_alignements[i]->getNbr() * 50;
-// 				return weight;
-// 			}
-// 		}
-// 	}
-// 	return weight;
-// }
-
-// int 					Computer::spyAround(int x, int y)
-// {
-// 	int weight = 0;
-// 	Pawn*	current = _currentBoard->findPawn(x, y);
-
-// 	if (current)
-// 	{
-// 		weight += spyOpponent(x - 1, y, current);
-// 		weight += spyOpponent(x - 1, y - 1, current);
-// 		weight += spyOpponent(x + 1, y, current);
-// 		weight += spyOpponent(x + 1, y + 1, current);
-// 		weight += spyOpponent(x, y - 1, current);
-// 		weight += spyOpponent(x, y + 1, current);
-// 		weight += spyOpponent(x + 1, y - 1, current);
-// 		weight += spyOpponent(x - 1, y + 1, current);
-// 	}
-// 	// if (weight > 2)
-// 	// 	std::cout << "spyAround weight: " << weight << std::endl;
-// 	return weight;
-// }
-
-// int 					Computer::observeOwn(int x, int y, Pawn* currentPawn)
-// {
-// 	int 	weight = 0;
-// 	Pawn*	neighbourg = _currentBoard->findPawn(x, y);
-
-// 	if (neighbourg && neighbourg->getPlayer()->getName() == currentPawn->getPlayer()->getName())
-// 	{
-// 		for (unsigned int i = 0; i < neighbourg->_alignements.size(); i++)
-// 		{
-// 			// std::cout << "observeOwn alignementloop" << std::endl;
-// 			if (inAlignementWay(neighbourg->_alignements[i], currentPawn) && spaceDisp(neighbourg->_alignements[i], neighbourg->_alignements[i]->getNbr()))
-// 			{
-// 				weight = neighbourg->_alignements[i]->getNbr() * 100;
-// 				return weight;
-// 			}
-// 		}
-// 	}
-// 	return weight;
-// }
-
-// int 					Computer::observeAround(int x, int y)
-// {
-// 	int weight = 0;
-// 	Pawn*	current = _currentBoard->findPawn(x, y);
-
-// 	if (current)
-// 	{
-// 		weight += observeOwn(x - 1, y, current);
-// 		weight += observeOwn(x - 1, y - 1, current);
-// 		weight += observeOwn(x + 1, y, current);
-// 		weight += observeOwn(x + 1, y + 1, current);
-// 		weight += observeOwn(x, y - 1, current);
-// 		weight += observeOwn(x, y + 1, current);
-// 		weight += observeOwn(x + 1, y - 1, current);
-// 		weight += observeOwn(x - 1, y + 1, current);
-// 	}
-// 	// if (weight > 2)
-// 	// 	std::cout << "observeAround weight: " << weight << std::endl;
-// 	return weight;
-// }
 
 int			Computer::countAlignements(int x, int y)
 {
 	int weight = 0;
 	Pawn *currentPawn = _currentBoard->findPawn(x, y);
+	int 	alignementSize = 0;
+	int 	alignementPlayer;
 
-	// if (!currentPawn)
-	// 	std::cout << "PRBLM >>>>>>>>>>>>>>>>>>>>>>>       Computer::countAlignements !currentPawn" << std::endl;
+	
 
 	currentPawn = _currentBoard->findPawn(_tmp->getX(), _tmp->getY());
 
 	for (unsigned int i = 0; i < _currentBoard->_alignements.size(); i++)
 	{
-		if (_currentBoard->_alignements[i]->getNbr() == 5)
+		alignementSize = _currentBoard->_alignements[i]->getNbr();
+		alignementPlayer = _currentBoard->_alignements[i]->getPawnBegin()->getPlayer()->getName();
+		if (alignementSize == 5)
 		{
-			if (_currentBoard->_alignements[i]->getPawnBegin()->getPlayer()->getName() == getName())
+			if (alignementPlayer == getName())
 			{
 				weight += 100000;
-				// check si il peut etre capture. dans ce cas il vaut moins ?
 			}
-			else if (_currentBoard->_alignements[i]->getPawnBegin()->getPlayer()->getName() != getName())
+			else if (alignementPlayer != getName())
 			{
 				weight -= 500000;
-				// check si il peut etre capture. dans ce cas il vaut moins ?
 			}
 		}
-		else if (_currentBoard->_alignements[i]->getNbr() == 4)
+		else if (alignementSize == 4)
 		{
-			if (_currentBoard->_alignements[i]->getPawnBegin()->getPlayer()->getName() == getName())
+			if (alignementPlayer == getName())
 			{
 				weight += 10000;
-				// check si il est bloque. dans ce cas il vaut moins ?
-				
-				// check si il peut etre capture. dans ce cas il vaut moins ?
+				if (riskCapture(_currentBoard->_alignements[i]) == 2)
+					weight -= 10000;				
 			}
-			else if (_currentBoard->_alignements[i]->getPawnBegin()->getPlayer()->getName() != getName())
+			else if (alignementPlayer != getName())
 			{
 				weight -= 50000;
-				// if (inAlignementWay(_currentBoard->_alignements[i], currentPawn))
-					weight += 100000 * inAlignementWay(_currentBoard->_alignements[i], currentPawn);			
-				// check si il peut etre capture. dans ce cas il vaut moins ?
+				weight += 10000 * riskCapture(_currentBoard->_alignements[i]);
 			}
 		}
-		else if (_currentBoard->_alignements[i]->getNbr() == 3)
+		else if (alignementSize == 3)
 		{
-			if (_currentBoard->_alignements[i]->getPawnBegin()->getPlayer()->getName() == getName())
+			if (alignementPlayer == getName())
 			{
 				weight += 1000;
-				// check si il peut etre capture. dans ce cas il vaut moins ?
+				if (riskCapture(_currentBoard->_alignements[i]) == 2)
+					weight -= 10000;
 			}
-			else if (_currentBoard->_alignements[i]->getPawnBegin()->getPlayer()->getName() != getName())
+			else if (alignementPlayer != getName())
 			{
 				weight -= 5000;	
-				// if (inAlignementWay(_currentBoard->_alignements[i], currentPawn))
-					weight += 10000 * inAlignementWay(_currentBoard->_alignements[i], currentPawn);
-				// check si il peut etre capture. dans ce cas il vaut moins ?
+				weight += 10000 * riskCapture(_currentBoard->_alignements[i]);
 			}
 		}
-		else if (_currentBoard->_alignements[i]->getNbr() == 2)
+		else if (alignementSize == 2)
 		{
-			if (_currentBoard->_alignements[i]->getPawnBegin()->getPlayer()->getName() == getName())
+			if (alignementPlayer == getName())
 			{
 				weight += 10;
-				// check si il peut etre capture. dans ce cas il vaut moins ?
+				weight -= 10000 * riskCapture(_currentBoard->_alignements[i]);
 			}
-			else if (_currentBoard->_alignements[i]->getPawnBegin()->getPlayer()->getName() != getName())
+			else if (alignementPlayer != getName())
 			{
 				weight -= 50;
-				// if (inAlignementWay(_currentBoard->_alignements[i], currentPawn))
-					weight += 100 * inAlignementWay(_currentBoard->_alignements[i], currentPawn);
-				// check si il peut etre capture. dans ce cas il vaut moins ?
+				weight += 10000 * riskCapture(_currentBoard->_alignements[i]);
 			}
 		}
 	}
-	// std::cout << "weight: " << weight << std::endl;
-
 	return weight;
 }
 
@@ -404,8 +309,8 @@ void			Computer::setWeight(int x, int y)
 	// 		weight -= 1000;
 	// }
 	this->_tmp->getGrandSons()[std::make_pair(x, y)]->_capturedPawns = _currentBoard->checkCapture(x, y); // nbr de pions captures par le petit fils
-	weight -=  (this->_tmp->_capturedPawns.size() - this->_tmp->getGrandSons()[std::make_pair(x, y)]->_capturedPawns.size()) * 50000;
-	weight += this->_tmp->_capturedPawns.size() * 25000; // * 10 a revoir
+	weight -=  (this->_tmp->_capturedPawns.size() - this->_tmp->getGrandSons()[std::make_pair(x, y)]->_capturedPawns.size()) * 25000;
+	weight += this->_tmp->_capturedPawns.size() * 50000; // * 10 a revoir
 
 
 	weight += countAlignements(x, y);

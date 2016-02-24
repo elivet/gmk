@@ -16,6 +16,7 @@ Gomoku::Gomoku( void )
 	this->_verbose = false;
 	this->_assist = false;
 	this->_gameMode = 0;
+	this->_currentBoard->_assist = std::make_pair(-1, -1);
 	return ;
 }
 
@@ -64,6 +65,8 @@ void				Gomoku::init( void )
 			this->_player2 = new Computer();
 			_player1->setOpponent(_player2);
 			_player2->setOpponent(_player1);
+			if (getAssist())
+				this->_player1->_assistant = new Computer(1);
 		}
 		else
 		{
@@ -71,6 +74,11 @@ void				Gomoku::init( void )
 			this->_player2 = new Player(2, 0xFFFFFF);
 			_player1->setOpponent(_player2);
 			_player2->setOpponent(_player1);
+			if (getAssist())
+			{
+				this->_player1->_assistant = new Computer(1);
+				this->_player2->_assistant = new Computer(2);
+			}
 		}
 
 		srand(time(NULL)); // initialisation de rand
@@ -80,18 +88,12 @@ void				Gomoku::init( void )
 			this->_firstPlayerTurn = false;
 }
 
-void			Gomoku::playerTurn(Player *player)
+void			Gomoku::Swap1Player(Player *player, int stepTo)
 {
 	std::pair<int, int> ret;
-	Possibility*		ret2;
-
-	Computer* check = dynamic_cast<Computer*>(player);
-	// if (check)
-	// 	std::cout << "Gomoku::playerTurn computer " << std::endl;
-	// else
-	// 	std::cout << "Gomoku::playerTurn not computer " << std::endl;
-
-	if (!check && isClicked())
+	static int step = 0;
+	std::cout << "Starting swap1 Mod step:" << step << std::endl;
+	if (isClicked())
 	{
 		while (player->referee(_currentBoard, getPair()) == true) // while ? 
 		{
@@ -100,6 +102,88 @@ void			Gomoku::playerTurn(Player *player)
 			capturePawns(_currentBoard->checkCapture(ret.first, ret.second), player);
 			_currentBoard->stockAlignement(ret);
 			endTurn();
+			step++;
+			if (step == stepTo)
+				this->setGameMode(0);
+		}
+	}
+
+}
+
+void			Gomoku::Swap1Computer(Player *player, int stepTo)
+{
+	static int step = 0;
+
+	std::pair<int, int> ret;
+
+	if (step == 0) 
+		ret = std::make_pair( 9, 9 );//computer
+	if (step == 1) 
+		ret = std::make_pair( 10, 9 );//player
+	if (step == 2) 
+		ret = std::make_pair( 10, 10 );//computer
+	if (step == 3) 
+		ret = std::make_pair( 10, 11 );//player
+	if (step == 4) 
+		ret = std::make_pair( 11, 11 );//computer
+	
+	_currentBoard->insert(ret, player);
+	capturePawns(_currentBoard->checkCapture(ret.first, ret.second), player);
+	_currentBoard->stockAlignement(ret);
+	endTurn();
+	step++;
+
+	if (step == stepTo)
+		this->setGameMode(0);
+}
+
+void			Gomoku::playerTurn(Player *player)
+{
+	std::pair<int, int> ret;
+	Possibility*		ret2;
+
+	Computer* check = dynamic_cast<Computer*>(player);
+
+	static int firstTurn = 0; // 1 for player 2 for computer
+	if (this->_gameMode == 1)
+	{
+		if (firstTurn == 0)
+			firstTurn = (!check) ? 1 : 2;
+
+		if (firstTurn == 1)
+			Swap1Player(player, 2);
+		else
+			Swap1Computer(player, 2);
+
+	}
+	else if (this->_gameMode == 2)
+	{
+		if (firstTurn == 0)
+			firstTurn = (!check) ? 1 : 2;
+
+		if (firstTurn == 1)
+			Swap1Player(player, 4);
+		else
+			Swap1Computer(player, 4);
+	}	
+	else if (!check)
+	{
+		if (getAssist())
+		{
+			ret2 = player->_assistant->play(_currentBoard);
+			_currentBoard->_assist = std::make_pair(ret2->getX(), ret2->getY());
+		}
+		if (isClicked())
+		{
+			_currentBoard->_assist = std::make_pair(-1, -1);
+			while (player->referee(_currentBoard, getPair()) == true) // while ? 
+			{
+				ret = player->play(_currentBoard, getPair());
+				_currentBoard->insert(ret, player);
+				capturePawns(_currentBoard->checkCapture(ret.first, ret.second), player);
+				_currentBoard->stockAlignement(ret);
+				endTurn();
+			}
 		}
 	}
 	else if (check)
@@ -111,19 +195,9 @@ void			Gomoku::playerTurn(Player *player)
   		std::cout<<"Took " << float( clock () - begin_time ) /  CLOCKS_PER_SEC << "s to place pawn. "<< std::endl;
 
 		ret = std::make_pair(ret2->getX(), ret2->getY());
-		
 		capturePawns(ret2->_capturedPawns, player);
-		// while (!check->referee(_currentBoard, ret))
-		// {
-			ret2 = check->play(_currentBoard);
-			ret = std::make_pair(ret2->getX(), ret2->getY());
-			capturePawns(ret2->_capturedPawns, player);
-		// }
 		_currentBoard->insert(ret, player);
 		_currentBoard->stockAlignement(ret);
-
-
-
 		endTurn();
 	}
 }
@@ -230,28 +304,14 @@ int					Gomoku::update( OpenGlLib *	_renderLib, double delta )
 {
 	(void)_renderLib;
 	(void)delta;
-	// std::cout << "Gomoku::update1" << std::endl;
 	this->_lastClick = &(_renderLib->OpenGlLib::lastClick[0]);
-	// std::cout << "Gomoku::update2" << std::endl;
 	this->play();
-	// std::cout << "Gomoku::update3" << std::endl;
-
 	return true;
 }
 
 int					Gomoku::render( OpenGlLib *	_renderLib ) const
 {
-	// std::cout << "Gomoku::render1" << std::endl;
 	_currentBoard->render(_renderLib);
-	// std::cout << "Gomoku::render2" << std::endl;
-
-	// if (_renderLib->isMouseClicked())
-	// {
-	// 	int x = (int)_renderLib->OpenGlLib::lastClick[0];
-	// 	int y = (int)_renderLib->OpenGlLib::lastClick[1];
-	// 	_currentBoard->insert(std::make_pair(x, y), 1);
-	// 	_renderLib->OpenGlLib::lastClick[2] = 0.0;
-	// }
 	return true;
 }
 

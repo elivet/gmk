@@ -7,6 +7,7 @@
 # include "Pawn.hpp" 
 class Pawn;
 class Alignement;
+class Computer;
 class Player
 {
 public:
@@ -34,6 +35,7 @@ protected:
 public:
 	std::vector<Alignement*>				_alignements;
 	int										_capturedPawns;
+	Computer*								_assistant;
 
 };
 

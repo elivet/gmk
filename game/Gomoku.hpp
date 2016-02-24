@@ -40,6 +40,8 @@ public:
 	bool						getAssist( void ) const;
 	void						setGameMode(int gameMode);
 	int							getGameMode( void ) const;
+	void						Swap1Player(Player *player, int step);
+	void						Swap1Computer(Player *player, int step);
 	virtual int					update( OpenGlLib *	_renderLib, double delta );
 	virtual int					render( OpenGlLib *	_renderLib ) const;
 
