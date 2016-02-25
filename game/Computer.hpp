@@ -39,9 +39,13 @@ public:
 	int 								riskCapture(Alignement* alignement);
 
 private:
-	std::vector<Possibility*> 	_sons;
 	Board* 						_currentBoard;
 	Possibility*				_tmp;
+
+public:
+	std::vector<Possibility*> 	_sons;
+	std::vector<Possibility*> 	_sonsDisplay;
+
 };
 
 #endif

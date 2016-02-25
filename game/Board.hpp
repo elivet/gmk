@@ -25,7 +25,6 @@ public:
 
 	void								insert(std::pair<int, int> xy, Player* player);
 	void								erase(std::pair<int, int> xy);
-	void								displayPawns( void );
 	Pawn*								findPawn( int x, int y);
 	bool 								checkwin(Player* player1, Player* player2);
 	bool								checkWinCapture(Alignement *al);

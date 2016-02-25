@@ -86,6 +86,9 @@ void				Gomoku::init( void )
 		nombre_aleatoire = rand() % 2;
 		if (nombre_aleatoire)
 			this->_firstPlayerTurn = false;
+
+		Computer* check = dynamic_cast<Computer*>(_player1);
+		_computer = (check) ? check : dynamic_cast<Computer*>(_player2);
 }
 
 void			Gomoku::Swap1Player(Player *player, int stepTo)
@@ -175,6 +178,7 @@ void			Gomoku::playerTurn(Player *player)
 		}
 		if (isClicked())
 		{
+			_computer->_sonsDisplay.clear();
 			_currentBoard->_assist = std::make_pair(-1, -1);
 			while (player->referee(_currentBoard, getPair()) == true) // while ? 
 			{
@@ -198,7 +202,11 @@ void			Gomoku::playerTurn(Player *player)
 		capturePawns(ret2->_capturedPawns, player);
 		_currentBoard->insert(ret, player);
 		_currentBoard->stockAlignement(ret);
+
+
+
 		endTurn();
+		
 	}
 }
 
@@ -309,8 +317,65 @@ int					Gomoku::update( OpenGlLib *	_renderLib, double delta )
 	return true;
 }
 
+static int getColorWeightGrandSons(int weight)
+{
+	if (weight <= -483648)
+		return 0xffe6f2;
+	else if (weight <= -2000)
+		return 0xff80bd;
+	else if (weight <= 0)
+		return 0xff3396;
+	else if (weight <= 2000)
+		return 0xdfff80;
+	else if (weight <= 483648)
+		return 0xc6ff1a;
+	return 0x86b300;
+}
+
+static int getColorWeightSons(int weight)
+{
+	if (weight <= -483648)
+		return 0xffd480;
+	else if (weight <= -2000)
+		return 0xffc34d;
+	else if (weight <= 0)
+		return 0xe69900;
+	else if (weight <= 2000)
+		return 0xbb99ff;
+	else if (weight <= 483648)
+		return 0x9966ff;
+	return 0x7733ff;
+}
+
 int					Gomoku::render( OpenGlLib *	_renderLib ) const
 {
+
+
+	int x, y, xx, yy;
+	for (unsigned int i = 0; i < _computer->_sonsDisplay.size(); i++)
+	{
+		x = _computer->_sonsDisplay[i]->getX();
+		y = _computer->_sonsDisplay[i]->getY();
+		_renderLib->drawCircle(x, y, 1, getColorWeightSons(_computer->_sonsDisplay[i]->getWeight()));
+
+
+
+
+		std::map<std::pair<int,int>, Possibility*>::iterator it=_computer->_sonsDisplay[i]->_grandSons.begin();
+		std::cout << "SIZE: " << _computer->_sonsDisplay[i]->_grandSons.size() << std::endl;
+		while( it!=_computer->_sonsDisplay[i]->_grandSons.end())
+		{
+			int ttt = it->second->getWeight();
+			xx = it->second->getX();
+			yy = it->second->getY();
+			std::cout << "Weight: " << ttt << std::endl; 
+			_renderLib->drawCircle(xx + 0.2, yy + 0.2 , 0.6, getColorWeightGrandSons(ttt));
+			it++;
+		}
+
+	}
+
+
 	_currentBoard->render(_renderLib);
 	for (int i = 0 ; i < _player1->_capturedPawns; i++)
 	{
@@ -320,6 +385,9 @@ int					Gomoku::render( OpenGlLib *	_renderLib ) const
 	{
 		_renderLib->drawCircle(19, 1 + i, 1, _player1->getColor());
 	}
+
+
+
 	return true;
 }
 

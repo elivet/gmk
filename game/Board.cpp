@@ -14,7 +14,6 @@ Board::~Board( void )
 
 Board::Board( Board const & src )
 {
-	std::cout << "  +++++++++    NEW SON" << std::endl;
 	*this = src;
 }
 
@@ -29,15 +28,12 @@ Board &	Board::operator=( Board const & rhs )
 
 void		Board::insert(std::pair<int, int> xy, Player* player)
 {
-	// std::cout << "XXXXXXXXXXXXXX                                             insertPawn x: " << xy.first << " y: " << xy.second << std::endl;
-	if (player->getName() == 0)
-		std::cout << " player DOESNT EXIST SHIT SHIT SHIT SHIT SHIT SHIT " <<  std::endl;
 	Pawn	*pawn = new Pawn(player, xy.first, xy.second);
 	_pawns[xy] = pawn;
 	return ;
 }
 
-void		Board::determinePawnBegin(Alignement* alignement) // plutot linverse ? se retracte dune case 
+void		Board::determinePawnBegin(Alignement* alignement) 
 {
 	std::pair<int,int> currentKey = std::make_pair(alignement->getPawnBegin()->getX() + alignement->getNx(), alignement->getPawnBegin()->getY() + alignement->getNy()); // check si cest bien dans le bon sens maybe linverse
 	alignement->setPawnBegin(findPawn(currentKey.first, currentKey.second));
@@ -47,7 +43,7 @@ void		Board::determinePawnBegin(Alignement* alignement) // plutot linverse ? se 
 	return ;
 }
 
-void		Board::determinePawnEnd(Alignement* alignement)// plutot linverse ? se retracte dune case 
+void		Board::determinePawnEnd(Alignement* alignement)
 {
 	std::pair<int,int> currentKey = std::make_pair(alignement->getPawnEnd()->getX() + alignement->getPx(), alignement->getPawnEnd()->getY() + alignement->getPy()); // check si cest bien dans le bon sens maybe linverse
 	alignement->setPawnEnd(findPawn(currentKey.first, currentKey.second));
@@ -78,10 +74,7 @@ void 		Board::eraseAlignementFromPawnsBegin(Alignement* al1, Alignement* al2)
 void		Board::deleteAlignement(Alignement *align)
 {
 	if (!align || !align->getPawnBegin() || !align->getPawnEnd())
-	{
-		//std::cout << "PRBLM >>>>>>>>>>>>>>>>>>>>>>         Board::deleteAlignement 1 ALIGN NULL" << std::endl;
 		return ;
-	}
 
 	Pawn *tmp = align->getPawnBegin();
 
@@ -91,8 +84,6 @@ void		Board::deleteAlignement(Alignement *align)
 	{
 		std::pair<int, int> currentKey = std::make_pair(tmp->getX()+ align->getNx(), tmp->getY() + align->getNy());
 		tmp = findPawn(currentKey.first, currentKey.second);
-		// if (!tmp)
-		// 	std::cout << "PRBLM >>>>>>>>>>>>>>>>>>>>>>>>>            Board::deleteAlignement !tmp" << std::endl;
 		tmp->deleteAlignement(align);
 	}
 	deleteAlignementFromBoard(align);
@@ -139,9 +130,6 @@ void		Board::erase(std::pair<int, int> xy)
 {
 	Pawn* pawn = findPawn(xy.first, xy.second);
 
-	// if (!pawn)
-	// 	std::cout << "PRBLM >>>>>>>>>>>>>>>>>>>>>>>>>>>>            Board::erase" << std::endl;
-
 	unsigned int stop = pawn->_alignements.size();
 	unsigned int j = 0;
 
@@ -167,19 +155,6 @@ void		Board::erase(std::pair<int, int> xy)
 	}
 	_pawns.erase(xy);
 	return ;
-}
-
-void		Board::displayPawns( void )
-{
-	for(std::map<std::pair<int,int>, Pawn*>::iterator it=_pawns.begin() ; it!=_pawns.end() ; ++it)
-	{
-		if (it->second == NULL)
-			std::cout << "PLAYER IS NULL DANS DISLPAY PAWNS" << std::endl;
-		if (it->second->getPlayer()->getName() != 1 && it->second->getPlayer()->getName() != 2)
-			std::cout << "PLAYER HAS NO NAME DANS DISLPAY PAWNS" << std::endl;
-		else
-			std::cout << "x: " << it->first.first << " y: " << it->first.second << " player: " << it->second->getPlayer()->getName() << std::endl;
-	}
 }
 
 Pawn*		Board::findPawn( int x, int y)
@@ -232,7 +207,6 @@ std::vector<std::pair<int, int> >	Board::checkOpponent(int x, int y, std::pair<i
 
 std::vector<std::pair<int, int> >		Board::checkCapture(int x, int y)
 {
-	// std::cout << "Board::checkCapture 1" << std::endl;
 	std::vector<std::pair<int, int> >	tmp;
 	std::vector<std::pair<int, int> >	tmp2;
 	std::pair<int, int> key = std::make_pair(x, y);
@@ -261,7 +235,6 @@ std::vector<std::pair<int, int> >		Board::checkCapture(int x, int y)
 	tmp = checkOpponent(x, y - 1, key);
 	if (tmp.size() > 0)
 		tmp2.insert(tmp2.end(), tmp.begin(), tmp.end());
-	// std::cout << "Board::checkCapture 2" << std::endl;
 
 	return tmp2;
 }
@@ -294,10 +267,7 @@ bool		Board::checkWinCaptureAroundPawn(Pawn *p, Alignement *al, int x, int y)
 				int new_y = p->getY() - y;	
 				Pawn *empty = findPawn(new_x, new_y);
 				if (!empty && new_x >= 0 && new_x <= 18 && new_y >= 0 && new_y <= 18)
-				{	
-					//std::cout << "space is empty" << std::endl;
-					return false;				
-				}
+					return false;
 			}
 		}
 		else if (neighbour->getPlayer()->getName() != p->getPlayer()->getName() && neighbour)
@@ -309,10 +279,7 @@ bool		Board::checkWinCaptureAroundPawn(Pawn *p, Alignement *al, int x, int y)
 				int new_y = second->getY() - y;
 				Pawn *empty = findPawn(new_x, new_y);
 				if (!empty && new_x >= 0 && new_x <= 18 && new_y >= 0 && new_y <= 18)
-				{	
-					//std::cout << "space is empty" << std::endl;
-					return false;				
-				}
+					return false;
 			}
 		}
 	}
@@ -355,18 +322,12 @@ bool		Board::checkWinCapture(Alignement *al)
 	int i = 0;
 	while (tmp != al->getPawnEnd())
 	{
-		//std::cout << "Pawn" << i << ": " << tmp->getX() << " - " << tmp->getY() << std::endl;
 		if (!checkWinCapturePawn(tmp, al))
 			return false;
 		tmp = findPawn(tmp->getX() + al->getNx(), tmp->getY() + al->getNy());
-		// if (!tmp)
-		// 	std::cout << "PRBLM >>>>>>>>>>>>>>>>>>>>>>>                                 Board::checkWinCapture !tmp" << std::endl;
 		i++;
 	}
-	std::cout << "Pawn" << i << ": " << tmp->getX() << " - " << tmp->getY() << std::endl;
-	//cehcking last Pawn because its eclude from the loop with the condition of tmp != al->getPawnEnd()
 	return checkWinCapturePawn(tmp, al);
-	//return true;
 }
 
 bool 		Board::checkwin(Player* player1, Player* player2)
@@ -430,9 +391,6 @@ void		Board::createAlignement(Pawn* neighbour, std::pair<int,int> key)
 	Pawn* current = findPawn(key.first, key.second);
 	Alignement* 	newAlignement = new Alignement(neighbour, current, this);
 	newAlignement->checkJoinAlignements(findPawn(key.first, key.second), this);
-	// current->_alignements.push_back(newAlignement);
-	// neighbour->_alignements.push_back(newAlignement);
-	// _alignements.push_back(newAlignement);
 	return ;
 }
 

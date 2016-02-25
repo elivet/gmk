@@ -8,7 +8,6 @@ Pawn::Pawn( void )
 
 Pawn::Pawn( Player* player, int x, int y) : _player( player ), _x(x), _y(y), _isWinnerAlignement(false)
 {
-	// std::cout << "PAWN CONST: " << _player->getName() << std::endl;
 	return ;
 }
 
@@ -91,8 +90,6 @@ void	Pawn::replaceAlignement(Alignement* al1, Alignement* al2)
 
 void	Pawn::deleteAlignement(Alignement* al)
 {
-	// if (_alignements.empty() || !_alignements.size())
-	// 	std::cout << "PROBLEM >>>>>>>>>>>>>>>>>>>>>>>>             Pawn::deleteAlignement " << std::endl;
 	unsigned int i = 0;
 	while ( i < _alignements.size())
 	{

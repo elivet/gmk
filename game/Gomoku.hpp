@@ -42,6 +42,7 @@ public:
 	int							getGameMode( void ) const;
 	void						Swap1Player(Player *player, int stepTo);
 	void						Swap1Computer(Player *player, int stepTo);
+	void 						setTimer(int time);
 	virtual int					update( OpenGlLib *	_renderLib, double delta );
 	virtual int					render( OpenGlLib *	_renderLib ) const;
 
@@ -50,6 +51,7 @@ private:
 	Board*						_currentBoard;
 	Player*						_player1;
 	Player*						_player2;
+	Computer*					_computer;
 	bool						_firstPlayerTurn;
 	double *					_lastClick;
 

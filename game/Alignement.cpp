@@ -48,8 +48,6 @@ Alignement::Alignement( Pawn* p1, Pawn* p2, Board* currentBoard )
 	{
 		currentKey = std::make_pair(tmp->getX() + this->_nx, tmp->getY() + this->_ny);
 		tmp = currentBoard->findPawn(currentKey.first, currentKey.second);
-		// if (!tmp)
-		// 	std::cout << "PRBML >>>>>>>>>>>>>>>>>>>>>>>>>>>>>          NEW ALIGNEMENT !tmp" << std::endl;
 		tmp->_alignements.push_back(this);
 		this->_nbr++;
 	}
@@ -100,7 +98,7 @@ bool Alignement::operator==(Alignement &rhs)
 		);
 }
 
-void		Alignement::deleteAlignement(Alignement *align, Board* currentBoard) // replace + que deleta
+void		Alignement::deleteAlignement(Alignement *align, Board* currentBoard)
 {
 	Pawn *tmp = align->_pawnBegin;
 
@@ -142,12 +140,12 @@ void 		Alignement::joinAlignements(Alignement *align, Pawn *current, Board* curr
 		}
 	}
 
-	this->_nbr += align->getNbr() - 1; // met pas -2 cest pas normal
+	this->_nbr += align->getNbr() - 1;
 
 	deleteAlignement(align, currentBoard);
 }
 
-void		Alignement::checkJoinAlignements(Pawn *current, Board* currentBoard) // ! peut etre n et p inverses
+void		Alignement::checkJoinAlignements(Pawn *current, Board* currentBoard)
 {
 	for (unsigned int i = 0; i < current->getAlignements().size(); i++)
 	{
@@ -175,12 +173,12 @@ void		Alignement::checkJoinAlignements(Pawn *current, Board* currentBoard) // ! 
 	return ;
 }
 
-int			Alignement::isAligned(std::pair<int, int> key, Board* currentBoard) // prblm ici en joignant un alignement a un pion solo
+int			Alignement::isAligned(std::pair<int, int> key, Board* currentBoard)
 {
 
 
-	std::pair<int,int> currentKey = std::make_pair(_pawnBegin->getX() - this->_nx, _pawnBegin->getY() - this->_ny); // check si cest bien dans le bon sens maybe linverse
-	std::pair<int,int> currentKey2 = std::make_pair(_pawnEnd->getX() - this->_px, _pawnEnd->getY() - this->_py); // check si cest bien dans le bon sens maybe linverse
+	std::pair<int,int> currentKey = std::make_pair(_pawnBegin->getX() - this->_nx, _pawnBegin->getY() - this->_ny);
+	std::pair<int,int> currentKey2 = std::make_pair(_pawnEnd->getX() - this->_px, _pawnEnd->getY() - this->_py);
 
 	if (currentKey.first == key.first && currentKey.second == key.second)  
 	{
