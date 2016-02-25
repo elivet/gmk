@@ -312,6 +312,14 @@ int					Gomoku::update( OpenGlLib *	_renderLib, double delta )
 int					Gomoku::render( OpenGlLib *	_renderLib ) const
 {
 	_currentBoard->render(_renderLib);
+	for (int i = 0 ; i < _player1->_capturedPawns; i++)
+	{
+		_renderLib->drawCircle(-1, 1 + i, 1, _player2->getColor());
+	}
+	for (int i = 0 ; i < _player2->_capturedPawns; i++)
+	{
+		_renderLib->drawCircle(19, 1 + i, 1, _player1->getColor());
+	}
 	return true;
 }
 
