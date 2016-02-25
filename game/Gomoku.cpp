@@ -350,29 +350,25 @@ static int getColorWeightSons(int weight)
 int					Gomoku::render( OpenGlLib *	_renderLib ) const
 {
 
-
-	int x, y, xx, yy;
-	for (unsigned int i = 0; i < _computer->_sonsDisplay.size(); i++)
+	if (this->getVerbose())
 	{
-		x = _computer->_sonsDisplay[i]->getX();
-		y = _computer->_sonsDisplay[i]->getY();
-		_renderLib->drawCircle(x, y, 1, getColorWeightSons(_computer->_sonsDisplay[i]->getWeight()));
-
-
-
-
-		std::map<std::pair<int,int>, Possibility*>::iterator it=_computer->_sonsDisplay[i]->_grandSons.begin();
-		std::cout << "SIZE: " << _computer->_sonsDisplay[i]->_grandSons.size() << std::endl;
-		while( it!=_computer->_sonsDisplay[i]->_grandSons.end())
+		int x, y, xx, yy;
+		for (unsigned int i = 0; i < _computer->_sonsDisplay.size(); i++)
 		{
-			int ttt = it->second->getWeight();
-			xx = it->second->getX();
-			yy = it->second->getY();
-			std::cout << "Weight: " << ttt << std::endl; 
-			_renderLib->drawCircle(xx + 0.2, yy + 0.2 , 0.6, getColorWeightGrandSons(ttt));
-			it++;
-		}
+			x = _computer->_sonsDisplay[i]->getX();
+			y = _computer->_sonsDisplay[i]->getY();
+			_renderLib->drawCircle(x, y, 1, getColorWeightSons(_computer->_sonsDisplay[i]->getWeight()));
 
+			std::map<std::pair<int,int>, Possibility*>::iterator it=_computer->_sonsDisplay[i]->_grandSons.begin();
+			while( it!=_computer->_sonsDisplay[i]->_grandSons.end())
+			{
+				int ttt = it->second->getWeight();
+				xx = it->second->getX();
+				yy = it->second->getY();
+				_renderLib->drawCircle(xx + 0.2, yy + 0.2 , 0.6, getColorWeightGrandSons(ttt));
+				it++;
+			}
+		}
 	}
 
 
