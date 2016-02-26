@@ -332,13 +332,16 @@ bool		Board::checkWinCapture(Alignement *al)
 
 bool 		Board::checkwin(Player* player1, Player* player2)
 {
+	static int top = 0;
 	for (unsigned int i = 0; i < _alignements.size(); i++)
 	{
 		if (_alignements[i]->getNbr() >= 5)
 		{
 			if (checkWinCapture(_alignements[i]))
 			{
-				std::cout << "WINNNERNNENRNNENRNRNENRNNRENRNRNRNRN" << std::endl;
+				if (!top)
+					std::cout << "WINNER" << std::endl;
+				top++;
 				_win = _alignements[i]->getPawnBegin()->getPlayer()->getName();
 
 				//******************************//
@@ -359,13 +362,17 @@ bool 		Board::checkwin(Player* player1, Player* player2)
 	if (player1->_capturedPawns >= 10)
 	{
 		_win = player1->getName();
-		std::cout << "Player: " << _win << " win !" << std::endl;
+		if (!top)
+			std::cout << "WINNER" << std::endl;
+		top++;
 		return true;
 	}
 	if (player2->_capturedPawns >= 10)
 	{
 		_win = player2->getName();
-		std::cout << "Player: " << _win << " win !" << std::endl;
+		if (!top)
+			std::cout << "WINNER" << std::endl;
+		top++;
 		return true;
 	} 
 	return false;

@@ -54,7 +54,10 @@ void				Gomoku::init( void )
 			if (c == "y")
 				comp = true;
 			else if (c == "n")
+			{
+				this->_verbose = false;
 				comp = false;
+			}
 			else
 				std::cout << "Please answer yes or no (y/n)" << std::endl;
 		}
@@ -178,7 +181,8 @@ void			Gomoku::playerTurn(Player *player)
 		}
 		if (isClicked())
 		{
-			_computer->_sonsDisplay.clear();
+			if (_computer != NULL)
+				_computer->_sonsDisplay.clear();
 			_currentBoard->_assist = std::make_pair(-1, -1);
 			while (player->referee(_currentBoard, getPair()) == true) // while ? 
 			{
@@ -319,30 +323,30 @@ int					Gomoku::update( OpenGlLib *	_renderLib, double delta )
 
 static int getColorWeightGrandSons(int weight)
 {
-	if (weight <= -483648)
+	if (weight <= -100000)
 		return 0xffe6f2;
-	else if (weight <= -2000)
+	else if (weight <= -10000)
 		return 0xff80bd;
 	else if (weight <= 0)
 		return 0xff3396;
-	else if (weight <= 2000)
+	else if (weight <= 10000)
 		return 0xdfff80;
-	else if (weight <= 483648)
+	else if (weight <= 100000)
 		return 0xc6ff1a;
 	return 0x86b300;
 }
 
 static int getColorWeightSons(int weight)
 {
-	if (weight <= -483648)
+	if (weight <= -100000)
 		return 0xffd480;
-	else if (weight <= -2000)
+	else if (weight <= -10000)
 		return 0xffc34d;
 	else if (weight <= 0)
 		return 0xe69900;
-	else if (weight <= 2000)
+	else if (weight <= 10000)
 		return 0xbb99ff;
-	else if (weight <= 483648)
+	else if (weight <= 100000)
 		return 0x9966ff;
 	return 0x7733ff;
 }
